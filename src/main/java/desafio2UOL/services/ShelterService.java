@@ -50,12 +50,13 @@ public class ShelterService {
     	old.setResponsible(updated.getResponsible());
     }
     
-    private void listOne(Integer id) {
+    private void findOne(Integer id) {
     	Shelter shelter = findById(id);
     	if(shelter != null) {
     		System.out.println(shelter);
     		System.out.println("--------------- Lista de itens do abrigo -------------");
     		System.out.println(shelter.getItens());
-    	}
+    	} else
+    		System.err.println("Entidade não encontrada");
     }
 }

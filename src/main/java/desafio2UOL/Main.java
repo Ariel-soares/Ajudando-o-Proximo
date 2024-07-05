@@ -24,14 +24,16 @@ public class Main {
 		em.persist(shelter);
 		em.getTransaction().commit();
 
+		/*
 		shelterService.listShelters();
-		
+
 		shelter.setName("abrigo 1 atualizado");
-		
+
 		shelterService.updateShelter(shelter, 1);
-		
+
 		shelterService.listShelters();
-		
+*/
+		showMenu();
 		/*
 		 * DistributionCenter cd = new DistributionCenter(null, "cd1", "rua 1",
 		 * "campinas", "RS", "25642");
@@ -82,10 +84,10 @@ public class Main {
 				// listDonations();
 				break;
 			case 3:
-				// addShelter();
+				showShelterMenu();
 				break;
 			case 4:
-				shelterService.listShelters();
+				
 				break;
 			case 5:
 				System.exit(0);
@@ -113,24 +115,131 @@ public class Main {
 				shelterService.listShelters();
 				break;
 			case 2:
-				// listDonations();
+				System.out.println("\n\nEnter Shelter Id: \n\n");
+				Integer idForDelete = scanner.nextInt();
+				System.out.println(shelterService.findById(idForDelete));
 				break;
 			case 3:
-				// addShelter();
+				addShelter();
 				break;
 			case 4:
-				shelterService.listShelters();
+				System.out.println("Enter Shelter Id: ");
+				Integer id = scanner.nextInt();
+				shelterService.deleteShelter(id);
 				break;
 			case 5:
-				
+				showUpdateShelterMenu();
 				break;
 			case 6:
-				
-				break;
+				System.out.println("\n\n Returning to main menu \n\n");
+				return;
 			default:
-				System.out.println("Invalid option");
+				System.out.println("\n\n Invalid option  \n\n");
 			}
 		}
 	}
 
+	private static void addShelter() {
+		System.out.print("Enter name: ");
+		String name = scanner.nextLine();
+		System.out.print("Enter address: ");
+		String address = scanner.nextLine();
+		System.out.print("Enter contact: ");
+		String contact = scanner.nextLine();
+		System.out.print("Enter capacity: ");
+		int capacity = scanner.nextInt();
+		System.out.print("Enter occupancy: ");
+		int occupancy = scanner.nextInt();
+		scanner.nextLine();
+		System.out.print("Enter responsible: ");
+		String responsible = scanner.nextLine();
+		System.out.print("Enter email: ");
+		String email = scanner.nextLine();
+
+
+		Shelter shelter = new Shelter(null, name, address, responsible, contact, email, capacity, occupancy);
+		shelterService.addShelter(shelter);
+		
+		System.out.println("\n\n Cadastro realizado com sucesso \n\n");
+	}
+
+	private static void showUpdateShelterMenu() {
+        System.out.print("Enter Shelter ID to update: ");
+        int id = scanner.nextInt();
+        scanner.nextLine();
+
+        Shelter shelter = shelterService.findById(id);
+        if (shelter == null) {
+            System.out.println("Shelter not found.");
+            return;
+        }
+
+        while (true) {
+            System.out.println("Updating Shelter: " + shelter.getName());
+            System.out.println("1. Update Name");
+            System.out.println("2. Update Address");
+            System.out.println("3. Update Contact");
+            System.out.println("4. Update Capacity");
+            System.out.println("5. Update Occupancy");
+            System.out.println("6. Update email");
+            System.out.println("7. Back to Shelters Menu");
+            System.out.print("Choose an option: ");
+            int option = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (option) {
+                case 1:
+                    System.out.print("Enter new name: ");
+                    String name = scanner.nextLine();
+                    if (!name.isEmpty()) {
+                        shelter.setName(name);
+                    }
+                    break;
+                case 2:
+                    System.out.print("Enter new address: ");
+                    String address = scanner.nextLine();
+                    if (!address.isEmpty()) {
+                        shelter.setAddress(address);
+                    }
+                    break;
+                case 3:
+                    System.out.print("Enter new contact: ");
+                    String contact = scanner.nextLine();
+                    if (!contact.isEmpty()) {
+                        shelter.setPhoneNumber(contact);
+                    }
+                    break;
+                case 4:
+                    System.out.print("Enter new capacity: ");
+                    int capacity = scanner.nextInt();
+                    if (capacity > 0) {
+                        shelter.setCapacity(capacity);
+                    }
+                    scanner.nextLine();
+                    break;
+                case 5:
+                    System.out.print("Enter new occupancy: ");
+                    int occupancy = scanner.nextInt();
+                    if (occupancy >= 0) {
+                        shelter.setOccupancy(occupancy);
+                    }
+                    scanner.nextLine();
+                    break;
+                case 6:
+                    System.out.print("Enter new email: ");
+                    String email = scanner.nextLine();
+                    if (!email.isEmpty()) {
+                        shelter.setEmail(email);
+                    }
+                    scanner.nextLine();
+                    break;
+                case 7:
+                    shelterService.updateShelter(shelter, shelter.getId());
+                    System.out.println("Shelter updated successfully.");
+                    return;
+                default:
+                    System.out.println("Invalid option");
+            }
+        }
+    }
 }

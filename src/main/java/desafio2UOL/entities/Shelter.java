@@ -35,7 +35,6 @@ public class Shelter {
 
 	public Shelter(Integer id, String name, String address, String responsible, String phoneNumber, String email,
 			Integer capacity, Integer occupancy) {
-		super();
 		this.id = id;
 		this.name = name;
 		this.address = address;
