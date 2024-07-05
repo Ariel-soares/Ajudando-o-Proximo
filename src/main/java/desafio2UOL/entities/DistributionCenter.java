@@ -1,11 +1,14 @@
 package desafio2UOL.entities;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -21,8 +24,9 @@ public class DistributionCenter {
 	private String state;
 	private String cep;
 	
+	@OneToMany
+	List<Item> items = new ArrayList<>();
 	
-		
 	public DistributionCenter(){}
 	
 	public DistributionCenter(Integer id, String name, String address, String city, String state, String cep) {
@@ -82,6 +86,10 @@ public class DistributionCenter {
 	public void setCep(String cep) {
 		this.cep = cep;
 	}
+	
+	public List<Item> getItems() {
+		return items;
+	}
 
 	@Override
 	public int hashCode() {
@@ -105,5 +113,7 @@ public class DistributionCenter {
 		return "DistributionCenter [id=" + id + ", name=" + name + ", address=" + address + ", city=" + city
 				+ ", state=" + state + ", cep=" + cep + "]";
 	}
+
+	
 	
 }
