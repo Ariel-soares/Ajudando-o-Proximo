@@ -27,6 +27,9 @@ public class DistributionCenter {
 	@OneToMany
 	List<Item> items = new ArrayList<>();
 	
+	@OneToMany(mappedBy = "centerId")
+	private List<Donation> donations = new ArrayList<>();
+	
 	public DistributionCenter(){}
 	
 	public DistributionCenter(Integer id, String name, String address, String city, String state, String cep) {
@@ -89,6 +92,10 @@ public class DistributionCenter {
 	
 	public List<Item> getItems() {
 		return items;
+	}
+	
+	public List<Donation> getDonations() {
+		return donations;
 	}
 
 	@Override
