@@ -72,7 +72,7 @@ public class Main {
 			System.out.println("3. Shelter Management");
 			System.out.println("4. Distribution Center Management");
 			System.out.println("5. Exit");
-			System.out.print("Choose an option: ");
+			System.out.print("\nChoose an option: ");
 			int option = scanner.nextInt();
 			scanner.nextLine();
 
@@ -100,13 +100,13 @@ public class Main {
 
 	private static void showShelterMenu() {
 		while (true) {
-			System.out.println("1. List Shelters");
+			System.out.println("\n1. List Shelters");
 			System.out.println("2. Find Specific Shelter");
 			System.out.println("3. Add Shelter");
 			System.out.println("4. Delete Shelter");
 			System.out.println("5. Update Shelter");
 			System.out.println("6. Exit");
-			System.out.print("Choose an option: ");
+			System.out.print("\nChoose an option: \n");
 			int option = scanner.nextInt();
 			scanner.nextLine();
 
@@ -115,9 +115,9 @@ public class Main {
 				shelterService.listShelters();
 				break;
 			case 2:
-				System.out.println("\n\nEnter Shelter Id: \n\n");
-				Integer idForDelete = scanner.nextInt();
-				System.out.println(shelterService.findById(idForDelete));
+				System.out.println("\n\nEnter Shelter Id: \n");
+				Integer idForFound = scanner.nextInt();
+				shelterService.findOne(idForFound);
 				break;
 			case 3:
 				addShelter();
@@ -131,10 +131,10 @@ public class Main {
 				showUpdateShelterMenu();
 				break;
 			case 6:
-				System.out.println("\n\n Returning to main menu \n\n");
+				System.out.println("\nReturning to main menu \n");
 				return;
 			default:
-				System.out.println("\n\n Invalid option  \n\n");
+				System.out.println("\nInvalid option  \n");
 			}
 		}
 	}
@@ -160,11 +160,11 @@ public class Main {
 		Shelter shelter = new Shelter(null, name, address, responsible, contact, email, capacity, occupancy);
 		shelterService.addShelter(shelter);
 		
-		System.out.println("\n\n Cadastro realizado com sucesso \n\n");
+		System.out.println("\nCadastro realizado com sucesso \n");
 	}
 
 	private static void showUpdateShelterMenu() {
-        System.out.print("Enter Shelter ID to update: ");
+        System.out.print("\nEnter Shelter ID to update:\n");
         int id = scanner.nextInt();
         scanner.nextLine();
 
@@ -235,10 +235,10 @@ public class Main {
                     break;
                 case 7:
                     shelterService.updateShelter(shelter, shelter.getId());
-                    System.out.println("Shelter updated successfully.");
+                    System.out.println("\nShelter updated successfully.\n");
                     return;
                 default:
-                    System.out.println("Invalid option");
+                    System.out.println("\nInvalid option\n");
             }
         }
     }
