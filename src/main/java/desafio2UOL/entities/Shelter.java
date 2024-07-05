@@ -30,6 +30,8 @@ public class Shelter {
 
 	@OneToMany
 	private List<Item> itens = new ArrayList<>();
+	
+	public Shelter() {}
 
 	public Shelter(Integer id, String name, String address, String responsible, String phoneNumber, String email,
 			Integer capacity, Integer occupancy) {
