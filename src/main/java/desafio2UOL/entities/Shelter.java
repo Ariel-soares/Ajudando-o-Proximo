@@ -22,7 +22,6 @@ public class Shelter {
 	private String name;
 	private String address;
 	private String responsible;
-
 	@Column(name = "phoneNumber")
 	private String phoneNumber;
 	private String email;

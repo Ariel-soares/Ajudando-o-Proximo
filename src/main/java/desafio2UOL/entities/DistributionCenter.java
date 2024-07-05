@@ -23,15 +23,16 @@ public class DistributionCenter {
 	private String city;
 	private String state;
 	private String cep;
-	
+
 	@OneToMany
-	List<Item> items = new ArrayList<>();
-	
+	private List<Item> items = new ArrayList<>();
+
 	@OneToMany(mappedBy = "centerId")
 	private List<Donation> donations = new ArrayList<>();
 	
-	public DistributionCenter(){}
-	
+	public DistributionCenter() {
+	}
+
 	public DistributionCenter(Integer id, String name, String address, String city, String state, String cep) {
 		super();
 		this.id = id;
@@ -89,11 +90,11 @@ public class DistributionCenter {
 	public void setCep(String cep) {
 		this.cep = cep;
 	}
-	
+
 	public List<Item> getItems() {
 		return items;
 	}
-	
+
 	public List<Donation> getDonations() {
 		return donations;
 	}
@@ -121,6 +122,4 @@ public class DistributionCenter {
 				+ ", state=" + state + ", cep=" + cep + "]";
 	}
 
-	
-	
 }
