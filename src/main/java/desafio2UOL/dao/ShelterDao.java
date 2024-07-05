@@ -10,6 +10,13 @@ import jakarta.persistence.Persistence;
 public class ShelterDao {
 
 	private EntityManagerFactory emf = Persistence.createEntityManagerFactory("desafio-context");
+	
+	public Shelter findById(Integer id) {
+		EntityManager em = emf.createEntityManager();
+		Shelter shelter = em.find(Shelter.class, id);
+		em.close();
+		return shelter;
+	}
 
 	public List<Shelter> getAllShelters() {
 		EntityManager em = emf.createEntityManager();
@@ -38,8 +45,9 @@ public class ShelterDao {
         em.close();
     }
 
-    public void updateShelter(Shelter shelter) {
+    public void updateShelter(Shelter shelter, Integer id) {
         EntityManager em = emf.createEntityManager();
+        em.find(Shelter.class, shelter.getId());
         em.getTransaction().begin();
         em.merge(shelter);
         em.getTransaction().commit();

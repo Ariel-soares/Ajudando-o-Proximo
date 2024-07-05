@@ -1,6 +1,5 @@
 package desafio2UOL;
 
-import java.util.List;
 import java.util.Scanner;
 
 import desafio2UOL.entities.Shelter;
@@ -18,18 +17,25 @@ public class Main {
 
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("desafio-context");
 		EntityManager em = emf.createEntityManager();
-		
-		
+
 		Shelter shelter = new Shelter(null, "abrigo 1", "rua 2", "s", "e", "d", 4, 5);
-		
+
 		em.getTransaction().begin();
 		em.persist(shelter);
 		em.getTransaction().commit();
+
+		shelterService.listShelters();
 		
-		listShelters();
+		shelter.setName("abrigo 1 atualizado");
+		
+		shelterService.updateShelter(shelter, 1);
+		
+		shelterService.listShelters();
+		
 		/*
-		DistributionCenter cd = new DistributionCenter(null, "cd1", "rua 1", "campinas", "RS", "25642");
-		
+		 * DistributionCenter cd = new DistributionCenter(null, "cd1", "rua 1",
+		 * "campinas", "RS", "25642");
+		 * 
 		 * em.getTransaction().begin(); em.persist(cd); em.getTransaction().commit();
 		 * 
 		 * Item cloth = new ClothItem(null, "Camisa", "Camisa Masculina branca", 'M',
@@ -61,8 +67,8 @@ public class Main {
 		while (true) {
 			System.out.println("1. Add Donation");
 			System.out.println("2. List Donations");
-			System.out.println("3. Add Shelter");
-			System.out.println("4. List Shelters");
+			System.out.println("3. Shelter Management");
+			System.out.println("4. Distribution Center Management");
 			System.out.println("5. Exit");
 			System.out.print("Choose an option: ");
 			int option = scanner.nextInt();
@@ -79,7 +85,7 @@ public class Main {
 				// addShelter();
 				break;
 			case 4:
-				// listShelters();
+				shelterService.listShelters();
 				break;
 			case 5:
 				System.exit(0);
@@ -89,12 +95,7 @@ public class Main {
 			}
 		}
 	}
+
 	
-	 private static void listShelters() {
-	        List<Shelter> shelters = shelterService.getAllShelters();
-	        for (Shelter shelter : shelters) {
-	            System.out.println(shelter);
-	        }
-	    }
-	
+
 }
