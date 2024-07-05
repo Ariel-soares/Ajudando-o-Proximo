@@ -29,7 +29,10 @@ public class DistributionCenter {
 
 	@OneToMany(mappedBy = "centerId")
 	private List<Donation> donations = new ArrayList<>();
-	
+
+	@OneToMany
+	private List<Order> orders = new ArrayList<>();
+
 	public DistributionCenter() {
 	}
 
@@ -97,6 +100,10 @@ public class DistributionCenter {
 
 	public List<Donation> getDonations() {
 		return donations;
+	}
+
+	public List<Order> getOrders() {
+		return orders;
 	}
 
 	@Override
