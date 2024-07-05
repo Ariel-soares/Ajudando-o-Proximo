@@ -96,6 +96,41 @@ public class Main {
 		}
 	}
 
-	
+	private static void showShelterMenu() {
+		while (true) {
+			System.out.println("1. List Shelters");
+			System.out.println("2. Find Specific Shelter");
+			System.out.println("3. Add Shelter");
+			System.out.println("4. Delete Shelter");
+			System.out.println("5. Update Shelter");
+			System.out.println("6. Exit");
+			System.out.print("Choose an option: ");
+			int option = scanner.nextInt();
+			scanner.nextLine();
+
+			switch (option) {
+			case 1:
+				shelterService.listShelters();
+				break;
+			case 2:
+				// listDonations();
+				break;
+			case 3:
+				// addShelter();
+				break;
+			case 4:
+				shelterService.listShelters();
+				break;
+			case 5:
+				
+				break;
+			case 6:
+				
+				break;
+			default:
+				System.out.println("Invalid option");
+			}
+		}
+	}
 
 }

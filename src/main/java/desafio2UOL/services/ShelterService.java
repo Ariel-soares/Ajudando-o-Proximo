@@ -9,6 +9,10 @@ public class ShelterService {
 	
 	private ShelterDao shelterDao = new ShelterDao();
 	
+	public Shelter findById(Integer id) {
+		return shelterDao.findById(id);
+	}
+	
 	public List<Shelter> getAllShelters() {
         return shelterDao.getAllShelters();
     }
@@ -46,4 +50,12 @@ public class ShelterService {
     	old.setResponsible(updated.getResponsible());
     }
     
+    private void listOne(Integer id) {
+    	Shelter shelter = findById(id);
+    	if(shelter != null) {
+    		System.out.println(shelter);
+    		System.out.println("--------------- Lista de itens do abrigo -------------");
+    		System.out.println(shelter.getItens());
+    	}
+    }
 }
