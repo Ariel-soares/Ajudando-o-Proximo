@@ -4,6 +4,8 @@ import java.util.List;
 
 import desafio2UOL.dao.DistributionCenterDao;
 import desafio2UOL.entities.DistributionCenter;
+import desafio2UOL.entities.Donation;
+import desafio2UOL.entities.Item;
 
 public class DistributionCenterService {
 
@@ -37,15 +39,26 @@ public class DistributionCenterService {
 			System.out.println(DistributionCenter);
 		}
 	}
+	
+	public void addDonation(Donation donation, Integer id) {
+		DistributionCenter center = DistributionCenterDao.findById(id);
+		center.getDonations().add(donation);
+		for(Item i : donation.getItens()) {
+			center.getItems().add(i);
+		}
+		DistributionCenterDao.updateDistributionCenter(center, id);
+	}
 
 	private void updateData(DistributionCenter old, DistributionCenter updated) {
-		/*
-		 * old.setAddress(updated.getAddress()); old.setCapacity(updated.getCapacity());
-		 * old.setEmail(updated.getEmail()); old.setId(updated.getId());
-		 * old.setName(updated.getName()); old.setOccupancy(updated.getOccupancy());
-		 * old.setPhoneNumber(updated.getPhoneNumber());
-		 * old.setResponsible(updated.getResponsible());
-		 */
+
+		old.setAddress(updated.getAddress());
+		old.setCep(updated.getCep());
+		old.setCity(updated.getCity());;
+		old.setId(updated.getId());
+		old.setName(updated.getName());
+		old.setState(updated.getState());
+		old.setId(updated.getId());
+
 	}
 
 	public void findOne(Integer id) {

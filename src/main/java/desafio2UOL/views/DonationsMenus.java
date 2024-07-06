@@ -1,5 +1,8 @@
 package desafio2UOL.views;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -12,17 +15,43 @@ import desafio2UOL.services.DistributionCenterService;
 
 public class DonationsMenus {
 	
+	public static void showDonationsMenu(Scanner scanner, DistributionCenterService distributionCenterService) {
+		while (true) {
+			System.out.println("Donations Menu:");
+			System.out.println("1. Add Donation Manually");
+			System.out.println("2. Add Donation from CSV");
+			System.out.println("3. List Donations");
+			System.out.println("4. Back to Main Menu");
+			System.out.print("Choose an option: ");
+			int option = scanner.nextInt();
+			scanner.nextLine(); // Consume newline
+
+			switch (option) {
+			case 1:
+				DonationsMenus.addDonationManually(scanner, distributionCenterService);
+				break;
+			case 2:
+				//DonationsMenus.addDonationFromCSV(scanner, distributionCenterService);
+				break;
+			case 3:
+				// listDonations();
+				break;
+			case 4:
+				return;
+			default:
+				System.out.println("Invalid option");
+			}
+		}
+	}
+	
 	public static void addDonationManually(Scanner scanner, DistributionCenterService distributionCenterService) {
-		
-		
-		
 		Donation donation = new Donation();
 		List<Item> items = new ArrayList<>();
 		
 		while (true) {
 			System.out.print("Enter item type (1 - Clothes/2 - Hygiene/3 - Food/ 4 - End Donation): ");
 			Integer itemType = scanner.nextInt();
-			scanner.nextLine(); // Consume newline
+			scanner.nextLine();
 
 			switch (itemType) {
 			case 1:
@@ -65,7 +94,7 @@ public class DonationsMenus {
 				DistributionCenter distributionCenter = distributionCenterService.findById(distributionCenterId);
 				if (distributionCenter != null) {
 					distributionCenter.getDonations().add(donation);
-					distributionCenterService.updateDistributionCenter(distributionCenter, distributionCenterId);
+					distributionCenterService.addDonation(donation, distributionCenterId);
 					System.out.println("\nDonation added\n");
 					return;
 				}else 
@@ -75,6 +104,32 @@ public class DonationsMenus {
 			default:
 				System.out.println("Invalid option");
 			}
+		}
+	}
+
+	private static void addDonationFromCSV(Scanner scanner, DistributionCenterService distributionCenterService) {
+		System.out.print("Enter CSV file path: ");
+		String csvFilePath = scanner.nextLine();
+
+		try (BufferedReader br = new BufferedReader(new FileReader(csvFilePath))) {
+			String line;
+			while ((line = br.readLine()) != null) {
+				String[] values = line.split(",");
+				String itemType = values[0];
+				String itemName = values[1];
+				int quantity = Integer.parseInt(values[2]);
+				int distributionCenterId = Integer.parseInt(values[3]);
+
+				DistributionCenter distributionCenter = distributionCenterService.findById(distributionCenterId);
+				if (distributionCenter == null) {
+					System.out.println("Distribution Center not found for ID: " + distributionCenterId);
+					continue;
+				}
+
+			}
+			System.out.println("Donations added from CSV successfully.");
+		} catch (IOException e) {
+			System.out.println("Error reading CSV file: " + e.getMessage());
 		}
 	}
 

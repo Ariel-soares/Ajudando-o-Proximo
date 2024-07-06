@@ -25,13 +25,13 @@ public class DistributionCenter {
 	private String state;
 	private String cep;
 
-	@OneToMany
+	@OneToMany(fetch = FetchType.EAGER)
 	private List<Item> items = new ArrayList<>();
 
 	@OneToMany(mappedBy = "centerId", fetch = FetchType.EAGER)
 	private List<Donation> donations = new ArrayList<>();
 
-	@OneToMany
+	@OneToMany(fetch = FetchType.EAGER)
 	private List<Order> orders = new ArrayList<>();
 
 	public DistributionCenter() {
