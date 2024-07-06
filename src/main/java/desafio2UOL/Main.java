@@ -1,10 +1,5 @@
 package desafio2UOL;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 import desafio2UOL.entities.ClothItem;
@@ -13,6 +8,7 @@ import desafio2UOL.entities.Donation;
 import desafio2UOL.entities.Item;
 import desafio2UOL.entities.Shelter;
 import desafio2UOL.services.DistributionCenterService;
+import desafio2UOL.services.ItemService;
 import desafio2UOL.services.ShelterService;
 import desafio2UOL.views.DonationsMenus;
 import desafio2UOL.views.ShelterMenus;
@@ -25,6 +21,7 @@ public class Main {
 	private static Scanner scanner = new Scanner(System.in);
 	private static ShelterService shelterService = new ShelterService();
 	private static DistributionCenterService distributionCenterService = new DistributionCenterService();
+	private static ItemService itemService = new ItemService();
 
 	public static void main(String[] args) {
 
@@ -93,7 +90,7 @@ public class Main {
 
 			switch (option) {
 			case 1:
-				DonationsMenus.showDonationsMenu(scanner, distributionCenterService);;
+				DonationsMenus.showDonationsMenu(scanner, distributionCenterService, itemService);;
 				break;
 			case 2:
 				// listDonations();

@@ -12,10 +12,12 @@ import desafio2UOL.entities.DistributionCenter;
 import desafio2UOL.entities.Donation;
 import desafio2UOL.entities.Item;
 import desafio2UOL.services.DistributionCenterService;
+import desafio2UOL.services.ItemService;
 
 public class DonationsMenus {
-	
-	public static void showDonationsMenu(Scanner scanner, DistributionCenterService distributionCenterService) {
+
+	public static void showDonationsMenu(Scanner scanner, DistributionCenterService distributionCenterService,
+			ItemService itemService) {
 		while (true) {
 			System.out.println("Donations Menu:");
 			System.out.println("1. Add Donation Manually");
@@ -28,10 +30,10 @@ public class DonationsMenus {
 
 			switch (option) {
 			case 1:
-				DonationsMenus.addDonationManually(scanner, distributionCenterService);
+				DonationsMenus.addDonationManually(scanner, distributionCenterService, itemService);
 				break;
 			case 2:
-				//DonationsMenus.addDonationFromCSV(scanner, distributionCenterService);
+				// DonationsMenus.addDonationFromCSV(scanner, distributionCenterService);
 				break;
 			case 3:
 				// listDonations();
@@ -43,11 +45,11 @@ public class DonationsMenus {
 			}
 		}
 	}
-	
-	public static void addDonationManually(Scanner scanner, DistributionCenterService distributionCenterService) {
+
+	public static void addDonationManually(Scanner scanner, DistributionCenterService distributionCenterService, ItemService itemService) {
 		Donation donation = new Donation();
 		List<Item> items = new ArrayList<>();
-		
+
 		while (true) {
 			System.out.print("Enter item type (1 - Clothes/2 - Hygiene/3 - Food/ 4 - End Donation): ");
 			Integer itemType = scanner.nextInt();
@@ -64,7 +66,7 @@ public class DonationsMenus {
 				switch (option) {
 				case 1:
 					items.add(new ClothItem(null, name, "cloth", 'M', size));
-					
+
 				case 2:
 					items.add(new ClothItem(null, name, "cloth", 'F', size));
 				}
@@ -76,11 +78,11 @@ public class DonationsMenus {
 				;
 				break;
 			case 4:
-				
-				for(Item i : items) {
+
+				for (Item i : items) {
 					donation.getItens().add(i);
 				}
-				
+
 				List<DistributionCenter> distributionCenters = distributionCenterService.getAllDistributionCenters();
 				System.out.println("Available Distribution Centers:");
 				for (DistributionCenter dc : distributionCenters) {
@@ -93,13 +95,16 @@ public class DonationsMenus {
 
 				DistributionCenter distributionCenter = distributionCenterService.findById(distributionCenterId);
 				if (distributionCenter != null) {
+					for (Item i : donation.getItens()) {
+						itemService.addItem(i);
+					}
 					distributionCenter.getDonations().add(donation);
 					distributionCenterService.addDonation(donation, distributionCenterId);
 					System.out.println("\nDonation added\n");
 					return;
-				}else 
+				} else
 					System.out.println("Distribution Center not found.");
-				
+
 				return;
 			default:
 				System.out.println("Invalid option");
