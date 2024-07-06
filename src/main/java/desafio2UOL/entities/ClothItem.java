@@ -24,7 +24,6 @@ public class ClothItem extends Item {
 	public ClothItem(Integer id, String name, String description, char gender, String size) {
 		this.id = id;
 		this.name = name;
-		this.id = id;
 		this.description = description;
 		this.gender = gender;
 		this.size = size;
@@ -92,8 +91,7 @@ public class ClothItem extends Item {
 
 	@Override
 	public String toString() {
-		return " Item do tipo Roupa,nome: " + name + ", do gênero " + gender + ", do tamanho " + size + ", descrição: "
-				+ description + "\n";
+		return " Item do tipo" + description + ",nome: " + name + ", do gênero " + gender + ", do tamanho " + size + "\n";
 	}
 
 }

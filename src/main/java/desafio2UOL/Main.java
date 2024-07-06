@@ -1,5 +1,10 @@
 package desafio2UOL;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import desafio2UOL.entities.ClothItem;
@@ -7,7 +12,9 @@ import desafio2UOL.entities.DistributionCenter;
 import desafio2UOL.entities.Donation;
 import desafio2UOL.entities.Item;
 import desafio2UOL.entities.Shelter;
+import desafio2UOL.services.DistributionCenterService;
 import desafio2UOL.services.ShelterService;
+import desafio2UOL.views.DonationsMenus;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
@@ -16,6 +23,7 @@ public class Main {
 
 	private static Scanner scanner = new Scanner(System.in);
 	private static ShelterService shelterService = new ShelterService();
+	private static DistributionCenterService distributionCenterService = new DistributionCenterService();
 
 	public static void main(String[] args) {
 
@@ -34,7 +42,7 @@ public class Main {
 		shelter.getItens().add(cloth2);
 		shelter.getItens().add(cloth);
 
-		System.out.println(shelter.getItens());
+		//System.out.println(shelter.getItens());
 
 		em.getTransaction().begin();
 		em.persist(cloth);
@@ -56,14 +64,14 @@ public class Main {
 		em.getTransaction().begin();
 		em.persist(donation);
 		em.getTransaction().commit();
-		
+
 		cd.getDonations().add(donation);
-		
+
 		em.getTransaction().begin();
 		em.persist(cd);
 		em.getTransaction().commit();
-		
-		System.out.println(cd.getDonations());
+
+		//System.out.println(cd.getDonations());
 
 		showMenu();
 		/*
@@ -94,7 +102,7 @@ public class Main {
 
 	private static void showMenu() {
 		while (true) {
-			System.out.println("1. Add Donation");
+			System.out.println("1. Donation Management");
 			System.out.println("2. List Donations");
 			System.out.println("3. Shelter Management");
 			System.out.println("4. Distribution Center Management");
@@ -105,7 +113,7 @@ public class Main {
 
 			switch (option) {
 			case 1:
-				// addDonation();
+				showDonationsMenu();
 				break;
 			case 2:
 				// listDonations();
@@ -268,4 +276,67 @@ public class Main {
 			}
 		}
 	}
+
+	private static void showDonationsMenu() {
+		while (true) {
+			System.out.println("Donations Menu:");
+			System.out.println("1. Add Donation Manually");
+			System.out.println("2. Add Donation from CSV");
+			System.out.println("3. List Donations");
+			System.out.println("4. Back to Main Menu");
+			System.out.print("Choose an option: ");
+			int option = scanner.nextInt();
+			scanner.nextLine(); // Consume newline
+
+			switch (option) {
+			case 1:
+				DonationsMenus.addDonationManually(scanner, distributionCenterService);
+				break;
+			case 2:
+				addDonationFromCSV();
+				break;
+			case 3:
+				// listDonations();
+				break;
+			case 4:
+				return;
+			default:
+				System.out.println("Invalid option");
+			}
+		}
+	}
+
+	
+
+	private static void addDonationFromCSV() {
+		System.out.print("Enter CSV file path: ");
+		String csvFilePath = scanner.nextLine();
+
+		try (BufferedReader br = new BufferedReader(new FileReader(csvFilePath))) {
+			String line;
+			while ((line = br.readLine()) != null) {
+				String[] values = line.split(",");
+				String itemType = values[0];
+				String itemName = values[1];
+				int quantity = Integer.parseInt(values[2]);
+				int distributionCenterId = Integer.parseInt(values[3]);
+
+				DistributionCenter distributionCenter = distributionCenterService.findById(distributionCenterId);
+				if (distributionCenter == null) {
+					System.out.println("Distribution Center not found for ID: " + distributionCenterId);
+					continue;
+				}
+
+			}
+			System.out.println("Donations added from CSV successfully.");
+		} catch (IOException e) {
+			System.out.println("Error reading CSV file: " + e.getMessage());
+		}
+	}
+
+	/*
+	 * private static void listDonations() { List<Donation> donations =
+	 * donationDAO.getAll(); for (Donation donation : donations) {
+	 * System.out.println(donation); } }
+	 */
 }

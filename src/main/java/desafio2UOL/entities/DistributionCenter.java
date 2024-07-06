@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -27,7 +28,7 @@ public class DistributionCenter {
 	@OneToMany
 	private List<Item> items = new ArrayList<>();
 
-	@OneToMany(mappedBy = "centerId")
+	@OneToMany(mappedBy = "centerId", fetch = FetchType.EAGER)
 	private List<Donation> donations = new ArrayList<>();
 
 	@OneToMany
