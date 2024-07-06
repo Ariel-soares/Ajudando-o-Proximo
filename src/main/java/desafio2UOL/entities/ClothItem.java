@@ -8,7 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
-public class ClothItem extends Item{
+public class ClothItem extends Item {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,10 +17,12 @@ public class ClothItem extends Item{
 	private String description;
 	private char gender;
 	private String size;
-	
-	public ClothItem(){}
 
-	public ClothItem( Integer id,String name, String description, char gender, String size) {
+	public ClothItem() {
+	}
+
+	public ClothItem(Integer id, String name, String description, char gender, String size) {
+		this.id = id;
 		this.name = name;
 		this.id = id;
 		this.description = description;
@@ -59,6 +61,7 @@ public class ClothItem extends Item{
 	public void setSize(String size) {
 		this.size = size;
 	}
+
 	public String getName() {
 		return name;
 	}
@@ -89,8 +92,8 @@ public class ClothItem extends Item{
 
 	@Override
 	public String toString() {
-		return "Item do tipo Roupa,nome: " + name + " do gênero " + gender + " do tamanho " + size +", descrição: " + description ;
+		return " Item do tipo Roupa,nome: " + name + ", do gênero " + gender + ", do tamanho " + size + ", descrição: "
+				+ description + "\n";
 	}
-
 
 }

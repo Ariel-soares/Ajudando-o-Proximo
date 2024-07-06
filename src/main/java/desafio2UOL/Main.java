@@ -2,6 +2,10 @@ package desafio2UOL;
 
 import java.util.Scanner;
 
+import desafio2UOL.entities.ClothItem;
+import desafio2UOL.entities.DistributionCenter;
+import desafio2UOL.entities.Donation;
+import desafio2UOL.entities.Item;
 import desafio2UOL.entities.Shelter;
 import desafio2UOL.services.ShelterService;
 import jakarta.persistence.EntityManager;
@@ -24,15 +28,43 @@ public class Main {
 		em.persist(shelter);
 		em.getTransaction().commit();
 
-		/*
-		shelterService.listShelters();
+		Item cloth = new ClothItem(null, "Camisa", "Camisa Masculina branca", 'M', "M");
+		Item cloth2 = new ClothItem(null, "Moletom", "Moletom feminino preto", 'F', "M");
 
-		shelter.setName("abrigo 1 atualizado");
+		shelter.getItens().add(cloth2);
+		shelter.getItens().add(cloth);
 
-		shelterService.updateShelter(shelter, 1);
+		System.out.println(shelter.getItens());
 
-		shelterService.listShelters();
-*/
+		em.getTransaction().begin();
+		em.persist(cloth);
+		em.persist(cloth2);
+		em.persist(shelter);
+		em.getTransaction().commit();
+
+		DistributionCenter cd = new DistributionCenter(null, "cd1", "rua 1", "campinas", "RS", "25642");
+
+		em.getTransaction().begin();
+		em.persist(cd);
+		em.getTransaction().commit();
+
+		Donation donation = new Donation(null, cd);
+
+		donation.addItem(cloth);
+		donation.addItem(cloth2);
+
+		em.getTransaction().begin();
+		em.persist(donation);
+		em.getTransaction().commit();
+		
+		cd.getDonations().add(donation);
+		
+		em.getTransaction().begin();
+		em.persist(cd);
+		em.getTransaction().commit();
+		
+		System.out.println(cd.getDonations());
+
 		showMenu();
 		/*
 		 * DistributionCenter cd = new DistributionCenter(null, "cd1", "rua 1",
@@ -40,12 +72,6 @@ public class Main {
 		 * 
 		 * em.getTransaction().begin(); em.persist(cd); em.getTransaction().commit();
 		 * 
-		 * Item cloth = new ClothItem(null, "Camisa", "Camisa Masculina branca", 'M',
-		 * "M"); Item cloth2 = new ClothItem(null, "Moletom", "Moletom feminino preto",
-		 * 'F', "M");
-		 * 
-		 * em.getTransaction().begin(); em.persist(cloth); em.persist(cloth2);
-		 * em.getTransaction().commit();
 		 * 
 		 * Donation donation = new Donation(null, cd);
 		 * 
@@ -60,6 +86,7 @@ public class Main {
 		 * 
 		 * for (Item item : result.getItens()) { System.out.println(item); }
 		 */
+
 		emf.close();
 		em.close();
 
@@ -87,7 +114,7 @@ public class Main {
 				showShelterMenu();
 				break;
 			case 4:
-				
+
 				break;
 			case 5:
 				System.exit(0);
@@ -156,90 +183,89 @@ public class Main {
 		System.out.print("Enter email: ");
 		String email = scanner.nextLine();
 
-
 		Shelter shelter = new Shelter(null, name, address, responsible, contact, email, capacity, occupancy);
 		shelterService.addShelter(shelter);
-		
+
 		System.out.println("\nCadastro realizado com sucesso \n");
 	}
 
 	private static void showUpdateShelterMenu() {
-        System.out.print("\nEnter Shelter ID to update:\n");
-        int id = scanner.nextInt();
-        scanner.nextLine();
+		System.out.print("\nEnter Shelter ID to update:\n");
+		int id = scanner.nextInt();
+		scanner.nextLine();
 
-        Shelter shelter = shelterService.findById(id);
-        if (shelter == null) {
-            System.out.println("Shelter not found.");
-            return;
-        }
+		Shelter shelter = shelterService.findById(id);
+		if (shelter == null) {
+			System.out.println("Shelter not found.");
+			return;
+		}
 
-        while (true) {
-            System.out.println("Updating Shelter: " + shelter.getName());
-            System.out.println("1. Update Name");
-            System.out.println("2. Update Address");
-            System.out.println("3. Update Contact");
-            System.out.println("4. Update Capacity");
-            System.out.println("5. Update Occupancy");
-            System.out.println("6. Update email");
-            System.out.println("7. Back to Shelters Menu");
-            System.out.print("Choose an option: ");
-            int option = scanner.nextInt();
-            scanner.nextLine();
+		while (true) {
+			System.out.println("Updating Shelter: " + shelter.getName());
+			System.out.println("1. Update Name");
+			System.out.println("2. Update Address");
+			System.out.println("3. Update Contact");
+			System.out.println("4. Update Capacity");
+			System.out.println("5. Update Occupancy");
+			System.out.println("6. Update email");
+			System.out.println("7. Back to Shelters Menu");
+			System.out.print("Choose an option: ");
+			int option = scanner.nextInt();
+			scanner.nextLine();
 
-            switch (option) {
-                case 1:
-                    System.out.print("Enter new name: ");
-                    String name = scanner.nextLine();
-                    if (!name.isEmpty()) {
-                        shelter.setName(name);
-                    }
-                    break;
-                case 2:
-                    System.out.print("Enter new address: ");
-                    String address = scanner.nextLine();
-                    if (!address.isEmpty()) {
-                        shelter.setAddress(address);
-                    }
-                    break;
-                case 3:
-                    System.out.print("Enter new contact: ");
-                    String contact = scanner.nextLine();
-                    if (!contact.isEmpty()) {
-                        shelter.setPhoneNumber(contact);
-                    }
-                    break;
-                case 4:
-                    System.out.print("Enter new capacity: ");
-                    int capacity = scanner.nextInt();
-                    if (capacity > 0) {
-                        shelter.setCapacity(capacity);
-                    }
-                    scanner.nextLine();
-                    break;
-                case 5:
-                    System.out.print("Enter new occupancy: ");
-                    int occupancy = scanner.nextInt();
-                    if (occupancy >= 0) {
-                        shelter.setOccupancy(occupancy);
-                    }
-                    scanner.nextLine();
-                    break;
-                case 6:
-                    System.out.print("Enter new email: ");
-                    String email = scanner.nextLine();
-                    if (!email.isEmpty()) {
-                        shelter.setEmail(email);
-                    }
-                    scanner.nextLine();
-                    break;
-                case 7:
-                    shelterService.updateShelter(shelter, shelter.getId());
-                    System.out.println("\nShelter updated successfully.\n");
-                    return;
-                default:
-                    System.out.println("\nInvalid option\n");
-            }
-        }
-    }
+			switch (option) {
+			case 1:
+				System.out.print("Enter new name: ");
+				String name = scanner.nextLine();
+				if (!name.isEmpty()) {
+					shelter.setName(name);
+				}
+				break;
+			case 2:
+				System.out.print("Enter new address: ");
+				String address = scanner.nextLine();
+				if (!address.isEmpty()) {
+					shelter.setAddress(address);
+				}
+				break;
+			case 3:
+				System.out.print("Enter new contact: ");
+				String contact = scanner.nextLine();
+				if (!contact.isEmpty()) {
+					shelter.setPhoneNumber(contact);
+				}
+				break;
+			case 4:
+				System.out.print("Enter new capacity: ");
+				int capacity = scanner.nextInt();
+				if (capacity > 0) {
+					shelter.setCapacity(capacity);
+				}
+				scanner.nextLine();
+				break;
+			case 5:
+				System.out.print("Enter new occupancy: ");
+				int occupancy = scanner.nextInt();
+				if (occupancy >= 0) {
+					shelter.setOccupancy(occupancy);
+				}
+				scanner.nextLine();
+				break;
+			case 6:
+				System.out.print("Enter new email: ");
+				String email = scanner.nextLine();
+				if (!email.isEmpty()) {
+					shelter.setEmail(email);
+				}
+				scanner.nextLine();
+				break;
+			case 7:
+				shelterService.updateShelter(shelter, shelter.getId());
+				System.out.println("\nShelter updated successfully.\n");
+				return;
+			default:
+				System.out.println("\nInvalid option\n");
+			}
+		}
+	}
 }

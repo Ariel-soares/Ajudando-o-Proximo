@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Objects;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -23,7 +24,7 @@ public class Donation {
 	private Integer id;
 	private LocalDateTime time;
 	
-	@OneToMany
+	@OneToMany(fetch = FetchType.EAGER)
 	private List<Item> itens = new ArrayList<>();
 	
 	@ManyToOne
