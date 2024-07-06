@@ -6,7 +6,7 @@ import desafio2UOL.entities.Shelter;
 import desafio2UOL.services.ShelterService;
 
 public class ShelterMenus {
-	
+
 	public static void showShelterMenu(Scanner scanner, ShelterService shelterService) {
 		while (true) {
 			System.out.println("\n1. List Shelters");
@@ -14,6 +14,7 @@ public class ShelterMenus {
 			System.out.println("3. Add Shelter");
 			System.out.println("4. Delete Shelter");
 			System.out.println("5. Update Shelter");
+			System.out.println("6. Order items from shelter");
 			System.out.println("6. Exit");
 			System.out.print("\nChoose an option: \n");
 			int option = scanner.nextInt();
@@ -21,10 +22,11 @@ public class ShelterMenus {
 
 			switch (option) {
 			case 1:
+				System.out.println("\nLista de abrigos cadastrados\n");
 				shelterService.listShelters();
 				break;
 			case 2:
-				System.out.println("\n\nEnter Shelter Id: \n");
+				System.out.println("\nEnter Shelter Id:\n");
 				Integer idForFound = scanner.nextInt();
 				shelterService.findOne(idForFound);
 				break;
@@ -40,10 +42,13 @@ public class ShelterMenus {
 				showUpdateShelterMenu(scanner, shelterService);
 				break;
 			case 6:
-				System.out.println("\nReturning to main menu \n");
+				System.out.println("\nImplementar função\n");
+				break;
+			case 7:
+				System.out.println("\nReturning to main menu\n");
 				return;
 			default:
-				System.out.println("\nInvalid option  \n");
+				System.out.println("\nInvalid option\n");
 			}
 		}
 	}
@@ -150,7 +155,5 @@ public class ShelterMenus {
 			}
 		}
 	}
-
-	
 
 }

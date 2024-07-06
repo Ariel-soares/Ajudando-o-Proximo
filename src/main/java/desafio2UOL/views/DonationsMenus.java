@@ -137,7 +137,8 @@ public class DonationsMenus {
 		}
 	}
 
-	private static void addDonationFromCSV(Scanner scanner, DistributionCenterService distributionCenterService, ItemService itemService, DonationService donationService) {
+	private static void addDonationFromCSV(Scanner scanner, DistributionCenterService distributionCenterService,
+			ItemService itemService, DonationService donationService) {
 
 		System.out.print("Enter CSV file path: ");
 		String csvFilePath = scanner.nextLine();
@@ -169,19 +170,18 @@ public class DonationsMenus {
 			scanner.nextLine(); // Consume newline
 
 			DistributionCenter distributionCenter = distributionCenterService.findById(distributionCenterId);
-			
+
 			if (distributionCenter == null) {
 				System.out.println("Distribution Center not found.");
 				return;
 			}
-			
+
 			itemService.addItemList(items);
 			Donation donation = new Donation(null, distributionCenter);
-			for(Item i : items) {
+			for (Item i : items) {
 				donation.addItem(i);
 			}
 			donationService.addDonation(donation);
-			
 
 			System.out.println("Donations added from CSV successfully.");
 		} catch (IOException e) {
@@ -221,5 +221,4 @@ public class DonationsMenus {
 
 	}
 
-	
 }
