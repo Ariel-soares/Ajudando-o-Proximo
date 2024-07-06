@@ -23,19 +23,20 @@ public class Donation {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private LocalDateTime time;
-	
+
 	@OneToMany(fetch = FetchType.EAGER)
 	private List<Item> itens = new ArrayList<>();
-	
+
 	@ManyToOne
 	@JoinColumn(name = "distributioncenter_id")
 	private DistributionCenter centerId;
-	
-	public Donation() {}
+
+	public Donation() {
+	}
 
 	public Donation(Integer id, DistributionCenter centerId) {
 		this.id = id;
-		this.time =LocalDateTime.now();
+		this.time = LocalDateTime.now();
 		this.centerId = centerId;
 	}
 
@@ -50,7 +51,6 @@ public class Donation {
 	public List<Item> getItens() {
 		return itens;
 	}
-
 
 	public LocalDateTime getTime() {
 		return time;
@@ -87,9 +87,10 @@ public class Donation {
 
 	@Override
 	public String toString() {
-		return "Donation [id=" + id + ", itens=" + itens  + ", time=" + time + ", centerId=" + centerId + "]";
+		return "Donation number " + id + ", made to distribution center " + centerId.getName() + " adding "
+				+ itens.size() + " item(s) to this distribution center";
 	}
-	
+
 	public void addItem(Item item) {
 		this.itens.add(item);
 	}

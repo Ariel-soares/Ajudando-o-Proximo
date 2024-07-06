@@ -4,10 +4,10 @@ import java.util.Scanner;
 
 import desafio2UOL.entities.ClothItem;
 import desafio2UOL.entities.DistributionCenter;
-import desafio2UOL.entities.Donation;
 import desafio2UOL.entities.Item;
 import desafio2UOL.entities.Shelter;
 import desafio2UOL.services.DistributionCenterService;
+import desafio2UOL.services.DonationService;
 import desafio2UOL.services.ItemService;
 import desafio2UOL.services.ShelterService;
 import desafio2UOL.views.DonationsMenus;
@@ -22,6 +22,7 @@ public class Main {
 	private static ShelterService shelterService = new ShelterService();
 	private static DistributionCenterService distributionCenterService = new DistributionCenterService();
 	private static ItemService itemService = new ItemService();
+	private static DonationService donationService = new DonationService();
 
 	public static void main(String[] args) {
 
@@ -53,21 +54,6 @@ public class Main {
 		em.getTransaction().begin();
 		em.persist(cd);
 		em.getTransaction().commit();
-
-		Donation donation = new Donation(null, cd);
-
-		donation.addItem(cloth);
-		donation.addItem(cloth2);
-
-		em.getTransaction().begin();
-		em.persist(donation);
-		em.getTransaction().commit();
-
-		cd.getDonations().add(donation);
-
-		em.getTransaction().begin();
-		em.persist(cd);
-		em.getTransaction().commit();
 		
 		showMenu();
 		
@@ -80,29 +66,25 @@ public class Main {
 	private static void showMenu() {
 		while (true) {
 			System.out.println("1. Donation Management");
-			System.out.println("2. List Donations");
-			System.out.println("3. Shelter Management");
-			System.out.println("4. Distribution Center Management");
-			System.out.println("5. Exit");
+			System.out.println("2. Shelter Management");
+			System.out.println("3. Distribution Center Management");
+			System.out.println("4. Exit");
 			System.out.print("\nChoose an option: ");
 			int option = scanner.nextInt();
 			scanner.nextLine();
 
 			switch (option) {
 			case 1:
-				DonationsMenus.showDonationsMenu(scanner, distributionCenterService, itemService);;
+				DonationsMenus.showDonationsMenu(scanner, distributionCenterService, itemService, donationService);
 				break;
 			case 2:
-				// listDonations();
-				break;
-			case 3:
 				ShelterMenus.showShelterMenu(scanner, shelterService);
 				break;
-			case 4:
+			case 3:
 				DistributionCenter cd2 = distributionCenterService.findById(1);
 				System.out.println(cd2.getItems());
 				break;
-			case 5:
+			case 4:
 				System.exit(0);
 				break;
 			default:
