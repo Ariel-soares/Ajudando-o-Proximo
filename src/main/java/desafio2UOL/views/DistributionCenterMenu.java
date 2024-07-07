@@ -1,16 +1,23 @@
 package desafio2UOL.views;
 
+import java.util.List;
+
 import desafio2UOL.entities.DistributionCenter;
 import desafio2UOL.services.DistributionCenterService;
+import jakarta.persistence.EntityManager;
 
 public class DistributionCenterMenu {
 	
-	public static void showDistributionCenterMenu() {
+	public static void showDistributionCenterMenu(EntityManager em) {
 		DistributionCenterService service = new DistributionCenterService();
 		
-		DistributionCenter center = service.findById(1);
+		List<DistributionCenter> centers = service.getAllDistributionCenters(em);
 		
-		System.out.println(center);
+		System.out.println(centers);
+		
+		for(DistributionCenter cd : centers) {
+			System.out.println(cd.getItems());
+		}
 		
 	}
 

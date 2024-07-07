@@ -2,6 +2,7 @@ package desafio2UOL.entities;
 
 import java.util.Objects;
 
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -77,7 +78,7 @@ public class FoodItem extends Item{
 
 	@Override
 	public String toString() {
-		return "Item do tipo ALMIENTO, com a descrição: " + description + " com vencimento em: " + validity + " medido em:" + measurement;
+		return "Item do tipo alimento, com a descrição: " + description + " com vencimento em: " + validity + " medido em:" + measurement;
 	}
 	
 

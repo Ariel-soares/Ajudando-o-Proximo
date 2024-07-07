@@ -36,8 +36,8 @@ public class Main {
 		em.persist(shelter);
 		em.getTransaction().commit();
 
-		Item cloth = new ClothItem(null, "Camisa", "Camisa Masculina branca", 'M', "M");
-		Item cloth2 = new ClothItem(null, "Moletom", "Moletom feminino preto", 'F', "M");
+		Item cloth = new ClothItem("Camisa", "Camisa Masculina branca", 'M', "M");
+		Item cloth2 = new ClothItem("Moletom", "Moletom feminino preto", 'F', "M");
 
 		shelter.getItens().add(cloth2);
 		shelter.getItens().add(cloth);
@@ -56,7 +56,7 @@ public class Main {
 		em.persist(cd);
 		em.getTransaction().commit();
 		
-		showMenu();
+		showMenu(em);
 		
 
 		emf.close();
@@ -64,7 +64,7 @@ public class Main {
 
 	}
 
-	private static void showMenu() {
+	private static void showMenu(EntityManager em) {
 		while (true) {
 			System.out.println("1. Donation Management");
 			System.out.println("2. Shelter Management");
@@ -76,13 +76,13 @@ public class Main {
 
 			switch (option) {
 			case 1:
-				DonationsMenus.showDonationsMenu(scanner, distributionCenterService, itemService, donationService);
+				DonationsMenus.showDonationsMenu(scanner, distributionCenterService, itemService, donationService, em);
 				break;
 			case 2:
 				ShelterMenus.showShelterMenu(scanner, shelterService);
 				break;
 			case 3:
-				DistributionCenterMenu.showDistributionCenterMenu();
+				DistributionCenterMenu.showDistributionCenterMenu(em);
 				break;
 			case 4:
 				System.exit(0);

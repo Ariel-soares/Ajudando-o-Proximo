@@ -18,11 +18,12 @@ import desafio2UOL.entities.Item;
 import desafio2UOL.services.DistributionCenterService;
 import desafio2UOL.services.DonationService;
 import desafio2UOL.services.ItemService;
+import jakarta.persistence.EntityManager;
 
 public class DonationsMenus {
 
 	public static void showDonationsMenu(Scanner scanner, DistributionCenterService distributionCenterService,
-			ItemService itemService, DonationService donationService) {
+			ItemService itemService, DonationService donationService, EntityManager em) {
 		while (true) {
 			System.out.println("Donations Menu:");
 			System.out.println("1. Add Donation Manually");
@@ -35,10 +36,10 @@ public class DonationsMenus {
 
 			switch (option) {
 			case 1:
-				DonationsMenus.addDonationManually(scanner, distributionCenterService, itemService, donationService);
+				DonationsMenus.addDonationManually(scanner, distributionCenterService, itemService, donationService, em);
 				break;
 			case 2:
-				addDonationFromCSV(scanner, distributionCenterService, itemService, donationService);
+				addDonationFromCSV(scanner, distributionCenterService, itemService, donationService, em);
 				break;
 			case 3:
 				listDonations(donationService);
@@ -57,7 +58,7 @@ public class DonationsMenus {
 	}
 
 	public static void addDonationManually(Scanner scanner, DistributionCenterService distributionCenterService,
-			ItemService itemService, DonationService donationService) {
+			ItemService itemService, DonationService donationService, EntityManager em) {
 
 		Donation donation = new Donation();
 		List<Item> items = new ArrayList<>();
@@ -77,11 +78,11 @@ public class DonationsMenus {
 				Integer option = scanner.nextInt();
 				switch (option) {
 				case 1:
-					items.add(new ClothItem(null, name, "cloth", 'M', size));
+					items.add(new ClothItem(name, "cloth", 'M', size));
 					break;
 
 				case 2:
-					items.add(new ClothItem(null, name, "cloth", 'F', size));
+					items.add(new ClothItem(name, "cloth", 'F', size));
 					break;
 				}
 				break;
@@ -107,7 +108,7 @@ public class DonationsMenus {
 					donation.getItens().add(i);
 				}
 
-				List<DistributionCenter> distributionCenters = distributionCenterService.getAllDistributionCenters();
+				List<DistributionCenter> distributionCenters = distributionCenterService.getAllDistributionCenters(em);
 				System.out.println("Available Distribution Centers:");
 				for (DistributionCenter dc : distributionCenters) {
 					System.out.println(dc.getId() + ": " + dc.getName());
@@ -117,7 +118,7 @@ public class DonationsMenus {
 				int distributionCenterId = scanner.nextInt();
 				scanner.nextLine();
 
-				DistributionCenter distributionCenter = distributionCenterService.findById(distributionCenterId);
+				DistributionCenter distributionCenter = distributionCenterService.findById(distributionCenterId, em);
 
 				if (distributionCenter != null) {
 
@@ -126,7 +127,7 @@ public class DonationsMenus {
 					donation.setCenterId(distributionCenter);
 					donationService.addDonation(donation);
 					distributionCenter.getDonations().add(donation);
-					distributionCenterService.addDonation(donation, distributionCenterId);
+					distributionCenterService.addDonation(donation, distributionCenterId, em);
 					System.out.println("\nDonation added\n");
 					return;
 				} else
@@ -203,7 +204,7 @@ public class DonationsMenus {
 	 */
 
 	private static void addDonationFromCSV(Scanner scanner, DistributionCenterService distributionCenterService,
-			ItemService itemService, DonationService donationService) {
+			ItemService itemService, DonationService donationService, EntityManager em) {
 
 		System.out.print("Enter CSV file path: ");
 		String csvFilePath = scanner.nextLine();
@@ -234,7 +235,7 @@ public class DonationsMenus {
 				int distributionCenterId = entry.getKey();
 				List<Item> items = entry.getValue();
 
-				DistributionCenter distributionCenter = distributionCenterService.findById(distributionCenterId);
+				DistributionCenter distributionCenter = distributionCenterService.findById(distributionCenterId, em);
 				if (distributionCenter == null) {
 					System.out.println("Distribution Center not found: " + distributionCenterId);
 					continue;
@@ -247,7 +248,7 @@ public class DonationsMenus {
 					distributionCenter.getItems().add(item);
 				}
 				donationService.addDonation(donation);
-				distributionCenterService.updateDistributionCenter(distributionCenter, distributionCenterId);
+				distributionCenterService.updateDistributionCenter(distributionCenter, distributionCenterId, em);
 			}
 
 			System.out.println("Donations added from CSV successfully.");

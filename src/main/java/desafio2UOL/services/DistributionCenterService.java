@@ -6,48 +6,49 @@ import desafio2UOL.dao.DistributionCenterDao;
 import desafio2UOL.entities.DistributionCenter;
 import desafio2UOL.entities.Donation;
 import desafio2UOL.entities.Item;
+import jakarta.persistence.EntityManager;
 
 public class DistributionCenterService {
 
 	private DistributionCenterDao DistributionCenterDao = new DistributionCenterDao();
 	
 
-	public DistributionCenter findById(Integer id) {
-		return DistributionCenterDao.findById(id);
+	public DistributionCenter findById(Integer id, EntityManager em) {
+		return DistributionCenterDao.findById(id, em);
 	}
 
-	public List<DistributionCenter> getAllDistributionCenters() {
-		return DistributionCenterDao.getAllDistributionCenters();
+	public List<DistributionCenter> getAllDistributionCenters(EntityManager em) {
+		return DistributionCenterDao.getAllDistributionCenters(em);
 	}
 
-	public void addDistributionCenter(DistributionCenter DistributionCenter) {
-		DistributionCenterDao.addDistributionCenter(DistributionCenter);
+	public void addDistributionCenter(DistributionCenter DistributionCenter, EntityManager em) {
+		DistributionCenterDao.addDistributionCenter(DistributionCenter, em);
 	}
 
-	public void updateDistributionCenter(DistributionCenter DistributionCenter, Integer id) {
-		DistributionCenter old = DistributionCenterDao.findById(id);
+	public void updateDistributionCenter(DistributionCenter DistributionCenter, Integer id, EntityManager em) {
+		DistributionCenter old = DistributionCenterDao.findById(id, em);
 		updateData(old, DistributionCenter);
-		DistributionCenterDao.updateDistributionCenter(old, id);
+		DistributionCenterDao.updateDistributionCenter(old, id, em);
 	}
 
-	public void deleteDistributionCenter(int id) {
-		DistributionCenterDao.deleteDistributionCenter(id);
+	public void deleteDistributionCenter(int id, EntityManager em) {
+		DistributionCenterDao.deleteDistributionCenter(id, em);
 	}
 
-	public void listDistributionCenters() {
-		List<DistributionCenter> DistributionCenters = DistributionCenterDao.getAllDistributionCenters();
+	public void listDistributionCenters(EntityManager em) {
+		List<DistributionCenter> DistributionCenters = DistributionCenterDao.getAllDistributionCenters(em);
 		for (DistributionCenter DistributionCenter : DistributionCenters) {
 			System.out.println(DistributionCenter);
 		}
 	}
 	
-	public void addDonation(Donation donation, Integer id) {
-		DistributionCenter center = DistributionCenterDao.findById(id);
+	public void addDonation(Donation donation, Integer id, EntityManager em) {
+		DistributionCenter center = DistributionCenterDao.findById(id, em);
 		center.getDonations().add(donation);
 		for(Item i : donation.getItens()) {
 			center.getItems().add(i);
 		}
-		DistributionCenterDao.updateDistributionCenter(center, id);
+		DistributionCenterDao.updateDistributionCenter(center, id, em);
 	}
 
 	private void updateData(DistributionCenter old, DistributionCenter updated) {
@@ -59,11 +60,15 @@ public class DistributionCenterService {
 		old.setName(updated.getName());
 		old.setState(updated.getState());
 		old.setId(updated.getId());
+		
+	//	for(Item i : updated.getItems()) {
+		//	old.getItems().add(i);
+		//}
 
 	}
 
-	public void findOne(Integer id) {
-		DistributionCenter DistributionCenter = findById(id);
+	public void findOne(Integer id, EntityManager em) {
+		DistributionCenter DistributionCenter = findById(id, em);
 		if (DistributionCenter != null) {
 			System.out.println(DistributionCenter);
 			System.out.println("\n--------------- Lista de doações do abrigo -------------\n");

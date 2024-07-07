@@ -38,7 +38,6 @@ public class DistributionCenter {
 	}
 
 	public DistributionCenter(Integer id, String name, String address, String city, String state, String cep) {
-		super();
 		this.id = id;
 		this.name = name;
 		this.address = address;

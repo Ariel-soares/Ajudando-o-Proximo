@@ -9,24 +9,17 @@ import jakarta.persistence.Persistence;
 
 public class DistributionCenterDao {
 
-	private EntityManagerFactory emf = Persistence.createEntityManagerFactory("desafio-context");
-
-	public DistributionCenter findById(Integer id) {
-		EntityManager em = emf.createEntityManager();
+	public DistributionCenter findById(Integer id, EntityManager em) {
 		DistributionCenter DistributionCenter = em.find(DistributionCenter.class, id);
-		em.close();
 		return DistributionCenter;
 	}
 
-	public List<DistributionCenter> getAllDistributionCenters() {
-		EntityManager em = emf.createEntityManager();
+	public List<DistributionCenter> getAllDistributionCenters(EntityManager em) {
 		List<DistributionCenter> DistributionCenters = em.createQuery("SELECT s FROM DistributionCenter s", DistributionCenter.class).getResultList();
-		em.close();
 		return DistributionCenters;
 	}
 
-	public void deleteDistributionCenter(int id) {
-		EntityManager em = emf.createEntityManager();
+	public void deleteDistributionCenter(int id, EntityManager em) {
 		em.getTransaction().begin();
 		DistributionCenter DistributionCenter = em.find(DistributionCenter.class, id);
 		if (DistributionCenter != null) {
@@ -34,24 +27,19 @@ public class DistributionCenterDao {
 			System.out.println("DistributionCenter Removed!");
 		}
 		em.getTransaction().commit();
-		em.close();
 	}
 
-	public void addDistributionCenter(DistributionCenter DistributionCenter) {
-		EntityManager em = emf.createEntityManager();
+	public void addDistributionCenter(DistributionCenter DistributionCenter, EntityManager em) {
 		em.getTransaction().begin();
 		em.persist(DistributionCenter);
 		em.getTransaction().commit();
-		em.close();
 	}
 
-	public void updateDistributionCenter(DistributionCenter DistributionCenter, Integer id) {
-		EntityManager em = emf.createEntityManager();
+	public void updateDistributionCenter(DistributionCenter DistributionCenter, Integer id, EntityManager em) {
 		em.find(DistributionCenter.class, DistributionCenter.getId());
 		em.getTransaction().begin();
 		em.merge(DistributionCenter);
 		em.getTransaction().commit();
-		em.close();
 	}
 
 }

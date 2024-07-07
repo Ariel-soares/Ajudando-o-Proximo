@@ -2,21 +2,23 @@ package desafio2UOL.entities;
 
 import java.util.Objects;
 
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
-public class HygieneItem extends Item{
-	
+public class HygieneItem extends Item {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String name;
 	private String description;
-	
-	public HygieneItem(){}
+
+	public HygieneItem() {
+	}
 
 	public HygieneItem(Integer id, String name, String description) {
 		this.id = id;
@@ -69,6 +71,5 @@ public class HygieneItem extends Item{
 	public String toString() {
 		return "Item de higiene do tipo " + name + ", com a descrição: " + description;
 	}
-	
-	
+
 }
