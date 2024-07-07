@@ -4,7 +4,9 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 import desafio2UOL.entities.ClothItem;
@@ -137,56 +139,116 @@ public class DonationsMenus {
 		}
 	}
 
+	/*
+	 * private static void addDonationFromCSV(Scanner scanner,
+	 * DistributionCenterService distributionCenterService, ItemService itemService,
+	 * DonationService donationService) {
+	 * 
+	 * System.out.print("Enter CSV file path: "); String csvFilePath =
+	 * scanner.nextLine(); List<Item> items = new ArrayList<>();
+	 * 
+	 * try (BufferedReader br = new BufferedReader(new FileReader(csvFilePath))) {
+	 * String line; Item item = null;
+	 * 
+	 * while ((line = br.readLine()) != null) { String[] values = line.split(",");
+	 * String itemType = values[1]; Integer quantity = Integer.parseInt(values[0]);
+	 * 
+	 * for (int i = 0; i <= quantity; i++) { item = createItemFromCSV(itemType,
+	 * values); }
+	 * 
+	 * if (item == null) { System.out.println("Invalid item type in CSV: " +
+	 * itemType); continue; } items.add(item); }
+	 * 
+	 * System.out.
+	 * println("CSV file read successfully. Now, select the distribution center.");
+	 * List<DistributionCenter> distributionCenters =
+	 * distributionCenterService.getAllDistributionCenters();
+	 * System.out.println("Available Distribution Centers:"); for
+	 * (DistributionCenter dc : distributionCenters) { System.out.println(dc.getId()
+	 * + ": " + dc.getName()); } System.out.print("Enter distribution center ID: ");
+	 * int distributionCenterId = scanner.nextInt(); scanner.nextLine(); // Consume
+	 * newline
+	 * 
+	 * DistributionCenter distributionCenter =
+	 * distributionCenterService.findById(distributionCenterId);
+	 * 
+	 * if (distributionCenter == null) {
+	 * System.out.println("Distribution Center not found."); return; }
+	 * 
+	 * itemService.addItemList(items); Donation donation = new Donation(null,
+	 * distributionCenter); for (Item i : items) { donation.addItem(i); }
+	 * donationService.addDonation(donation);
+	 * 
+	 * System.out.println("Donations added from CSV successfully."); } catch
+	 * (IOException e) { System.out.println("Error reading CSV file: " +
+	 * e.getMessage()); } }
+	 * 
+	 * private static Item createItemFromCSV(String itemType, String[] values) {
+	 * 
+	 * switch (itemType.toLowerCase()) { case "cloth": ClothItem cloth = new
+	 * ClothItem(); cloth.setId(null); cloth.setName(values[2]);
+	 * cloth.setDescription(values[3]);
+	 * cloth.setGender(values[4].toUpperCase().charAt(0)); cloth.setSize(values[5]);
+	 * return cloth;
+	 * 
+	 * case "food": FoodItem food = new FoodItem(); food.setId(null);
+	 * food.setDescription(values[2]); food.setMeasurement(values[3]);
+	 * food.setValidity(values[4]); return food;
+	 * 
+	 * case "hygiene": HygieneItem hygiene = new HygieneItem();
+	 * hygiene.setName(values[2]); hygiene.setDescription(values[4]); return
+	 * hygiene; default: return null; }
+	 * 
+	 * }
+	 */
+
 	private static void addDonationFromCSV(Scanner scanner, DistributionCenterService distributionCenterService,
 			ItemService itemService, DonationService donationService) {
 
 		System.out.print("Enter CSV file path: ");
 		String csvFilePath = scanner.nextLine();
-		List<Item> items = new ArrayList<>();
+		Map<Integer, List<Item>> donationMap = new HashMap<>();
 
 		try (BufferedReader br = new BufferedReader(new FileReader(csvFilePath))) {
-			String line;
-			Item item = null;
-
+			
+			String line = br.readLine();
+			
 			while ((line = br.readLine()) != null) {
 				String[] values = line.split(",");
+				int distributionCenterId = Integer.parseInt(values[0]);
 				String itemType = values[1];
-				Integer quantity = Integer.parseInt(values[0]);
-				
-				for (int i = 0; i <= quantity; i++) {
-					item = createItemFromCSV(itemType, values);
+				int quantity = Integer.parseInt(values[2]);
+
+				for (int i = 0; i < quantity; i++) {
+					Item item = createItemFromCSV(itemType, values);
+					if (item == null) {
+						System.out.println("Invalid item type in CSV: " + itemType);
+						continue;
+					}
+
+					donationMap.computeIfAbsent(distributionCenterId, k -> new ArrayList<>()).add(item);
 				}
-				
-				if (item == null) {
-					System.out.println("Invalid item type in CSV: " + itemType);
+			}
+
+			for (Map.Entry<Integer, List<Item>> entry : donationMap.entrySet()) {
+				int distributionCenterId = entry.getKey();
+				List<Item> items = entry.getValue();
+
+				DistributionCenter distributionCenter = distributionCenterService.findById(distributionCenterId);
+				if (distributionCenter == null) {
+					System.out.println("Distribution Center not found: " + distributionCenterId);
 					continue;
 				}
-				items.add(item);
-			}
 
-			System.out.println("CSV file read successfully. Now, select the distribution center.");
-			List<DistributionCenter> distributionCenters = distributionCenterService.getAllDistributionCenters();
-			System.out.println("Available Distribution Centers:");
-			for (DistributionCenter dc : distributionCenters) {
-				System.out.println(dc.getId() + ": " + dc.getName());
+				itemService.addItemList(items);
+				Donation donation = new Donation(null, distributionCenter);
+				for (Item item : items) {
+					donation.addItem(item);
+					distributionCenter.getItems().add(item);
+				}
+				donationService.addDonation(donation);
+				distributionCenterService.updateDistributionCenter(distributionCenter, distributionCenterId);
 			}
-			System.out.print("Enter distribution center ID: ");
-			int distributionCenterId = scanner.nextInt();
-			scanner.nextLine(); // Consume newline
-
-			DistributionCenter distributionCenter = distributionCenterService.findById(distributionCenterId);
-
-			if (distributionCenter == null) {
-				System.out.println("Distribution Center not found.");
-				return;
-			}
-
-			itemService.addItemList(items);
-			Donation donation = new Donation(null, distributionCenter);
-			for (Item i : items) {
-				donation.addItem(i);
-			}
-			donationService.addDonation(donation);
 
 			System.out.println("Donations added from CSV successfully.");
 		} catch (IOException e) {
@@ -195,35 +257,34 @@ public class DonationsMenus {
 	}
 
 	private static Item createItemFromCSV(String itemType, String[] values) {
-
 		switch (itemType.toLowerCase()) {
 		case "cloth":
 			ClothItem cloth = new ClothItem();
 			cloth.setId(null);
-			cloth.setName(values[2]);
-			cloth.setDescription(values[3]);
-			cloth.setGender(values[4].toUpperCase().charAt(0));
-			cloth.setSize(values[5]);
+			cloth.setName(values[3]);
+			cloth.setDescription(values[4]);
+			cloth.setGender(values[5].toUpperCase().charAt(0));
+			cloth.setSize(values[6]);
+			
 			return cloth;
 
 		case "food":
 			FoodItem food = new FoodItem();
 			food.setId(null);
-			food.setDescription(values[2]);
-			food.setMeasurement(values[3]);
-			food.setValidity(values[4]);
+			food.setDescription(values[3]);
+			food.setMeasurement(values[4]);
+			food.setValidity(values[5]);
 			return food;
 
 		case "hygiene":
 			HygieneItem hygiene = new HygieneItem();
-			hygiene.setName(values[2]);
+			hygiene.setName(values[3]);
 			hygiene.setDescription(values[4]);
 			return hygiene;
 
 		default:
 			return null;
 		}
-
 	}
 
 }
