@@ -146,12 +146,17 @@ public class DonationsMenus {
 
 		try (BufferedReader br = new BufferedReader(new FileReader(csvFilePath))) {
 			String line;
+			Item item = null;
 
 			while ((line = br.readLine()) != null) {
 				String[] values = line.split(",");
-				String itemType = values[0];
-				Item item = createItemFromCSV(itemType, values);
-
+				String itemType = values[1];
+				Integer quantity = Integer.parseInt(values[0]);
+				
+				for (int i = 0; i <= quantity; i++) {
+					item = createItemFromCSV(itemType, values);
+				}
+				
 				if (item == null) {
 					System.out.println("Invalid item type in CSV: " + itemType);
 					continue;
@@ -195,24 +200,24 @@ public class DonationsMenus {
 		case "cloth":
 			ClothItem cloth = new ClothItem();
 			cloth.setId(null);
-			cloth.setName(values[1]);
-			cloth.setDescription(values[2]);
-			cloth.setGender(values[3].toUpperCase().charAt(0));
-			cloth.setSize(values[4]);
+			cloth.setName(values[2]);
+			cloth.setDescription(values[3]);
+			cloth.setGender(values[4].toUpperCase().charAt(0));
+			cloth.setSize(values[5]);
 			return cloth;
 
 		case "food":
 			FoodItem food = new FoodItem();
 			food.setId(null);
-			food.setDescription(values[1]);
-			food.setMeasurement(values[2]);
-			food.setValidity(values[3]);
+			food.setDescription(values[2]);
+			food.setMeasurement(values[3]);
+			food.setValidity(values[4]);
 			return food;
 
 		case "hygiene":
 			HygieneItem hygiene = new HygieneItem();
-			hygiene.setName(values[1]);
-			hygiene.setDescription(values[3]);
+			hygiene.setName(values[2]);
+			hygiene.setDescription(values[4]);
 			return hygiene;
 
 		default:

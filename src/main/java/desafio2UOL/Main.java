@@ -10,6 +10,7 @@ import desafio2UOL.services.DistributionCenterService;
 import desafio2UOL.services.DonationService;
 import desafio2UOL.services.ItemService;
 import desafio2UOL.services.ShelterService;
+import desafio2UOL.views.DistributionCenterMenu;
 import desafio2UOL.views.DonationsMenus;
 import desafio2UOL.views.ShelterMenus;
 import jakarta.persistence.EntityManager;
@@ -81,8 +82,7 @@ public class Main {
 				ShelterMenus.showShelterMenu(scanner, shelterService);
 				break;
 			case 3:
-				DistributionCenter cd2 = distributionCenterService.findById(1);
-				System.out.println(cd2.getItems());
+				DistributionCenterMenu.showDistributionCenterMenu();
 				break;
 			case 4:
 				System.exit(0);
