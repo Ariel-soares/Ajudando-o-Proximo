@@ -2,6 +2,7 @@ package desafio2UOL.entities;
 
 import java.util.Objects;
 
+import desafio2UOL.entities.enums.ItemName;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,19 +16,18 @@ public class FoodItem extends Item{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+	private ItemName name;
 	private String description;
 	private String measurement;
 	private String validity;
-	private Integer quantity;
 	
 	public FoodItem() {}
 
-	public FoodItem(Integer id, String description, String measurement, String validity, Integer quantity) {
-		this.id = id;
+	public FoodItem(ItemName name, String description, String measurement, String validity) {
+		this.name = name;
 		this.description = description;
 		this.measurement = measurement;
 		this.validity = validity;
-		this.quantity = quantity;
 	}
 
 	public Integer getId() {
@@ -36,6 +36,14 @@ public class FoodItem extends Item{
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+	
+	public ItemName getName() {
+		return name;
+	}
+	
+	public void setName(ItemName name) {
+		this.name = name;
 	}
 
 	public String getDescription() {
@@ -61,14 +69,6 @@ public class FoodItem extends Item{
 	public void setValidity(String validity) {
 		this.validity = validity;
 	}
-	
-	public Integer getQuantity() {
-		return quantity;
-	}
-
-	public void setQuantity(Integer quantity) {
-		this.quantity = quantity;
-	}
 
 	@Override
 	public int hashCode() {
@@ -89,7 +89,7 @@ public class FoodItem extends Item{
 
 	@Override
 	public String toString() {
-		return "Food type item, with description: " + description + ", spoiling at date: " + validity + ", measured in:" + measurement + ", with " + quantity + " units\n";
+		return "Food type item, with description: " + description + ", spoiling at date: " + validity + ", measured in:" + measurement + "\n";
 	}
 	
 

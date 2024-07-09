@@ -2,7 +2,10 @@ package desafio2UOL.entities;
 
 import java.util.Objects;
 
+import desafio2UOL.entities.enums.ItemName;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -15,21 +18,22 @@ public class ClothItem extends Item {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	private String name;
+	
+	@Enumerated(EnumType.STRING)
+	private ItemName name;
 	private String description;
 	private char gender;
 	private String size;
-	private Integer quantity;
-
+	
+	
 	public ClothItem() {
 	}
 
-	public ClothItem(String name, String description, char gender, String size, Integer quantity) {
+	public ClothItem(ItemName name, String description, char gender, String size) {
 		this.name = name;
 		this.description = description;
 		this.gender = gender;
 		this.size = size;
-		this.quantity = quantity;
 	}
 
 	public Integer getId() {
@@ -64,20 +68,12 @@ public class ClothItem extends Item {
 		this.size = size;
 	}
 
-	public String getName() {
+	public ItemName getName() {
 		return name;
 	}
 
-	public void setName(String name) {
+	public void setName(ItemName name) {
 		this.name = name;
-	}
-
-	public Integer getQuantity() {
-		return quantity;
-	}
-
-	public void setQuantity(Integer quantity) {
-		this.quantity = quantity;
 	}
 
 	@Override
@@ -103,7 +99,7 @@ public class ClothItem extends Item {
 	@Override
 	public String toString() {
 		return " cloth item type with description: " + description + ", of name : " + name + ", of gender " + gender
-				+ ", of size " + size + ", with " + quantity + " units\n";
+				+ ", of size " + size + " " +  super.getItemType() + " <- itemType\n";
 	}
 
 }

@@ -15,6 +15,8 @@ import desafio2UOL.entities.Donation;
 import desafio2UOL.entities.FoodItem;
 import desafio2UOL.entities.HygieneItem;
 import desafio2UOL.entities.Item;
+import desafio2UOL.entities.enums.ItemName;
+import desafio2UOL.entities.enums.ItemType;
 import desafio2UOL.services.DistributionCenterService;
 import desafio2UOL.services.DonationService;
 import desafio2UOL.services.ItemService;
@@ -81,11 +83,11 @@ public class DonationsMenus {
 				Integer option = scanner.nextInt();
 				switch (option) {
 				case 1:
-					items.add(new ClothItem(name, "cloth", 'M', size, quantity));
+					items.add(new ClothItem(ItemName.valueOf(name.toUpperCase()), "cloth", 'M', size));
 					break;
 
 				case 2:
-					items.add(new ClothItem(name, "cloth", 'F', size, quantity));
+					items.add(new ClothItem(ItemName.valueOf(name.toUpperCase()), "cloth", 'F', size));
 					break;
 				}
 				break;
@@ -96,18 +98,20 @@ public class DonationsMenus {
 				name = scanner.nextLine();
 				System.out.println("Enter item description: ");
 				String description = scanner.nextLine();
-				items.add(new HygieneItem(null, name, description, quantity));
+				items.add(new HygieneItem(ItemName.valueOf(name.toUpperCase()), description));
 				break;
 			case 3:
 				System.out.println("Enter quantity to be added:");
 				quantity = scanner.nextInt();
+				System.out.println("Enter item name: ");
+				name = scanner.nextLine();
 				System.out.println("Enter item description: ");
 				description = scanner.nextLine();
 				System.out.println("Enter the item measurement: ");
 				String measurement = scanner.nextLine();
 				System.out.println("Enter item validity date: ");
 				String validity = scanner.nextLine();
-				items.add(new FoodItem(null, description, measurement, validity, quantity));
+				items.add(new FoodItem(ItemName.valueOf(name.toUpperCase()), description, measurement, validity));
 				break;
 			case 4:
 
@@ -208,12 +212,11 @@ public class DonationsMenus {
 		case "cloth":
 			ClothItem cloth = new ClothItem();
 			cloth.setId(null);
-			cloth.setName(values[3]);
+			cloth.setName(ItemName.valueOf(values[3].toUpperCase()));
 			cloth.setDescription(values[4]);
 			cloth.setGender(values[5].toUpperCase().charAt(0));
 			cloth.setSize(values[6]);
-			cloth.setQuantity(Integer.parseInt(values[2]));
-
+			cloth.setItemType(ItemType.CLOTH);
 			return cloth;
 
 		case "food":
@@ -222,14 +225,14 @@ public class DonationsMenus {
 			food.setDescription(values[3]);
 			food.setMeasurement(values[4]);
 			food.setValidity(values[5]);
-			food.setQuantity(Integer.parseInt(values[2]));
+			food.setItemType(ItemType.FOOD);
 			return food;
 
 		case "hygiene":
 			HygieneItem hygiene = new HygieneItem();
-			hygiene.setName(values[3]);
+			hygiene.setName(ItemName.valueOf(values[3].toUpperCase()));
 			hygiene.setDescription(values[4]);
-			hygiene.setQuantity(Integer.parseInt(values[2]));
+			hygiene.setItemType(ItemType.HYGIENE);
 			return hygiene;
 
 		default:

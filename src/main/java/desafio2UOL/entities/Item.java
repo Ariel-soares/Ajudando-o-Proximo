@@ -2,7 +2,11 @@ package desafio2UOL.entities;
 
 import java.util.Objects;
 
+import desafio2UOL.entities.enums.ItemName;
+import desafio2UOL.entities.enums.ItemType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -12,21 +16,25 @@ import jakarta.persistence.InheritanceType;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Item {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	private String name;
+
+	@Enumerated(EnumType.STRING)
+	private ItemType itemType;
+
+	@Enumerated(EnumType.STRING)
+	private ItemName name;
 	private String description;
-	private Integer quantity;
-	
-	public Item() {}
-	
-	public Item(Integer id, String name, String description, Integer quantity) {
-		this.id = id;
+
+	public Item() {
+	}
+
+	public Item(ItemName name, String description, ItemType itemType) {
 		this.name = name;
 		this.description = description;
-		this.quantity = quantity;
+		this.itemType = itemType;
 	}
 
 	public Integer getId() {
@@ -37,14 +45,14 @@ public abstract class Item {
 		this.id = id;
 	}
 
-	public String getName() {
+	public ItemName getName() {
 		return name;
 	}
 
-	public void setName(String name) {
+	public void setName(ItemName name) {
 		this.name = name;
 	}
-	
+
 	public String getDescription() {
 		return description;
 	}
@@ -53,12 +61,12 @@ public abstract class Item {
 		this.description = description;
 	}
 	
-	public Integer getQuantity() {
-		return quantity;
+	public ItemType getItemType() {
+		return itemType;
 	}
 
-	public void setQuantity(Integer quantity) {
-		this.quantity = quantity;
+	public void setItemType(ItemType itemType) {
+		this.itemType = itemType;
 	}
 
 	@Override
@@ -75,12 +83,12 @@ public abstract class Item {
 		if (getClass() != obj.getClass())
 			return false;
 		Item other = (Item) obj;
-		return id == other.id;
+		return Objects.equals(id, other.id);
 	}
 
 	@Override
 	public String toString() {
-		return "Item [id=" + id + ", name=" + name + "]";
+		return "Item [id=" + id + ", name=" + name + ", description=" + description + "]";
 	}
 
 }

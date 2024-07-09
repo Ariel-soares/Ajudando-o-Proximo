@@ -2,6 +2,7 @@ package desafio2UOL.entities;
 
 import java.util.Objects;
 
+import desafio2UOL.entities.enums.ItemName;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,18 +16,15 @@ public class HygieneItem extends Item {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	private String name;
+	private ItemName name;
 	private String description;
-	private Integer quantity;
 
 	public HygieneItem() {
 	}
 
-	public HygieneItem(Integer id, String name, String description, Integer quantity) {
-		this.id = id;
+	public HygieneItem(ItemName name, String description) {
 		this.name = name;
 		this.description = description;
-		this.quantity = quantity;
 	}
 
 	public Integer getId() {
@@ -37,11 +35,11 @@ public class HygieneItem extends Item {
 		this.id = id;
 	}
 
-	public String getNome() {
+	public ItemName getNome() {
 		return name;
 	}
 
-	public void setNome(String nome) {
+	public void setNome(ItemName nome) {
 		this.name = nome;
 	}
 
@@ -51,14 +49,6 @@ public class HygieneItem extends Item {
 
 	public void setDescricao(String descricao) {
 		this.description = descricao;
-	}
-	
-	public Integer getQuantity() {
-		return quantity;
-	}
-
-	public void setQuantity(Integer quantity) {
-		this.quantity = quantity;
 	}
 
 	@Override
@@ -80,7 +70,7 @@ public class HygieneItem extends Item {
 
 	@Override
 	public String toString() {
-		return "Hygiene type item of name: " + name + ", with description: " + description + ", with " + quantity + " units\n";
+		return "Hygiene type item of name: " + name + ", with description: " + description + "\n";
 	}
 
 }
