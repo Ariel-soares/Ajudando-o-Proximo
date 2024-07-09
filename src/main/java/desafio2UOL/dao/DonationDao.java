@@ -9,24 +9,18 @@ import jakarta.persistence.Persistence;
 
 public class DonationDao {
 
-	private EntityManagerFactory emf = Persistence.createEntityManagerFactory("desafio-context");
 	
-	public Donation findById(Integer id) {
-		EntityManager em = emf.createEntityManager();
+	public Donation findById(Integer id, EntityManager em) {
 		Donation Donation = em.find(Donation.class, id);
-		em.close();
 		return Donation;
 	}
 
-	public List<Donation> getAllDonations() {
-		EntityManager em = emf.createEntityManager();
+	public List<Donation> getAllDonations(EntityManager em) {
 		List<Donation> Donations = em.createQuery("SELECT s FROM Donation s", Donation.class).getResultList();
-		em.close();
 		return Donations;
 	}
 
-	public void deleteDonation(int id) {
-		EntityManager em = emf.createEntityManager();
+	public void deleteDonation(int id, EntityManager em) {
 		em.getTransaction().begin();
 		Donation Donation = em.find(Donation.class, id);
 		if (Donation != null) {
@@ -34,24 +28,19 @@ public class DonationDao {
 			System.out.println("Donation Removed!");
 		}
 		em.getTransaction().commit();
-		em.close();
 	}
 	
-	public void addDonation(Donation Donation) {
-        EntityManager em = emf.createEntityManager();
+	public void addDonation(Donation Donation, EntityManager em) {
         em.getTransaction().begin();
         em.persist(Donation);
         em.getTransaction().commit();
-        em.close();
     }
 
-    public void updateDonation(Donation Donation, Integer id) {
-        EntityManager em = emf.createEntityManager();
+    public void updateDonation(Donation Donation, Integer id, EntityManager em) {
         em.find(Donation.class, Donation.getId());
         em.getTransaction().begin();
         em.merge(Donation);
         em.getTransaction().commit();
-        em.close();
     }
 
 }

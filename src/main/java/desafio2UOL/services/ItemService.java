@@ -4,26 +4,27 @@ import java.util.List;
 
 import desafio2UOL.dao.ItemDao;
 import desafio2UOL.entities.Item;
+import jakarta.persistence.EntityManager;
 
 public class ItemService {
 	
 	private ItemDao itemDao = new ItemDao();
 	
-	public Item findById(Integer id) {
-		return itemDao.findById(id);
+	public Item findById(Integer id, EntityManager em) {
+		return itemDao.findById(id, em);
 	}
 	
-	public List<Item> getAllItems() {
-        return itemDao.getAllItems();
+	public List<Item> getAllItems(EntityManager em) {
+        return itemDao.getAllItems(em);
     }
 	
-	public void addItem(Item Item) {
-        itemDao.addItem(Item);
+	public void addItem(Item Item, EntityManager em) {
+        itemDao.addItem(Item, em);
     }
 	
-	public void addItemList(List<Item> items) {
+	public void addItemList(List<Item> items, EntityManager em) {
         for(Item i : items) {
-        	itemDao.addItem(i);
+        	itemDao.addItem(i, em);
         };
     }
 /*

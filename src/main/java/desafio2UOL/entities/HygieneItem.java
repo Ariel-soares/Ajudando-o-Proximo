@@ -2,13 +2,14 @@ package desafio2UOL.entities;
 
 import java.util.Objects;
 
-import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "hygiene_items")
 public class HygieneItem extends Item {
 
 	@Id

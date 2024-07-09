@@ -36,13 +36,14 @@ public class DonationsMenus {
 
 			switch (option) {
 			case 1:
-				DonationsMenus.addDonationManually(scanner, distributionCenterService, itemService, donationService, em);
+				DonationsMenus.addDonationManually(scanner, distributionCenterService, itemService, donationService,
+						em);
 				break;
 			case 2:
 				addDonationFromCSV(scanner, distributionCenterService, itemService, donationService, em);
 				break;
 			case 3:
-				listDonations(donationService);
+				listDonations(donationService, em);
 				break;
 			case 4:
 				return;
@@ -52,8 +53,8 @@ public class DonationsMenus {
 		}
 	}
 
-	private static void listDonations(DonationService donationService) {
-		List<Donation> donations = donationService.getAllDonations();
+	private static void listDonations(DonationService donationService, EntityManager em) {
+		List<Donation> donations = donationService.getAllDonations(em);
 		System.out.println(donations);
 	}
 
@@ -122,10 +123,10 @@ public class DonationsMenus {
 
 				if (distributionCenter != null) {
 
-					itemService.addItemList(items);
+					itemService.addItemList(items, em);
 
 					donation.setCenterId(distributionCenter);
-					donationService.addDonation(donation);
+					donationService.addDonation(donation, em);
 					distributionCenter.getDonations().add(donation);
 					distributionCenterService.addDonation(donation, distributionCenterId, em);
 					System.out.println("\nDonation added\n");
@@ -211,9 +212,9 @@ public class DonationsMenus {
 		Map<Integer, List<Item>> donationMap = new HashMap<>();
 
 		try (BufferedReader br = new BufferedReader(new FileReader(csvFilePath))) {
-			
+
 			String line = br.readLine();
-			
+
 			while ((line = br.readLine()) != null) {
 				String[] values = line.split(",");
 				int distributionCenterId = Integer.parseInt(values[0]);
@@ -241,13 +242,15 @@ public class DonationsMenus {
 					continue;
 				}
 
-				itemService.addItemList(items);
+				itemService.addItemList(items, em);
 				Donation donation = new Donation(null, distributionCenter);
 				for (Item item : items) {
+
 					donation.addItem(item);
 					distributionCenter.getItems().add(item);
 				}
-				donationService.addDonation(donation);
+				System.out.println(donation.getItens());
+				donationService.addDonation(donation, em);
 				distributionCenterService.updateDistributionCenter(distributionCenter, distributionCenterId, em);
 			}
 
@@ -266,7 +269,7 @@ public class DonationsMenus {
 			cloth.setDescription(values[4]);
 			cloth.setGender(values[5].toUpperCase().charAt(0));
 			cloth.setSize(values[6]);
-			
+
 			return cloth;
 
 		case "food":

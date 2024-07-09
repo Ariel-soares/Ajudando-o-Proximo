@@ -11,6 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -25,6 +26,7 @@ public class Donation {
 	private LocalDateTime time;
 
 	@OneToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "donation_items", joinColumns = @JoinColumn(name = "Donation_id"))
 	private List<Item> itens = new ArrayList<>();
 
 	@ManyToOne

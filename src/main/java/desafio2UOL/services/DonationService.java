@@ -4,21 +4,22 @@ import java.util.List;
 
 import desafio2UOL.dao.DonationDao;
 import desafio2UOL.entities.Donation;
+import jakarta.persistence.EntityManager;
 
 public class DonationService {
 	
 	private DonationDao DonationDao = new DonationDao();
 	
-	public Donation findById(Integer id) {
-		return DonationDao.findById(id);
+	public Donation findById(Integer id, EntityManager em) {
+		return DonationDao.findById(id, em);
 	}
 	
-	public List<Donation> getAllDonations() {
-        return DonationDao.getAllDonations();
+	public List<Donation> getAllDonations(EntityManager em) {
+        return DonationDao.getAllDonations(em);
     }
 	
-	public void addDonation(Donation Donation) {
-        DonationDao.addDonation(Donation);
+	public void addDonation(Donation Donation, EntityManager em) {
+        DonationDao.addDonation(Donation, em);
     }
 /*
     public void updateDonation(Donation Donation, Integer id) {
@@ -50,8 +51,8 @@ public class DonationService {
     	old.setResponsible(updated.getResponsible());
     }*/
     
-    public void findOne(Integer id) {
-    	Donation Donation = findById(id);
+    public void findOne(Integer id, EntityManager em) {
+    	Donation Donation = findById(id, em);
     	if(Donation != null) {
     		System.out.println(Donation);
     		System.out.println("\n--------------- Lista de itens do abrigo -------------\n");

@@ -9,6 +9,8 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
@@ -26,6 +28,7 @@ public class DistributionCenter {
 	private String cep;
 
 	@OneToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "distribution_center_items", joinColumns = @JoinColumn(name = "distribution_center_id"), inverseJoinColumns = @JoinColumn(name = "itens_id"))
 	private List<Item> items = new ArrayList<>();
 
 	@OneToMany(mappedBy = "centerId", fetch = FetchType.EAGER)

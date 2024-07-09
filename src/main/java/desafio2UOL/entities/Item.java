@@ -2,8 +2,6 @@ package desafio2UOL.entities;
 
 import java.util.Objects;
 
-import jakarta.persistence.DiscriminatorColumn;
-import jakarta.persistence.DiscriminatorType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,8 +10,7 @@ import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "item_type", discriminatorType = DiscriminatorType.STRING)
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Item {
 	
 	@Id
