@@ -89,8 +89,8 @@ public class Donation {
 
 	@Override
 	public String toString() {
-		return "Donation number " + id + ", made to distribution center " + centerId.getName() + " adding "
-				+ itens.size() + " item(s) to this distribution center";
+		return "\nDonation number " + id + ", made to distribution center " + centerId.getName() + " adding "
+				+ itens.size() + " item(s) to this distribution center\n";
 	}
 
 	public void addItem(Item item) {

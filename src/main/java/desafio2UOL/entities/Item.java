@@ -18,13 +18,15 @@ public abstract class Item {
 	private Integer id;
 	private String name;
 	private String description;
+	private Integer quantity;
 	
 	public Item() {}
 	
-	public Item(Integer id, String name, String description) {
+	public Item(Integer id, String name, String description, Integer quantity) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
+		this.quantity = quantity;
 	}
 
 	public Integer getId() {
@@ -49,6 +51,14 @@ public abstract class Item {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	public Integer getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
 	}
 
 	@Override

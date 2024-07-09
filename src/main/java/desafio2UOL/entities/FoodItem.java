@@ -18,14 +18,16 @@ public class FoodItem extends Item{
 	private String description;
 	private String measurement;
 	private String validity;
+	private Integer quantity;
 	
 	public FoodItem() {}
 
-	public FoodItem(Integer id, String description, String measurement, String validity) {
+	public FoodItem(Integer id, String description, String measurement, String validity, Integer quantity) {
 		this.id = id;
 		this.description = description;
 		this.measurement = measurement;
 		this.validity = validity;
+		this.quantity = quantity;
 	}
 
 	public Integer getId() {
@@ -58,6 +60,14 @@ public class FoodItem extends Item{
 
 	public void setValidity(String validity) {
 		this.validity = validity;
+	}
+	
+	public Integer getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
 	}
 
 	@Override

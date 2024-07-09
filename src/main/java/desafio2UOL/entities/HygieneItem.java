@@ -17,14 +17,16 @@ public class HygieneItem extends Item {
 	private Integer id;
 	private String name;
 	private String description;
+	private Integer quantity;
 
 	public HygieneItem() {
 	}
 
-	public HygieneItem(Integer id, String name, String description) {
+	public HygieneItem(Integer id, String name, String description, Integer quantity) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
+		this.quantity = quantity;
 	}
 
 	public Integer getId() {
@@ -49,6 +51,14 @@ public class HygieneItem extends Item {
 
 	public void setDescricao(String descricao) {
 		this.description = descricao;
+	}
+	
+	public Integer getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
 	}
 
 	@Override

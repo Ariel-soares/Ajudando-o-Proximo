@@ -19,15 +19,17 @@ public class ClothItem extends Item {
 	private String description;
 	private char gender;
 	private String size;
+	private Integer quantity;
 
 	public ClothItem() {
 	}
 
-	public ClothItem(String name, String description, char gender, String size) {
+	public ClothItem(String name, String description, char gender, String size, Integer quantity) {
 		this.name = name;
 		this.description = description;
 		this.gender = gender;
 		this.size = size;
+		this.quantity = quantity;
 	}
 
 	public Integer getId() {
@@ -68,6 +70,14 @@ public class ClothItem extends Item {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Integer getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
 	}
 
 	@Override
