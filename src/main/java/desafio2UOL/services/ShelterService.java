@@ -3,6 +3,7 @@ package desafio2UOL.services;
 import java.util.List;
 
 import desafio2UOL.dao.ShelterDao;
+import desafio2UOL.entities.Item;
 import desafio2UOL.entities.Shelter;
 
 public class ShelterService {
@@ -55,8 +56,10 @@ public class ShelterService {
     	if(shelter != null) {
     		System.out.println(shelter);
     		System.out.println("\n--------------- Lista de itens do abrigo -------------\n");
-    		System.out.println(shelter.getItens());
+    		for(Item i : shelter.getItens()) {
+    			System.out.println(i);
+    		}
     	} else
-    		System.err.println("Entidade não encontrada");
+    		System.err.println("Entidade nao encontrada");
     }
 }

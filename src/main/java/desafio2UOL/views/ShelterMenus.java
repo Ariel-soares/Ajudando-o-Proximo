@@ -4,10 +4,11 @@ import java.util.Scanner;
 
 import desafio2UOL.entities.Shelter;
 import desafio2UOL.services.ShelterService;
+import jakarta.persistence.EntityManager;
 
 public class ShelterMenus {
 
-	public static void showShelterMenu(Scanner scanner, ShelterService shelterService) {
+	public static void showShelterMenu(Scanner scanner, ShelterService shelterService, EntityManager em) {
 		while (true) {
 			System.out.println("\n1. List Shelters");
 			System.out.println("2. Find Specific Shelter");
@@ -15,7 +16,7 @@ public class ShelterMenus {
 			System.out.println("4. Delete Shelter");
 			System.out.println("5. Update Shelter");
 			System.out.println("6. Order items from shelter");
-			System.out.println("6. Exit");
+			System.out.println("7. Exit");
 			System.out.print("\nChoose an option: \n");
 			int option = scanner.nextInt();
 			scanner.nextLine();
@@ -156,4 +157,18 @@ public class ShelterMenus {
 		}
 	}
 
+	private static void RequestOrderFromDistributionCenter(Scanner scanner, ShelterService shelterService, EntityManager em) {
+		
+		System.out.print("Enter Shelter ID: ");
+	    int shelterId = scanner.nextInt();
+	    scanner.nextLine(); 
+	    Shelter shelter = shelterService.findById(shelterId);
+
+	    if (shelter == null) {
+	        System.out.println("Shelter not found.");
+	        return;
+	    }
+	    
+	    
+	}
 }

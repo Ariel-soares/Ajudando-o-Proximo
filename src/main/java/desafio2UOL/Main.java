@@ -2,9 +2,7 @@ package desafio2UOL;
 
 import java.util.Scanner;
 
-import desafio2UOL.entities.ClothItem;
 import desafio2UOL.entities.DistributionCenter;
-import desafio2UOL.entities.Item;
 import desafio2UOL.entities.Shelter;
 import desafio2UOL.services.DistributionCenterService;
 import desafio2UOL.services.DonationService;
@@ -33,20 +31,6 @@ public class Main {
 		Shelter shelter = new Shelter(null, "abrigo 1", "rua 2", "s", "e", "d", 4, 5);
 
 		em.getTransaction().begin();
-		em.persist(shelter);
-		em.getTransaction().commit();
-
-		Item cloth = new ClothItem("Camisa", "Camisa Masculina branca", 'M', "M");
-		Item cloth2 = new ClothItem("Moletom", "Moletom feminino preto", 'F', "M");
-
-		shelter.getItens().add(cloth2);
-		shelter.getItens().add(cloth);
-
-		//System.out.println(shelter.getItens());
-
-		em.getTransaction().begin();
-		em.persist(cloth);
-		em.persist(cloth2);
 		em.persist(shelter);
 		em.getTransaction().commit();
 
@@ -79,12 +63,13 @@ public class Main {
 				DonationsMenus.showDonationsMenu(scanner, distributionCenterService, itemService, donationService, em);
 				break;
 			case 2:
-				ShelterMenus.showShelterMenu(scanner, shelterService);
+				ShelterMenus.showShelterMenu(scanner, shelterService, em);
 				break;
 			case 3:
-				DistributionCenterMenu.showDistributionCenterMenu(em);
+				DistributionCenterMenu.showDistributionCenterMenu(scanner, em);
 				break;
 			case 4:
+				System.out.println("ENCERRANDO SISTEMA");
 				System.exit(0);
 				break;
 			default:

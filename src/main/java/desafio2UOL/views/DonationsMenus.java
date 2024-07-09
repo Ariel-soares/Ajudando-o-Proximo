@@ -32,7 +32,7 @@ public class DonationsMenus {
 			System.out.println("4. Back to Main Menu");
 			System.out.print("Choose an option: ");
 			int option = scanner.nextInt();
-			scanner.nextLine(); // Consume newline
+			scanner.nextLine();
 
 			switch (option) {
 			case 1:
