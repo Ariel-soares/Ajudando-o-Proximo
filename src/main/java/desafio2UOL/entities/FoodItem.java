@@ -89,7 +89,7 @@ public class FoodItem extends Item{
 
 	@Override
 	public String toString() {
-		return "Item do tipo alimento, com a descricao: " + description + " com vencimento em: " + validity + " medido em:" + measurement + "\n";
+		return "Food type item, with description: " + description + ", spoiling at date: " + validity + ", measured in:" + measurement + ", with " + quantity + " units\n";
 	}
 	
 

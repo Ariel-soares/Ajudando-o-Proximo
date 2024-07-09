@@ -80,7 +80,7 @@ public class HygieneItem extends Item {
 
 	@Override
 	public String toString() {
-		return "Item de higiene do tipo " + name + ", com a descrição: " + description + "\n";
+		return "Hygiene type item of name: " + name + ", with description: " + description + ", with " + quantity + " units\n";
 	}
 
 }

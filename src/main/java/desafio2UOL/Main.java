@@ -77,16 +77,4 @@ public class Main {
 			}
 		}
 	}
-
-	
-
-	
-
-	
-
-	/*
-	 * private static void listDonations() { List<Donation> donations =
-	 * donationDAO.getAll(); for (Donation donation : donations) {
-	 * System.out.println(donation); } }
-	 */
 }
