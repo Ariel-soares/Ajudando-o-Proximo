@@ -92,7 +92,7 @@ public class ClothItem extends Item {
 
 	@Override
 	public String toString() {
-		return " Item do tipo" + description + ",nome: " + name + ", do gênero " + gender + ", do tamanho " + size
+		return " Item do tipo" + description + ",nome: " + name + ", do genero " + gender + ", do tamanho " + size
 				+ "\n";
 	}
 
