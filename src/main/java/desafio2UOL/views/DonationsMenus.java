@@ -193,7 +193,7 @@ public class DonationsMenus {
 				}
 				distributionCenter.getDonations().add(d);
 				
-				System.out.println(distributionCenter.getItems());
+				//System.out.println(distributionCenter.getItems());
 				distributionCenterService.updateDistributionCenter(distributionCenter, d.getCenterId().getId(), em);
 			}
 

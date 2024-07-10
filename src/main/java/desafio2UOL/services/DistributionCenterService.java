@@ -49,8 +49,12 @@ public class DistributionCenterService {
 		old.setName(updated.getName());
 		old.setState(updated.getState());
 		old.setId(updated.getId());
-		old.getItems().clear();
+		System.out.println("MAP FOR SAVING\n" + updated.getItems() + "----------------");
+		System.out.println("\nnot updated map\n" + old.getItems());
+		//old.getItems().clear();
+		System.out.println("cleared map\n" + old.getItems());
 		old.getItems().putAll(updated.getItems());
+		System.out.println("updated map\n" + old.getItems());
 	}
 
 	public void findOne(Integer id, EntityManager em) {
