@@ -1,16 +1,21 @@
 package desafio2UOL.entities;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
+import jakarta.persistence.MapKeyJoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
@@ -27,15 +32,24 @@ public class DistributionCenter {
 	private String state;
 	private String cep;
 
-	@OneToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "distribution_center_items", joinColumns = @JoinColumn(name = "distribution_center_id"), inverseJoinColumns = @JoinColumn(name = "itens_id"))
-	private List<Item> items = new ArrayList<>();
-
 	@OneToMany(mappedBy = "centerId", fetch = FetchType.EAGER)
 	private List<Donation> donations = new ArrayList<>();
 
 	@OneToMany(fetch = FetchType.EAGER)
 	private List<Order> orders = new ArrayList<>();
+
+	// @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ElementCollection
+	// @JoinTable(name = "distribution_center_items",
+	// joinColumns = {@JoinColumn(name = "distributionCenter_id",
+	// referencedColumnName = "id")},
+	// inverseJoinColumns = @JoinColumn(name = "items_quantity"))
+	// @MapKeyJoinColumn(name = "item_id")
+	@CollectionTable(name = "distributioncenter_items", joinColumns = {
+			@JoinColumn(name = "distributioncenter_id", referencedColumnName = "id") })
+	@Column(name = "quantity")
+	@MapKeyJoinColumn(name = "item_id")
+	private Map<Item, Integer> items = new LinkedHashMap<>();
 
 	public DistributionCenter() {
 	}
@@ -97,16 +111,16 @@ public class DistributionCenter {
 		this.cep = cep;
 	}
 
-	public List<Item> getItems() {
+	public List<Order> getOrders() {
+		return orders;
+	}
+
+	public Map<Item, Integer> getItems() {
 		return items;
 	}
 
 	public List<Donation> getDonations() {
 		return donations;
-	}
-
-	public List<Order> getOrders() {
-		return orders;
 	}
 
 	@Override

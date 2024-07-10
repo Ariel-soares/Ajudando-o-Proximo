@@ -132,7 +132,7 @@ public class DonationsMenus {
 
 					donation.setCenterId(distributionCenter);
 					donationService.addDonation(donation, em);
-					distributionCenter.getDonations().add(donation);
+					//distributionCenter.getDonations().add(donation);
 					// distributionCenterService.addDonation(donation, distributionCenterId, em);
 					System.out.println("\nDonation added\n");
 					return;
@@ -174,7 +174,7 @@ public class DonationsMenus {
 			}
 
 			for (Donation d : donations) {
-				
+
 				donationService.addDonation(d, em);
 
 				DistributionCenter distributionCenter = distributionCenterService.findById(d.getCenterId().getId(), em);
@@ -182,13 +182,12 @@ public class DonationsMenus {
 					System.out.println("Distribution Center not found: " + d.getCenterId().getId());
 					continue;
 				}
-				distributionCenter.getDonations().add(d);
-				for(int i = 0; i <= d.getQuantity(); i++) {
+			/*	distributionCenter.getDonations().add(d);
+				for (int i = 0; i <= d.getQuantity(); i++) {
 					distributionCenter.getItems().add(d.getItem());
 				}
 
-				
-				distributionCenter.getDonations().add(d);
+				distributionCenter.getDonations().add(d);*/
 				distributionCenterService.updateDistributionCenter(distributionCenter, d.getCenterId().getId(), em);
 			}
 

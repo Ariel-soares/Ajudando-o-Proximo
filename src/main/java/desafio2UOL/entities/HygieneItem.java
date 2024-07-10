@@ -4,6 +4,8 @@ import java.util.Objects;
 
 import desafio2UOL.entities.enums.ItemName;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -16,6 +18,8 @@ public class HygieneItem extends Item {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+	
+	@Enumerated(EnumType.STRING)
 	private ItemName name;
 	private String description;
 
@@ -51,21 +55,26 @@ public class HygieneItem extends Item {
 		this.description = descricao;
 	}
 
+	
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(id);
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + Objects.hash(name);
+		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
+		if (!super.equals(obj))
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
 		HygieneItem other = (HygieneItem) obj;
-		return Objects.equals(id, other.id);
+		return name == other.name;
 	}
 
 	@Override

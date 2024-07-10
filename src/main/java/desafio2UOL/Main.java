@@ -2,7 +2,6 @@ package desafio2UOL;
 
 import java.util.Scanner;
 
-import desafio2UOL.entities.DistributionCenter;
 import desafio2UOL.entities.Shelter;
 import desafio2UOL.services.DistributionCenterService;
 import desafio2UOL.services.DonationService;
@@ -27,7 +26,7 @@ public class Main {
 
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("desafio-context");
 		EntityManager em = emf.createEntityManager();
-
+/*
 		Shelter shelter = new Shelter(null, "abrigo 1", "rua 2", "s", "e", "d", 4, 5);
 
 		em.getTransaction().begin();
@@ -38,7 +37,7 @@ public class Main {
 
 		em.getTransaction().begin();
 		em.persist(cd);
-		em.getTransaction().commit();
+		em.getTransaction().commit();*/
 		
 		showMenu(em);
 		

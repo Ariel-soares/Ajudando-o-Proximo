@@ -76,11 +76,13 @@ public class ClothItem extends Item {
 		this.name = name;
 	}
 
+	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + Objects.hash(id);
+		result = prime * result + Objects.hash(gender, name, size);
 		return result;
 	}
 
@@ -93,7 +95,7 @@ public class ClothItem extends Item {
 		if (getClass() != obj.getClass())
 			return false;
 		ClothItem other = (ClothItem) obj;
-		return Objects.equals(id, other.id);
+		return gender == other.gender && name == other.name && Objects.equals(size, other.size);
 	}
 
 	@Override
