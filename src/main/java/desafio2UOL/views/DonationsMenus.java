@@ -182,12 +182,18 @@ public class DonationsMenus {
 					System.out.println("Distribution Center not found: " + d.getCenterId().getId());
 					continue;
 				}
-			/*	distributionCenter.getDonations().add(d);
-				for (int i = 0; i <= d.getQuantity(); i++) {
-					distributionCenter.getItems().add(d.getItem());
+				
+				Item i = d.getItem();
+				
+				if(distributionCenter.getItems().containsKey(i)) {
+					Integer quantitysoFar = distributionCenter.getItems().get(i);
+					distributionCenter.getItems().put(i, quantitysoFar + d.getQuantity());
+				}else {
+					distributionCenter.getItems().put(i, d.getQuantity());
 				}
-
-				distributionCenter.getDonations().add(d);*/
+				distributionCenter.getDonations().add(d);
+				
+				System.out.println(distributionCenter.getItems());
 				distributionCenterService.updateDistributionCenter(distributionCenter, d.getCenterId().getId(), em);
 			}
 
@@ -208,7 +214,6 @@ public class DonationsMenus {
 			cloth.setSize(values[6]);
 			cloth.setItemType(ItemType.CLOTH);
 			return cloth;
-
 		case "food":
 			FoodItem food = new FoodItem();
 			food.setId(null);
@@ -217,14 +222,12 @@ public class DonationsMenus {
 			food.setValidity(values[5]);
 			food.setItemType(ItemType.FOOD);
 			return food;
-
 		case "hygiene":
 			HygieneItem hygiene = new HygieneItem();
 			hygiene.setName(ItemName.valueOf(values[3].toUpperCase()));
 			hygiene.setDescription(values[4]);
 			hygiene.setItemType(ItemType.HYGIENE);
 			return hygiene;
-
 		default:
 			return null;
 		}

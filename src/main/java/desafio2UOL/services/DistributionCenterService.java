@@ -39,15 +39,6 @@ public class DistributionCenterService {
 			System.out.println(DistributionCenter);
 		}
 	}
-	/*
-	public void addDonation(Donation donation, Integer id, EntityManager em) {
-		DistributionCenter center = DistributionCenterDao.findById(id, em);
-		center.getDonations().add(donation);
-		for(Item i : donation.getItens()) {
-			center.getItems().add(i);
-		}
-		DistributionCenterDao.updateDistributionCenter(center, id, em);
-	}*/
 
 	private void updateData(DistributionCenter old, DistributionCenter updated) {
 
@@ -58,11 +49,8 @@ public class DistributionCenterService {
 		old.setName(updated.getName());
 		old.setState(updated.getState());
 		old.setId(updated.getId());
-		
-	//	for(Item i : updated.getItems()) {
-		//	old.getItems().add(i);
-		//}
-
+		old.getItems().clear();
+		old.getItems().putAll(updated.getItems());
 	}
 
 	public void findOne(Integer id, EntityManager em) {

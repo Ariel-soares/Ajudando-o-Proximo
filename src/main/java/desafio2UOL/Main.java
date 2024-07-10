@@ -2,6 +2,7 @@ package desafio2UOL;
 
 import java.util.Scanner;
 
+import desafio2UOL.entities.DistributionCenter;
 import desafio2UOL.entities.Shelter;
 import desafio2UOL.services.DistributionCenterService;
 import desafio2UOL.services.DonationService;
@@ -32,12 +33,12 @@ public class Main {
 		em.getTransaction().begin();
 		em.persist(shelter);
 		em.getTransaction().commit();
-
+*/
 		DistributionCenter cd = new DistributionCenter(null, "cd1", "rua 1", "campinas", "RS", "25642");
 
 		em.getTransaction().begin();
 		em.persist(cd);
-		em.getTransaction().commit();*/
+		em.getTransaction().commit();
 		
 		showMenu(em);
 		
