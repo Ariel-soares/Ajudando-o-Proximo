@@ -48,7 +48,7 @@ public class DistributionCenter {
 	@CollectionTable(name = "distributioncenter_items", joinColumns = {
 			@JoinColumn(name = "distributioncenter_id", referencedColumnName = "id") })
 	@Column(name = "quantity")
-	@MapKeyJoinColumn(name = "item_id")
+	@MapKeyJoinColumn(name = "item")
 	private Map<Item, Integer> items = new LinkedHashMap<>();
 
 	public DistributionCenter() {
