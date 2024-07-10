@@ -1,19 +1,15 @@
 package desafio2UOL.entities;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -24,10 +20,14 @@ public class Donation {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private LocalDateTime time;
-
+	private Integer quantity;
+/*
 	@OneToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "donation_items", joinColumns = @JoinColumn(name = "Donation_id"))
-	private List<Item> itens = new ArrayList<>();
+	private List<Item> itens = new ArrayList<>();*/
+	
+	@OneToOne
+	private Item item;
 
 	@ManyToOne
 	@JoinColumn(name = "distributioncenter_id")
@@ -36,10 +36,11 @@ public class Donation {
 	public Donation() {
 	}
 
-	public Donation(Integer id, DistributionCenter centerId) {
-		this.id = id;
+	public Donation(DistributionCenter centerId, Integer quantity, Item item) {
 		this.time = LocalDateTime.now();
 		this.centerId = centerId;
+		this.quantity = quantity;
+		this.item = item;
 	}
 
 	public Integer getId() {
@@ -50,8 +51,12 @@ public class Donation {
 		this.id = id;
 	}
 
-	public List<Item> getItens() {
-		return itens;
+	public Item getItem() {
+		return item;
+	}
+	
+	public void setItem(Item item) {
+		this.item = item;
 	}
 
 	public LocalDateTime getTime() {
@@ -68,6 +73,14 @@ public class Donation {
 
 	public void setCenterId(DistributionCenter centerId) {
 		this.centerId = centerId;
+	}
+
+	public Integer getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
 	}
 
 	@Override
@@ -90,10 +103,7 @@ public class Donation {
 	@Override
 	public String toString() {
 		return "\nDonation number " + id + ", made to distribution center " + centerId.getName() + " adding "
-				+ itens.size() + " item(s) to this distribution center\n";
+				+ quantity + item.getName() + "(s) to its storage\n";
 	}
 
-	public void addItem(Item item) {
-		this.itens.add(item);
-	}
 }

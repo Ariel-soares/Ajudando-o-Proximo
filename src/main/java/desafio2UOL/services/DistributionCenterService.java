@@ -4,8 +4,6 @@ import java.util.List;
 
 import desafio2UOL.dao.DistributionCenterDao;
 import desafio2UOL.entities.DistributionCenter;
-import desafio2UOL.entities.Donation;
-import desafio2UOL.entities.Item;
 import jakarta.persistence.EntityManager;
 
 public class DistributionCenterService {
@@ -41,7 +39,7 @@ public class DistributionCenterService {
 			System.out.println(DistributionCenter);
 		}
 	}
-	
+	/*
 	public void addDonation(Donation donation, Integer id, EntityManager em) {
 		DistributionCenter center = DistributionCenterDao.findById(id, em);
 		center.getDonations().add(donation);
@@ -49,7 +47,7 @@ public class DistributionCenterService {
 			center.getItems().add(i);
 		}
 		DistributionCenterDao.updateDistributionCenter(center, id, em);
-	}
+	}*/
 
 	private void updateData(DistributionCenter old, DistributionCenter updated) {
 

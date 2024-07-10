@@ -55,8 +55,8 @@ public class DonationService {
     	Donation Donation = findById(id, em);
     	if(Donation != null) {
     		System.out.println(Donation);
-    		System.out.println("\n--------------- Lista de itens do abrigo -------------\n");
-    		System.out.println(Donation.getItens());
+    		System.out.println("\n--------------- Item da doação -------------\n");
+    		System.out.println(Donation.getItem());
     	} else
     		System.err.println("Entidade não encontrada");
     }
