@@ -50,8 +50,7 @@ public class DistributionCenterService {
 		old.setState(updated.getState());
 		old.setId(updated.getId());
 		System.out.println("MAP FOR SAVING\n" + updated.getItems() + "----------------");
-		System.out.println("\nnot updated map\n" + old.getItems());
-		//old.getItems().clear();
+		System.out.println("\n not updated map\n" + old.getItems());
 		System.out.println("cleared map\n" + old.getItems());
 		old.getItems().putAll(updated.getItems());
 		System.out.println("updated map\n" + old.getItems());

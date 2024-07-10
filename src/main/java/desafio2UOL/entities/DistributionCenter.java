@@ -38,18 +38,12 @@ public class DistributionCenter {
 	@OneToMany(fetch = FetchType.EAGER)
 	private List<Order> orders = new ArrayList<>();
 
-	// @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@ElementCollection
-	// @JoinTable(name = "distribution_center_items",
-	// joinColumns = {@JoinColumn(name = "distributionCenter_id",
-	// referencedColumnName = "id")},
-	// inverseJoinColumns = @JoinColumn(name = "items_quantity"))
-	// @MapKeyJoinColumn(name = "item_id")
 	@CollectionTable(name = "distributioncenter_items", joinColumns = {
 			@JoinColumn(name = "distributioncenter_id", referencedColumnName = "id") })
 	@Column(name = "quantity")
 	@MapKeyJoinColumn(name = "item")
-	private Map<Item, Integer> items = new LinkedHashMap<>();
+	private Map<String, Integer> items = new LinkedHashMap<>();
 
 	public DistributionCenter() {
 	}
@@ -115,7 +109,7 @@ public class DistributionCenter {
 		return orders;
 	}
 
-	public Map<Item, Integer> getItems() {
+	public Map<String, Integer> getItems() {
 		return items;
 	}
 

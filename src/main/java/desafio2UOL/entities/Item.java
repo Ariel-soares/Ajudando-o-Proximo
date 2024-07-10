@@ -68,6 +68,10 @@ public abstract class Item {
 	public void setItemType(ItemType itemType) {
 		this.itemType = itemType;
 	}
+	
+	public String storageCode() {
+		return itemType.toString() + "/" + name.toString();
+	}
 
 	@Override
 	public int hashCode() {

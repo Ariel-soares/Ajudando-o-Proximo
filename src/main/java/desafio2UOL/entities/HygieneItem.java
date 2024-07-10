@@ -55,7 +55,10 @@ public class HygieneItem extends Item {
 		this.description = descricao;
 	}
 
-	
+	@Override
+	public String storageCode() {
+		return super.getItemType().toString() + "/" + name.toString();
+	}
 
 	@Override
 	public int hashCode() {

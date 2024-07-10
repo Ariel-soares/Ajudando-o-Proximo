@@ -185,15 +185,14 @@ public class DonationsMenus {
 				
 				Item i = d.getItem();
 				
-				if(distributionCenter.getItems().containsKey(i)) {
-					Integer quantitysoFar = distributionCenter.getItems().get(i);
-					distributionCenter.getItems().put(i, quantitysoFar + d.getQuantity());
+				if(distributionCenter.getItems().containsKey(i.storageCode())) {
+					Integer quantitysoFar = distributionCenter.getItems().get(i.storageCode());
+					distributionCenter.getItems().put(i.storageCode(), quantitysoFar + d.getQuantity());
 				}else {
-					distributionCenter.getItems().put(i, d.getQuantity());
+					distributionCenter.getItems().put(i.storageCode(), d.getQuantity());
 				}
 				distributionCenter.getDonations().add(d);
 				
-				//System.out.println(distributionCenter.getItems());
 				distributionCenterService.updateDistributionCenter(distributionCenter, d.getCenterId().getId(), em);
 			}
 
@@ -217,6 +216,7 @@ public class DonationsMenus {
 		case "food":
 			FoodItem food = new FoodItem();
 			food.setId(null);
+			food.setName(ItemName.valueOf(values[3].toUpperCase()));
 			food.setDescription(values[3]);
 			food.setMeasurement(values[4]);
 			food.setValidity(values[5]);

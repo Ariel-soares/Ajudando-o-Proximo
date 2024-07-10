@@ -74,13 +74,18 @@ public class FoodItem extends Item{
 	}
 
 	@Override
+	public String storageCode() {
+		return super.getItemType().toString() + "/" + name.toString();
+	}
+
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + Objects.hash(name);
 		return result;
 	}
-
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -95,8 +100,7 @@ public class FoodItem extends Item{
 
 	@Override
 	public String toString() {
-		return "Food type item, with description: " + description + ", spoiling at date: " + validity + ", measured in:" + measurement + "\n";
+		return "Food type item, with description: " + description + ", spoiling at date: " + validity + ", measured in:" + measurement + super.getItemType() +"\n";
 	}
 	
-
 }
