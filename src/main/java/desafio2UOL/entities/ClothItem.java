@@ -78,7 +78,7 @@ public class ClothItem extends Item {
 
 	@Override
 	public String storageCode() {
-		return super.getItemType() + name.toString() + "/" + gender + "/" + size;
+		return super.getItemType() + "/" + name.toString() + "/" + gender + "/" + size;
 	}
 
 	@Override
