@@ -8,7 +8,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -20,20 +20,18 @@ public class Order {
 	private Integer id;
 	private int quantity;
 	private LocalDateTime time;
+	private String itemCode;
 
-	@OneToOne
+	@ManyToOne
 	private Shelter requester;
-
-	@OneToOne
-	private Item item;
 
 	public Order() {
 	}
 
-	public Order(Shelter requester, Item item, int quantity) {
+	public Order(Shelter requester, String itemCode, int quantity) {
 		this.id = null;
 		this.requester = requester;
-		this.item = item;
+		this.itemCode = itemCode;
 		this.time = LocalDateTime.now(ZoneId.of("America/Sao_Paulo"));
 		this.setQuantity(quantity);
 	}
@@ -54,12 +52,12 @@ public class Order {
 		this.requester = requester;
 	}
 
-	public Item getItem() {
-		return item;
+	public String getItemCode() {
+		return itemCode;
 	}
 
-	public void setItem(Item item) {
-		this.item = item;
+	public void setItem(String itemCode) {
+		this.itemCode = itemCode;
 	}
 
 	public LocalDateTime getTime() {
@@ -93,8 +91,8 @@ public class Order {
 
 	@Override
 	public String toString() {
-		return "Order [id=" + id + ", quantity=" + quantity + ", time=" + time + ", requester=" + requester.getId() + ", item="
-				+ item.getId() + "]";
+		return "Order [id=" + id + ", quantity=" + quantity + ", time=" + time + ", requester=" + requester.getId() + ", itemCode="
+				+ itemCode + "]";
 	}
 	
 	

@@ -56,7 +56,7 @@ public class OrderService {
     	if(order != null) {
     		System.out.println(order);
     		System.out.println("\n--------------- Lista de itens do abrigo -------------\n");
-    		System.out.println(order.getItem());
+    		System.out.println(order.getItemCode());
     	} else
     		System.err.println("Entidade nao encontrada");
     }

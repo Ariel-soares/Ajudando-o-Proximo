@@ -13,14 +13,13 @@ import desafio2UOL.entities.Shelter;
 import desafio2UOL.entities.enums.ItemName;
 import desafio2UOL.entities.enums.ItemType;
 import desafio2UOL.services.DistributionCenterService;
-import desafio2UOL.services.ItemService;
 import desafio2UOL.services.OrderService;
 import desafio2UOL.services.ShelterService;
 import jakarta.persistence.EntityManager;
 
 public class ShelterMenus {
 
-	public static void showShelterMenu(Scanner scanner, ShelterService shelterService, EntityManager em, DistributionCenterService distributionCenterService, OrderService orderService, ItemService itemService) {
+	public static void showShelterMenu(Scanner scanner, ShelterService shelterService, EntityManager em, DistributionCenterService distributionCenterService, OrderService orderService) {
 		while (true) {
 			System.out.println("\n1. List Shelters");
 			System.out.println("2. Find Specific Shelter");
@@ -55,8 +54,8 @@ public class ShelterMenus {
 				showUpdateShelterMenu(scanner, shelterService, em);
 				break;
 			case 6:
-				RequestOrderFromDistributionCenter(scanner, shelterService, em, distributionCenterService, itemService, orderService);
-				break;
+				RequestOrderFromDistributionCenter(scanner, shelterService, em, distributionCenterService, orderService);
+				return;
 			case 7:
 				System.out.println("\nReturning to main menu\n");
 				return;
@@ -169,7 +168,7 @@ public class ShelterMenus {
 		}
 	}
 
-	private static void RequestOrderFromDistributionCenter(Scanner scanner, ShelterService shelterService, EntityManager em, DistributionCenterService distributionCenterService, ItemService itemService, OrderService orderService) {
+	private static void RequestOrderFromDistributionCenter(Scanner scanner, ShelterService shelterService, EntityManager em, DistributionCenterService distributionCenterService, OrderService orderService) {
 		
 		List<Shelter> shelters = shelterService.getAllShelters(em);
 		Order order = new Order();
@@ -187,10 +186,10 @@ public class ShelterMenus {
 	    
 	    order.setRequester(shelter);
 	    
-	    createRequestOrder(scanner, em, itemService, order, orderService, distributionCenterService);
+	    createRequestOrder(scanner, em, order, orderService, distributionCenterService);
 	}
 	
-	private static void createRequestOrder(Scanner scanner, EntityManager em, ItemService itemService, Order order, OrderService orderService, DistributionCenterService distributionCenterService) {
+	private static void createRequestOrder(Scanner scanner, EntityManager em, Order order, OrderService orderService, DistributionCenterService distributionCenterService) {
 		
 		System.out.print("Enter item type (1 - Clothes/2 - Hygiene/3 - Food/ 4 - End order request): ");
 		Integer itemType = scanner.nextInt();
@@ -216,8 +215,8 @@ public class ShelterMenus {
 			case 1:
 				item = new ClothItem(ItemName.valueOf(name.toUpperCase()), "cloth", 'M', size);
 				item.setItemType(ItemType.CLOTH);
-				order.setItem(item);
-				addOrder(scanner, order,itemService, em, orderService, distributionCenterService);
+				order.setItem(item.storageCode());
+				addOrder(scanner, order, em, orderService, distributionCenterService);
 				
 				
 				//addDonation(donation, em, distributionCenterService, donationService, itemService);
@@ -225,8 +224,8 @@ public class ShelterMenus {
 			case 2:
 				item = new ClothItem(ItemName.valueOf(name.toUpperCase()), "cloth", 'F', size);
 				item.setItemType(ItemType.CLOTH);
-				order.setItem(item);
-				addOrder(scanner, order,itemService, em, orderService, distributionCenterService);;
+				order.setItem(item.storageCode());
+				addOrder(scanner, order, em, orderService, distributionCenterService);
 				break;
 			}
 			break;
@@ -237,8 +236,8 @@ public class ShelterMenus {
 			String description = scanner.nextLine();
 			item = new HygieneItem(ItemName.valueOf(name.toUpperCase()), description);
 			item.setItemType(ItemType.HYGIENE);
-			order.setItem(item);
-			addOrder(scanner, order,itemService, em, orderService, distributionCenterService);
+			order.setItem(item.storageCode());
+			addOrder(scanner, order, em, orderService, distributionCenterService);
 			break;
 		case 3:
 			System.out.println("Enter item name: ");
@@ -252,8 +251,8 @@ public class ShelterMenus {
 
 			item = new FoodItem(ItemName.valueOf(name.toUpperCase()), description, measurement, validity);
 			item.setItemType(ItemType.FOOD);
-			order.setItem(item);
-			addOrder(scanner, order,itemService, em, orderService, distributionCenterService);
+			order.setItem(item.storageCode());
+			addOrder(scanner, order, em, orderService, distributionCenterService);
 			break;
 		case 4:
 /*
@@ -275,7 +274,7 @@ public class ShelterMenus {
 		}
 	}
 	
-	private static void addOrder(Scanner scanner, Order order, ItemService itemService, EntityManager em, OrderService orderService, DistributionCenterService distributionCenterService) {
+	private static void addOrder(Scanner scanner, Order order, EntityManager em, OrderService orderService, DistributionCenterService distributionCenterService) {
 		
 		List<DistributionCenter> centers = distributionCenterService.getAllDistributionCenters(em);
 		System.out.println("\n------------ DistributionCenters Available for request ------------\n");
@@ -286,9 +285,12 @@ public class ShelterMenus {
 		
 		DistributionCenter center = distributionCenterService.findById(centerId, em);
 		
-		itemService.addItem(order.getItem(), em);
+		order.setId(null);
 		
 		orderService.addOrder(order, em);
+		System.out.println(order);
+		
+		//center.getOrders().clear();
 		
 		center.getOrders().add(order);
 		

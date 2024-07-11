@@ -64,7 +64,7 @@ public class Main {
 				DonationsMenus.showDonationsMenu(scanner, distributionCenterService, itemService, donationService, em);
 				break;
 			case 2:
-				ShelterMenus.showShelterMenu(scanner, shelterService, em, distributionCenterService, orderService, itemService);
+				ShelterMenus.showShelterMenu(scanner, shelterService, em, distributionCenterService, orderService);
 				break;
 			case 3:
 				DistributionCenterMenu.showDistributionCenterMenu(scanner, em);
