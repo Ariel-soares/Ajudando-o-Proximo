@@ -17,12 +17,12 @@ public class Order {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	private int quantity;
 	private LocalDateTime time;
 
 	@OneToOne
-	private Shelter requesterId;
+	private Shelter requester;
 
 	@OneToOne
 	private Item item;
@@ -30,35 +30,35 @@ public class Order {
 	public Order() {
 	}
 
-	public Order(int id, Shelter requesterId, Item item, int quantity) {
-		this.id = id;
-		this.requesterId = requesterId;
+	public Order(Shelter requester, Item item, int quantity) {
+		this.id = null;
+		this.requester = requester;
 		this.item = item;
 		this.time = LocalDateTime.now(ZoneId.of("America/Sao_Paulo"));
 		this.setQuantity(quantity);
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	public Shelter getRequesterId() {
-		return requesterId;
+	public Shelter getRequester() {
+		return requester;
 	}
 
-	public void setRequester(Shelter requesterId) {
-		this.requesterId = requesterId;
+	public void setRequester(Shelter requester) {
+		this.requester = requester;
 	}
 
 	public Item getItem() {
 		return item;
 	}
 
-	public void setItens(Item item) {
+	public void setItem(Item item) {
 		this.item = item;
 	}
 

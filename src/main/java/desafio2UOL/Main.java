@@ -3,9 +3,11 @@ package desafio2UOL;
 import java.util.Scanner;
 
 import desafio2UOL.entities.DistributionCenter;
+import desafio2UOL.entities.Shelter;
 import desafio2UOL.services.DistributionCenterService;
 import desafio2UOL.services.DonationService;
 import desafio2UOL.services.ItemService;
+import desafio2UOL.services.OrderService;
 import desafio2UOL.services.ShelterService;
 import desafio2UOL.views.DistributionCenterMenu;
 import desafio2UOL.views.DonationsMenus;
@@ -21,6 +23,7 @@ public class Main {
 	private static DistributionCenterService distributionCenterService = new DistributionCenterService();
 	private static ItemService itemService = new ItemService();
 	private static DonationService donationService = new DonationService();
+	private static OrderService orderService = new OrderService();
 
 	public static void main(String[] args) {
 
@@ -31,6 +34,12 @@ public class Main {
 
 		em.getTransaction().begin();
 		em.persist(cd);
+		em.getTransaction().commit();
+		
+		Shelter shelter = new Shelter();
+		
+		em.getTransaction().begin();
+		em.persist(shelter);
 		em.getTransaction().commit();
 
 		showMenu(em);
@@ -55,7 +64,7 @@ public class Main {
 				DonationsMenus.showDonationsMenu(scanner, distributionCenterService, itemService, donationService, em);
 				break;
 			case 2:
-				ShelterMenus.showShelterMenu(scanner, shelterService, em);
+				ShelterMenus.showShelterMenu(scanner, shelterService, em, distributionCenterService, orderService, itemService);
 				break;
 			case 3:
 				DistributionCenterMenu.showDistributionCenterMenu(scanner, em);

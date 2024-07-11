@@ -36,8 +36,7 @@ public class DonationsMenus {
 
 			switch (option) {
 			case 1:
-				DonationsMenus.addDonationManually(scanner, distributionCenterService, itemService, donationService,
-						em);
+				addDonationManually(scanner, distributionCenterService, itemService, donationService, em);
 				break;
 			case 2:
 				addDonationFromCSV(scanner, distributionCenterService, itemService, donationService, em);
@@ -63,7 +62,7 @@ public class DonationsMenus {
 
 		Donation donation = new Donation();
 		Item item;
-		
+
 		List<DistributionCenter> distributionCenters = distributionCenterService.getAllDistributionCenters(em);
 		System.out.println("Available Distribution Centers for donation:");
 		for (DistributionCenter dc : distributionCenters) {
@@ -85,12 +84,11 @@ public class DonationsMenus {
 		Integer quantity = scanner.nextInt();
 
 		donation.setQuantity(quantity);
-		
+
 		switch (itemType) {
 		case 1:
 			scanner.nextLine();
-			
-			
+
 			System.out.println("Enter item name: ");
 			String name = scanner.nextLine();
 			System.out.println("Enter product size (Infantil/PP/P/M/G/GG)");
@@ -137,8 +135,8 @@ public class DonationsMenus {
 			donation.setItem(item);
 			break;
 		case 4:
-			
-			if(donation.getItem() == null) {
+
+			if (donation.getItem() == null) {
 				return;
 			}
 
@@ -146,7 +144,7 @@ public class DonationsMenus {
 				donation.setCenterId(distributionCenter);
 				addDonation(donation, em, distributionCenterService, donationService, itemService);
 				return;
-				
+
 			} else
 				System.out.println("Distribution Center not found.");
 
@@ -174,7 +172,7 @@ public class DonationsMenus {
 				String itemType = values[1];
 
 				Item item = createItemFromCSV(itemType, values);
-				//itemService.addItem(item, em);
+				// itemService.addItem(item, em);
 				DistributionCenter distributionCenter = distributionCenterService.findById(distributionCenterId, em);
 				if (item == null) {
 					System.out.println("Invalid item type in CSV: " + itemType);
@@ -189,19 +187,20 @@ public class DonationsMenus {
 				addDonation(d, em, distributionCenterService, donationService, itemService);
 			}
 
-			
 		} catch (IOException e) {
 			System.out.println("Error reading CSV file: " + e.getMessage());
 		}
 	}
 
 	private static void addDonation(Donation donation, EntityManager em,
-			DistributionCenterService distributionCenterService, DonationService donationService, ItemService itemService) {
+			DistributionCenterService distributionCenterService, DonationService donationService,
+			ItemService itemService) {
 
 		itemService.addItem(donation.getItem(), em);
 		donationService.addDonation(donation, em);
 
-		DistributionCenter distributionCenter = distributionCenterService.findById(donation.getDistributionCenter().getId(), em);
+		DistributionCenter distributionCenter = distributionCenterService
+				.findById(donation.getDistributionCenter().getId(), em);
 		if (distributionCenter == null) {
 			System.out.println("Distribution Center not found: " + donation.getDistributionCenter().getId());
 			return;
@@ -217,8 +216,9 @@ public class DonationsMenus {
 		}
 		distributionCenter.getDonations().add(donation);
 
-		distributionCenterService.updateDistributionCenter(distributionCenter, donation.getDistributionCenter().getId(), em);
-		
+		distributionCenterService.updateDistributionCenter(distributionCenter, donation.getDistributionCenter().getId(),
+				em);
+
 		System.out.println("Donations added from CSV successfully.\n");
 	}
 

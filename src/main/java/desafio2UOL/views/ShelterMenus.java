@@ -1,14 +1,26 @@
 package desafio2UOL.views;
 
+import java.util.List;
 import java.util.Scanner;
 
+import desafio2UOL.entities.ClothItem;
+import desafio2UOL.entities.DistributionCenter;
+import desafio2UOL.entities.FoodItem;
+import desafio2UOL.entities.HygieneItem;
+import desafio2UOL.entities.Item;
+import desafio2UOL.entities.Order;
 import desafio2UOL.entities.Shelter;
+import desafio2UOL.entities.enums.ItemName;
+import desafio2UOL.entities.enums.ItemType;
+import desafio2UOL.services.DistributionCenterService;
+import desafio2UOL.services.ItemService;
+import desafio2UOL.services.OrderService;
 import desafio2UOL.services.ShelterService;
 import jakarta.persistence.EntityManager;
 
 public class ShelterMenus {
 
-	public static void showShelterMenu(Scanner scanner, ShelterService shelterService, EntityManager em) {
+	public static void showShelterMenu(Scanner scanner, ShelterService shelterService, EntityManager em, DistributionCenterService distributionCenterService, OrderService orderService, ItemService itemService) {
 		while (true) {
 			System.out.println("\n1. List Shelters");
 			System.out.println("2. Find Specific Shelter");
@@ -24,26 +36,26 @@ public class ShelterMenus {
 			switch (option) {
 			case 1:
 				System.out.println("\nLista de abrigos cadastrados\n");
-				shelterService.listShelters();
+				shelterService.listShelters(em);
 				break;
 			case 2:
 				System.out.println("\nEnter Shelter Id:\n");
 				Integer idForFound = scanner.nextInt();
-				shelterService.findOne(idForFound);
+				shelterService.findOne(idForFound, em);
 				break;
 			case 3:
-				addShelter(scanner, shelterService);
+				addShelter(scanner, shelterService, em);
 				break;
 			case 4:
 				System.out.println("Enter Shelter Id: ");
 				Integer id = scanner.nextInt();
-				shelterService.deleteShelter(id);
+				shelterService.deleteShelter(id, em);
 				break;
 			case 5:
-				showUpdateShelterMenu(scanner, shelterService);
+				showUpdateShelterMenu(scanner, shelterService, em);
 				break;
 			case 6:
-				System.out.println("\nImplementar função\n");
+				RequestOrderFromDistributionCenter(scanner, shelterService, em, distributionCenterService, itemService, orderService);
 				break;
 			case 7:
 				System.out.println("\nReturning to main menu\n");
@@ -54,7 +66,7 @@ public class ShelterMenus {
 		}
 	}
 
-	private static void addShelter(Scanner scanner, ShelterService shelterService) {
+	private static void addShelter(Scanner scanner, ShelterService shelterService, EntityManager em) {
 		System.out.print("Enter name: ");
 		String name = scanner.nextLine();
 		System.out.print("Enter address: ");
@@ -72,17 +84,17 @@ public class ShelterMenus {
 		String email = scanner.nextLine();
 
 		Shelter shelter = new Shelter(null, name, address, responsible, contact, email, capacity, occupancy);
-		shelterService.addShelter(shelter);
+		shelterService.addShelter(shelter, em);
 
 		System.out.println("\nCadastro realizado com sucesso \n");
 	}
 
-	private static void showUpdateShelterMenu(Scanner scanner, ShelterService shelterService) {
+	private static void showUpdateShelterMenu(Scanner scanner, ShelterService shelterService, EntityManager em) {
 		System.out.print("\nEnter Shelter ID to update:\n");
 		int id = scanner.nextInt();
 		scanner.nextLine();
 
-		Shelter shelter = shelterService.findById(id);
+		Shelter shelter = shelterService.findById(id, em);
 		if (shelter == null) {
 			System.out.println("Shelter not found.");
 			return;
@@ -148,7 +160,7 @@ public class ShelterMenus {
 				scanner.nextLine();
 				break;
 			case 7:
-				shelterService.updateShelter(shelter, shelter.getId());
+				shelterService.updateShelter(shelter, shelter.getId(), em);
 				System.out.println("\nShelter updated successfully.\n");
 				return;
 			default:
@@ -157,18 +169,132 @@ public class ShelterMenus {
 		}
 	}
 
-	private static void RequestOrderFromDistributionCenter(Scanner scanner, ShelterService shelterService, EntityManager em) {
+	private static void RequestOrderFromDistributionCenter(Scanner scanner, ShelterService shelterService, EntityManager em, DistributionCenterService distributionCenterService, ItemService itemService, OrderService orderService) {
+		
+		List<Shelter> shelters = shelterService.getAllShelters(em);
+		Order order = new Order();
+		System.out.println(shelters);
 		
 		System.out.print("Enter Shelter ID: ");
 	    int shelterId = scanner.nextInt();
 	    scanner.nextLine(); 
-	    Shelter shelter = shelterService.findById(shelterId);
+	    Shelter shelter = shelterService.findById(shelterId, em);
 
 	    if (shelter == null) {
 	        System.out.println("Shelter not found.");
 	        return;
 	    }
 	    
+	    order.setRequester(shelter);
 	    
+	    createRequestOrder(scanner, em, itemService, order, orderService, distributionCenterService);
 	}
+	
+	private static void createRequestOrder(Scanner scanner, EntityManager em, ItemService itemService, Order order, OrderService orderService, DistributionCenterService distributionCenterService) {
+		
+		System.out.print("Enter item type (1 - Clothes/2 - Hygiene/3 - Food/ 4 - End order request): ");
+		Integer itemType = scanner.nextInt();
+		scanner.nextLine();
+		
+		System.out.println("Enter quantity to be requested:");
+		Integer quantity = scanner.nextInt();
+		scanner.nextLine();
+		
+		order.setQuantity(quantity);
+		Item item;
+		
+		switch (itemType) {
+		case 1:
+			
+			System.out.println("Enter item name: ");
+			String name = scanner.nextLine();
+			System.out.println("Enter product size (Infantil/PP/P/M/G/GG)");
+			String size = scanner.next().toUpperCase();
+			System.out.println("Enter item gender: (1 - Masculine / 2 - Feminine)");
+			Integer option = scanner.nextInt();
+			switch (option) {
+			case 1:
+				item = new ClothItem(ItemName.valueOf(name.toUpperCase()), "cloth", 'M', size);
+				item.setItemType(ItemType.CLOTH);
+				order.setItem(item);
+				addOrder(scanner, order,itemService, em, orderService, distributionCenterService);
+				
+				
+				//addDonation(donation, em, distributionCenterService, donationService, itemService);
+				break;
+			case 2:
+				item = new ClothItem(ItemName.valueOf(name.toUpperCase()), "cloth", 'F', size);
+				item.setItemType(ItemType.CLOTH);
+				order.setItem(item);
+				addOrder(scanner, order,itemService, em, orderService, distributionCenterService);;
+				break;
+			}
+			break;
+		case 2:
+			System.out.println("Enter item name: ");
+			name = scanner.nextLine();
+			System.out.println("Enter item description: ");
+			String description = scanner.nextLine();
+			item = new HygieneItem(ItemName.valueOf(name.toUpperCase()), description);
+			item.setItemType(ItemType.HYGIENE);
+			order.setItem(item);
+			addOrder(scanner, order,itemService, em, orderService, distributionCenterService);
+			break;
+		case 3:
+			System.out.println("Enter item name: ");
+			name = scanner.nextLine();
+			System.out.println("Enter item description: ");
+			description = scanner.nextLine();
+			System.out.println("Enter the item measurement: ");
+			String measurement = scanner.nextLine();
+			System.out.println("Enter item validity date: ");
+			String validity = scanner.nextLine();
+
+			item = new FoodItem(ItemName.valueOf(name.toUpperCase()), description, measurement, validity);
+			item.setItemType(ItemType.FOOD);
+			order.setItem(item);
+			addOrder(scanner, order,itemService, em, orderService, distributionCenterService);
+			break;
+		case 4:
+/*
+			if (order.getItem() == null) {
+				return;
+			}
+
+			if (distributionCenter != null) {
+				donation.setCenterId(distributionCenter);
+				addDonation(donation, em, distributionCenterService, donationService, itemService);
+				return;
+
+			} else
+				System.out.println("Distribution Center not found.");
+
+			return;
+		default:
+			System.out.println("Invalid option");*/
+		}
+	}
+	
+	private static void addOrder(Scanner scanner, Order order, ItemService itemService, EntityManager em, OrderService orderService, DistributionCenterService distributionCenterService) {
+		
+		List<DistributionCenter> centers = distributionCenterService.getAllDistributionCenters(em);
+		System.out.println("\n------------ DistributionCenters Available for request ------------\n");
+		System.out.println(centers);
+		
+		System.out.println("Enter Center ID");
+		Integer centerId = scanner.nextInt();
+		
+		DistributionCenter center = distributionCenterService.findById(centerId, em);
+		
+		itemService.addItem(order.getItem(), em);
+		
+		orderService.addOrder(order, em);
+		
+		center.getOrders().add(order);
+		
+		distributionCenterService.updateDistributionCenter(center, centerId, em);
+		
+		System.out.println("Order Request completed");
+	}
+	
 }
