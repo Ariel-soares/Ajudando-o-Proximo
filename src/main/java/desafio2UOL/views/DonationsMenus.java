@@ -201,9 +201,9 @@ public class DonationsMenus {
 		itemService.addItem(donation.getItem(), em);
 		donationService.addDonation(donation, em);
 
-		DistributionCenter distributionCenter = distributionCenterService.findById(donation.getCenterId().getId(), em);
+		DistributionCenter distributionCenter = distributionCenterService.findById(donation.getDistributionCenter().getId(), em);
 		if (distributionCenter == null) {
-			System.out.println("Distribution Center not found: " + donation.getCenterId().getId());
+			System.out.println("Distribution Center not found: " + donation.getDistributionCenter().getId());
 			return;
 		}
 
@@ -217,7 +217,7 @@ public class DonationsMenus {
 		}
 		distributionCenter.getDonations().add(donation);
 
-		distributionCenterService.updateDistributionCenter(distributionCenter, donation.getCenterId().getId(), em);
+		distributionCenterService.updateDistributionCenter(distributionCenter, donation.getDistributionCenter().getId(), em);
 		
 		System.out.println("Donations added from CSV successfully.\n");
 	}

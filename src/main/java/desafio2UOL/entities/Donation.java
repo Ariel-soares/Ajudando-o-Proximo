@@ -31,14 +31,14 @@ public class Donation {
 
 	@ManyToOne
 	@JoinColumn(name = "distributioncenter_id")
-	private DistributionCenter centerId;
+	private DistributionCenter distributionCenter;
 
 	public Donation() {
 	}
 
-	public Donation(DistributionCenter centerId, Integer quantity, Item item) {
+	public Donation(DistributionCenter distributionCenter, Integer quantity, Item item) {
 		this.time = LocalDateTime.now();
-		this.centerId = centerId;
+		this.distributionCenter = distributionCenter;
 		this.quantity = quantity;
 		this.item = item;
 	}
@@ -67,12 +67,12 @@ public class Donation {
 		this.time = time;
 	}
 
-	public DistributionCenter getCenterId() {
-		return centerId;
+	public DistributionCenter getDistributionCenter() {
+		return distributionCenter;
 	}
 
-	public void setCenterId(DistributionCenter centerId) {
-		this.centerId = centerId;
+	public void setCenterId(DistributionCenter distributionCenter) {
+		this.distributionCenter = distributionCenter;
 	}
 
 	public Integer getQuantity() {
@@ -102,7 +102,7 @@ public class Donation {
 
 	@Override
 	public String toString() {
-		return "\nDonation number " + id + ", made to distribution center " + centerId.getName() + " adding "
+		return "\nDonation number " + id + ", made to distribution center " + distributionCenter.getName() + " adding "
 				+ quantity + item.getName() + "(s) to its storage\n";
 	}
 

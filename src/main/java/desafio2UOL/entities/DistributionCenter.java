@@ -31,8 +31,12 @@ public class DistributionCenter {
 	private String city;
 	private String state;
 	private String cep;
+	private int clothItems;
+	private int foodItems;
+	private int hygieneItems;
+	
 
-	@OneToMany(mappedBy = "centerId", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "distributionCenter", fetch = FetchType.EAGER)
 	private List<Donation> donations = new ArrayList<>();
 
 	@OneToMany(fetch = FetchType.EAGER)
@@ -55,6 +59,9 @@ public class DistributionCenter {
 		this.city = city;
 		this.state = state;
 		this.cep = cep;
+		this.clothItems = 0;
+		this.foodItems = 0;
+		this.hygieneItems = 0;
 	}
 
 	public Integer getId() {
@@ -115,6 +122,31 @@ public class DistributionCenter {
 
 	public List<Donation> getDonations() {
 		return donations;
+	}
+	
+
+	public int getClothItems() {
+		return clothItems;
+	}
+
+	public void setClothItems(int clothItems) {
+		this.clothItems = clothItems;
+	}
+
+	public int getFoodItems() {
+		return foodItems;
+	}
+
+	public void setFoodItems(int foodItems) {
+		this.foodItems = foodItems;
+	}
+
+	public int getHygieneItems() {
+		return hygieneItems;
+	}
+
+	public void setHygieneItems(int hygieneItems) {
+		this.hygieneItems = hygieneItems;
 	}
 
 	@Override
