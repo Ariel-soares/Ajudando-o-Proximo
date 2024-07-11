@@ -4,7 +4,6 @@ import java.util.List;
 
 import desafio2UOL.dao.DistributionCenterDao;
 import desafio2UOL.entities.DistributionCenter;
-import desafio2UOL.entities.Order;
 import jakarta.persistence.EntityManager;
 
 public class DistributionCenterService {
@@ -51,13 +50,6 @@ public class DistributionCenterService {
 		old.setState(updated.getState());
 		old.setId(updated.getId());
 		old.getItems().putAll(updated.getItems());
-		//old.getOrders().clear();
-		System.out.println("old orders cleared list" + old.getOrders() + "\n");
-		//old.getOrders().addAll(updated.getOrders());
-		System.out.println("old orders updated list" + old.getOrders() + "\n");
-		System.out.println("updated orders list" + updated.getOrders() + "\n");
-		
-		
 	}
 
 	public void findOne(Integer id, EntityManager em) {

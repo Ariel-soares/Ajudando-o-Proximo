@@ -1,5 +1,7 @@
 package desafio2UOL.views;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -55,7 +57,7 @@ public class ShelterMenus {
 				break;
 			case 6:
 				RequestOrderFromDistributionCenter(scanner, shelterService, em, distributionCenterService, orderService);
-				return;
+				break;
 			case 7:
 				System.out.println("\nReturning to main menu\n");
 				return;
@@ -255,11 +257,9 @@ public class ShelterMenus {
 			addOrder(scanner, order, em, orderService, distributionCenterService);
 			break;
 		case 4:
-/*
-			if (order.getItem() == null) {
+			/*if (order.getItem() == null) {
 				return;
 			}
-
 			if (distributionCenter != null) {
 				donation.setCenterId(distributionCenter);
 				addDonation(donation, em, distributionCenterService, donationService, itemService);
@@ -267,7 +267,6 @@ public class ShelterMenus {
 
 			} else
 				System.out.println("Distribution Center not found.");
-
 			return;
 		default:
 			System.out.println("Invalid option");*/
@@ -277,10 +276,47 @@ public class ShelterMenus {
 	private static void addOrder(Scanner scanner, Order order, EntityManager em, OrderService orderService, DistributionCenterService distributionCenterService) {
 		
 		List<DistributionCenter> centers = distributionCenterService.getAllDistributionCenters(em);
-		System.out.println("\n------------ DistributionCenters Available for request ------------\n");
-		System.out.println(centers);
 		
-		System.out.println("Enter Center ID");
+		String[] values = order.getItemCode().split("/");
+		
+		switch(values[0].toLowerCase()) {
+		case "food":
+			Collections.sort(centers, new Comparator<DistributionCenter>() {
+	            @Override
+	            public int compare(DistributionCenter dc1, DistributionCenter dc2) {
+	                return dc2.getFoodItems().compareTo(dc1.getFoodItems());
+	            }
+	        });
+			System.out.println("\n------------ DistributionCenters Available for request ------------\n");
+			for(DistributionCenter cd : centers) {
+				System.out.println("Distribution Center " + cd.getName() + " disposing of " + cd.getFoodItems() + "  food items");
+			}
+		case "cloth":
+			Collections.sort(centers, new Comparator<DistributionCenter>() {
+	            @Override
+	            public int compare(DistributionCenter dc1, DistributionCenter dc2) {
+	                return dc2.getClothItems().compareTo(dc1.getClothItems());
+	            }
+	        });
+			System.out.println("\n------------ DistributionCenters Available for request ------------\n");
+			for(DistributionCenter cd : centers) {
+				System.out.println("Distribution Center " + cd.getName() + " disposing of " + cd.getClothItems() + "  cloth items");
+			}
+		case "hygiene":
+			Collections.sort(centers, new Comparator<DistributionCenter>() {
+	            @Override
+	            public int compare(DistributionCenter dc1, DistributionCenter dc2) {
+	                return dc2.getHygieneItems().compareTo(dc1.getHygieneItems());
+	            }
+	        });
+			System.out.println("\n------------ DistributionCenters Available for request ------------\n");
+			for(DistributionCenter cd : centers) {
+				System.out.println("Distribution Center " + cd.getName() + " disposing of " + cd.getHygieneItems() + "  hygiene items");
+			}
+		}
+		
+		
+		System.out.println("Enter Center ID for requesting the order");
 		Integer centerId = scanner.nextInt();
 		
 		DistributionCenter center = distributionCenterService.findById(centerId, em);

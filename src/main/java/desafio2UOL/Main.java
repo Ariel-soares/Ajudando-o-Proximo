@@ -30,10 +30,15 @@ public class Main {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("desafio-context");
 		EntityManager em = emf.createEntityManager();
 
-		DistributionCenter cd = new DistributionCenter(null, "cd1", "rua 1", "campinas", "RS", "25642");
+		DistributionCenter cd = new DistributionCenter(null, "centro 1", "rua 1", "campinas", "RS", "25642");
+		DistributionCenter cd2 = new DistributionCenter(null, "centro 2", "rua 1", "campinas", "RS", "25642");
 
 		em.getTransaction().begin();
 		em.persist(cd);
+		em.getTransaction().commit();
+		
+		em.getTransaction().begin();
+		em.persist(cd2);
 		em.getTransaction().commit();
 		
 		Shelter shelter = new Shelter();

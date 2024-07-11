@@ -183,7 +183,6 @@ public class DonationsMenus {
 			}
 
 			for (Donation d : donations) {
-
 				addDonation(d, em, distributionCenterService, donationService, itemService);
 			}
 
@@ -215,10 +214,20 @@ public class DonationsMenus {
 			distributionCenter.getItems().put(i.storageCode(), donation.getQuantity());
 		}
 		distributionCenter.getDonations().add(donation);
+		
+		String[] values = donation.getItem().storageCode().split("/");
+		switch(values[0].toLowerCase()) {
+		case "food":
+			distributionCenter.setFoodItems(distributionCenter.getFoodItems() + donation.getQuantity());
+		case "cloth":
+			distributionCenter.setClothItems(distributionCenter.getClothItems() + donation.getQuantity());
+		case "hygiene": 
+			distributionCenter.setHygieneItems(distributionCenter.getHygieneItems() + donation.getQuantity());
+		}
 
 		distributionCenterService.updateDistributionCenter(distributionCenter, donation.getDistributionCenter().getId(),
 				em);
-
+		
 		System.out.println("Donations added from CSV successfully.\n");
 	}
 

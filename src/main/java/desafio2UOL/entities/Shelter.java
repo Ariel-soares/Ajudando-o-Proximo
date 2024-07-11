@@ -1,16 +1,18 @@
 package desafio2UOL.entities;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Objects;
 
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.MapKeyJoinColumn;
 import jakarta.persistence.Table;
 
 @Entity
@@ -29,8 +31,12 @@ public class Shelter {
 	private Integer capacity;
 	private Integer occupancy;
 
-	@OneToMany(fetch = FetchType.EAGER)
-	private List<Item> itens = new ArrayList<>();
+	@ElementCollection
+	@CollectionTable(name = "shelter_items", joinColumns = {
+			@JoinColumn(name = "shelter_id", referencedColumnName = "id") })
+	@Column(name = "quantity")
+	@MapKeyJoinColumn(name = "item")
+	private Map<String, Integer> items = new LinkedHashMap<>();
 	
 	public Shelter() {}
 
@@ -110,8 +116,9 @@ public class Shelter {
 		this.occupancy = occupancy;
 	}
 	
-	public List<Item> getItens() {
-		return itens;
+
+	public Map<String, Integer> getItems() {
+		return items;
 	}
 
 	@Override

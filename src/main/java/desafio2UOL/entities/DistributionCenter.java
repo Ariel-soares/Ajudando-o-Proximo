@@ -31,10 +31,9 @@ public class DistributionCenter {
 	private String city;
 	private String state;
 	private String cep;
-	private int clothItems;
-	private int foodItems;
-	private int hygieneItems;
-	
+	private Integer clothItems;
+	private Integer foodItems;
+	private Integer hygieneItems;
 
 	@OneToMany(mappedBy = "distributionCenter", fetch = FetchType.EAGER)
 	private List<Donation> donations = new ArrayList<>();
@@ -123,29 +122,28 @@ public class DistributionCenter {
 	public List<Donation> getDonations() {
 		return donations;
 	}
-	
 
-	public int getClothItems() {
+	public Integer getClothItems() {
 		return clothItems;
 	}
 
-	public void setClothItems(int clothItems) {
+	public void setClothItems(Integer clothItems) {
 		this.clothItems = clothItems;
 	}
 
-	public int getFoodItems() {
+	public Integer getFoodItems() {
 		return foodItems;
 	}
 
-	public void setFoodItems(int foodItems) {
+	public void setFoodItems(Integer foodItems) {
 		this.foodItems = foodItems;
 	}
 
-	public int getHygieneItems() {
+	public Integer getHygieneItems() {
 		return hygieneItems;
 	}
 
-	public void setHygieneItems(int hygieneItems) {
+	public void setHygieneItems(Integer hygieneItems) {
 		this.hygieneItems = hygieneItems;
 	}
 
@@ -168,8 +166,9 @@ public class DistributionCenter {
 
 	@Override
 	public String toString() {
-		return "DistributionCenter [id=" + id + ", name=" + name + ", address=" + address + ", city=" + city
-				+ ", state=" + state + ", cep=" + cep + "]";
+		return "DistributionCenter " + name + ", located at " + address + ", in the city " + city + " in the state of "
+				+ state + " with CEP " + cep + "\n Number of cloth items available: " + clothItems
+				+ "\n Number of food items available: " + foodItems + "\n Number of hygiene items available: " + hygieneItems;
 	}
 
 }
