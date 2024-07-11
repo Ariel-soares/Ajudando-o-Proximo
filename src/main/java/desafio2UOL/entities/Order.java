@@ -90,4 +90,12 @@ public class Order {
 		Order other = (Order) obj;
 		return id == other.id;
 	}
+
+	@Override
+	public String toString() {
+		return "Order [id=" + id + ", quantity=" + quantity + ", time=" + time + ", requester=" + requester.getId() + ", item="
+				+ item.getId() + "]";
+	}
+	
+	
 }

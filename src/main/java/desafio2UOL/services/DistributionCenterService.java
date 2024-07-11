@@ -52,7 +52,7 @@ public class DistributionCenterService {
 		old.setId(updated.getId());
 		old.getItems().putAll(updated.getItems());
 		//old.getOrders().clear();
-		old.getOrders().addAll(updated.getOrders());
+		//old.getOrders().addAll(updated.getOrders());
 		System.out.println("updated orders list" + updated.getOrders() + "\n");
 		System.out.println("old orders list" + old.getOrders() + "\n");
 		
