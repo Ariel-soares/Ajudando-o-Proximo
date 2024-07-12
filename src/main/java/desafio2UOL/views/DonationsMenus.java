@@ -235,10 +235,8 @@ public class DonationsMenus {
 		
 		if(values[0].toLowerCase().equals("food")) {
 			distributionCenter.setFoodItems(distributionCenter.getFoodItems() + donation.getQuantity());
-			System.out.println("aqui");
 		}else if(values[0].toLowerCase().equals("cloth")) {
 			distributionCenter.setClothItems(distributionCenter.getClothItems() + donation.getQuantity());
-			System.out.println("aqui 2");
 		}else if(values[0].toLowerCase().equals("hygiene")) {
 			distributionCenter.setHygieneItems(distributionCenter.getHygieneItems() + donation.getQuantity());
 			System.out.println("aqui 3");
