@@ -50,6 +50,7 @@ public class DistributionCenterService {
 		old.setState(updated.getState());
 		old.setId(updated.getId());
 		old.getItems().putAll(updated.getItems());
+		//old.setFoodItems(updated.getFoodItems());
 	}
 
 	public void findOne(Integer id, EntityManager em) {

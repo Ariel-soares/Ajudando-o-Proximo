@@ -21,10 +21,7 @@ public class Donation {
 	private Integer id;
 	private LocalDateTime time;
 	private Integer quantity;
-/*
-	@OneToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "donation_items", joinColumns = @JoinColumn(name = "Donation_id"))
-	private List<Item> itens = new ArrayList<>();*/
+	private String observation;
 	
 	@OneToOne
 	private Item item;
@@ -81,6 +78,14 @@ public class Donation {
 
 	public void setQuantity(Integer quantity) {
 		this.quantity = quantity;
+	}
+
+	public String getObservation() {
+		return observation;
+	}
+
+	public void setObservation(String observation) {
+		this.observation = observation;
 	}
 
 	@Override

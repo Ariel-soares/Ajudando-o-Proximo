@@ -194,29 +194,60 @@ public class DonationsMenus {
 	private static void addDonation(Donation donation, EntityManager em,
 			DistributionCenterService distributionCenterService, DonationService donationService,
 			ItemService itemService) {
-		
+
 		DistributionCenter distributionCenter = distributionCenterService
 				.findById(donation.getDistributionCenter().getId(), em);
 		if (distributionCenter == null) {
-			System.out.println("Distribution Center not found: " + donation.getDistributionCenter().getId());
+			System.out.println("Distribution Center not found: \n" + donation.getDistributionCenter().getId());
 			return;
 		}
-		
+
 		String[] values = donation.getItem().storageCode().split("/");
-		
-		if(values[0].toLowerCase().equals("food") && distributionCenter.getFoodItems() < 1000) {
-			if(distributionCenter.getFoodItems() + donation.getQuantity() > 1000) {
-				System.out.println("This distributionCenter can receive only " + (1000 - distributionCenter.getFoodItems()));
+		Integer amount = donation.getQuantity();
+
+		if (values[0].toLowerCase().equals("food") && distributionCenter.getFoodItems() >= 1000
+				|| values[0].toLowerCase().equals("cloth") && distributionCenter.getClothItems() >= 1000
+				|| values[0].toLowerCase().equals("cloth") && distributionCenter.getClothItems() >= 1000) {
+			System.out.println("The maximum possible for this type of item has been reached, try to make a donation with items of other types!");
+			return;
+		}
+
+		if (values[0].toLowerCase().equals("food")) {
+			if (distributionCenter.getFoodItems() + donation.getQuantity() > 1000) {
+				System.out.println("This distributionCenter can receive only "
+						+ (1000 - distributionCenter.getFoodItems())
+						+ " units from this type of item, we will be accepting the possible amount, and the rest will be given back");
+				donation.setObservation(
+						"Donation exceeds distribution center total capacity for this kind of item, we will be accepting "
+								+ (1000 - distributionCenter.getFoodItems()) + " units from the donated amount of "
+								+ amount + " units");
+				amount = 1000 - distributionCenter.getFoodItems();
 			}
-		}else if(values[0].toLowerCase().equals("cloth") && distributionCenter.getClothItems() < 1000) {
-			if(distributionCenter.getClothItems() + donation.getQuantity() > 1000) {
-				System.out.println("This distributionCenter can receive only " + (1000 - distributionCenter.getClothItems()));
+		} else if (values[0].toLowerCase().equals("cloth")) {
+			if (distributionCenter.getClothItems() + donation.getQuantity() > 1000) {
+				System.out.println("This distributionCenter can receive only "
+						+ (1000 - distributionCenter.getClothItems())
+						+ " units from this type of item, we will be accepting the possible amount, and the rest will be given back");
+				donation.setObservation(
+						"Donation exceeds distribution center total capacity for this kind of item, we will be accepting "
+								+ (1000 - distributionCenter.getClothItems()) + " units from the previous amount of "
+								+ donation.getQuantity() + " units");
+				amount = 1000 - distributionCenter.getFoodItems();
 			}
-		}else if(values[0].toLowerCase().equals("hygiene") && distributionCenter.getHygieneItems() < 1000) {
-			if(distributionCenter.getHygieneItems() + donation.getQuantity() > 1000) {
-				System.out.println("This distributionCenter can receive only " + (1000 - distributionCenter.getHygieneItems()));
+		} else if (values[0].toLowerCase().equals("hygiene") && distributionCenter.getHygieneItems() < 1000) {
+			if (distributionCenter.getHygieneItems() + donation.getQuantity() > 1000) {
+				System.out.println("This distributionCenter can receive only "
+						+ (1000 - distributionCenter.getHygieneItems())
+						+ " units from this type of item, we will be accepting the possible amount, and the rest will be given back");
+				donation.setObservation(
+						"Donation exceeds distribution center total capacity for this kind of item, we will be accepting "
+								+ (1000 - distributionCenter.getClothItems()) + " units from the previous amount of "
+								+ donation.getQuantity() + " units");
+				amount = 1000 - distributionCenter.getFoodItems();
 			}
 		}
+
+		System.out.println("updated amount" + amount);
 
 		itemService.addItem(donation.getItem(), em);
 		donationService.addDonation(donation, em);
@@ -225,26 +256,23 @@ public class DonationsMenus {
 
 		if (distributionCenter.getItems().containsKey(i.storageCode())) {
 			Integer quantitysoFar = distributionCenter.getItems().get(i.storageCode());
-			distributionCenter.getItems().put(i.storageCode(), quantitysoFar + donation.getQuantity());
+			distributionCenter.getItems().put(i.storageCode(), quantitysoFar + amount);
 		} else {
-			distributionCenter.getItems().put(i.storageCode(), donation.getQuantity());
+			distributionCenter.getItems().put(i.storageCode(), amount);
 		}
 		distributionCenter.getDonations().add(donation);
-		
-		
-		
-		if(values[0].toLowerCase().equals("food")) {
-			distributionCenter.setFoodItems(distributionCenter.getFoodItems() + donation.getQuantity());
-		}else if(values[0].toLowerCase().equals("cloth")) {
-			distributionCenter.setClothItems(distributionCenter.getClothItems() + donation.getQuantity());
-		}else if(values[0].toLowerCase().equals("hygiene")) {
-			distributionCenter.setHygieneItems(distributionCenter.getHygieneItems() + donation.getQuantity());
-			System.out.println("aqui 3");
+
+		if (values[0].toLowerCase().equals("food")) {
+			distributionCenter.setFoodItems(distributionCenter.getFoodItems() + amount);
+		} else if (values[0].toLowerCase().equals("cloth")) {
+			distributionCenter.setClothItems(distributionCenter.getClothItems() + amount);
+		} else if (values[0].toLowerCase().equals("hygiene")) {
+			distributionCenter.setHygieneItems(distributionCenter.getHygieneItems() + amount);
 		}
-		
+
 		distributionCenterService.updateDistributionCenter(distributionCenter, donation.getDistributionCenter().getId(),
 				em);
-		
+
 		System.out.println("Donations added from CSV successfully.\n");
 	}
 
