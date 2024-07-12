@@ -8,10 +8,10 @@ import desafio2UOL.services.DistributionCenterService;
 import jakarta.persistence.EntityManager;
 
 public class DistributionCenterMenu {
-	
+
 	public static void showDistributionCenterMenu(Scanner scanner, EntityManager em) {
 		DistributionCenterService service = new DistributionCenterService();
-		
+
 		while (true) {
 			System.out.println("\nDistribution Center Menu:\n");
 			System.out.println("1. Add Distribution Center");
@@ -45,16 +45,16 @@ public class DistributionCenterMenu {
 			default:
 				System.out.println("Invalid option");
 			}
-		}	
+		}
 	}
-	
+
 	private static void listDistributionCenters(DistributionCenterService distributionCenterService, EntityManager em) {
 		List<DistributionCenter> distributionCenters = distributionCenterService.getAllDistributionCenters(em);
-		for(DistributionCenter cd : distributionCenters) {
+		for (DistributionCenter cd : distributionCenters) {
 			System.out.println(cd);
 		}
 	}
-	
+
 	private static void addDistributionCenter(Scanner scanner, DistributionCenterService service, EntityManager em) {
 		System.out.print("Enter name: ");
 		String name = scanner.nextLine();
@@ -66,9 +66,9 @@ public class DistributionCenterMenu {
 		String state = scanner.nextLine();
 		System.out.print("Enter CEP: ");
 		String cep = scanner.nextLine();
-		
+
 		service.addDistributionCenter(new DistributionCenter(null, name, address, city, state, cep), em);
-		
+
 		System.out.println("\nDistributionCenter added succesfully\n");
 	}
 
@@ -78,14 +78,15 @@ public class DistributionCenterMenu {
 		service.deleteDistributionCenter(id, em);
 		System.out.println("Deletion Complete");
 	}
-	
-	private static void showDistributionCenterUpdateMenu(Scanner scanner, DistributionCenterService service, EntityManager em) {
+
+	private static void showDistributionCenterUpdateMenu(Scanner scanner, DistributionCenterService service,
+			EntityManager em) {
 		System.out.print("\nEnter Distribution Center ID to update:\n");
 		int id = scanner.nextInt();
 		scanner.nextLine();
-		
+
 		DistributionCenter center = service.findById(id, em);
-		
+
 		while (true) {
 			System.out.println("Updating DistributionCenter: " + center.getName());
 			System.out.println("1. Update Name");
@@ -144,28 +145,46 @@ public class DistributionCenterMenu {
 				System.out.println("\nInvalid option\n");
 			}
 		}
-		
-		
-		
+
 	}
 
 	private static void findDistributionCenter(Scanner scanner, DistributionCenterService service, EntityManager em) {
 		List<DistributionCenter> centers = service.getAllDistributionCenters(em);
 		System.out.println("\n-------------- Distribution Centers available -----------------\n");
-		for(DistributionCenter center : centers) {
+		for (DistributionCenter center : centers) {
 			System.out.println(center);
 		}
 		System.out.println("Enter desired DistributionCenter Id:\n");
 		Integer id = scanner.nextInt();
-		
+
 		DistributionCenter center = service.findById(id, em);
-		
-		if(center != null) {
+
+		if (center != null) {
 			System.out.println(center);
 			System.out.println("\nItems on distribution center " + center.getName() + "\n");
 			System.out.println(center.getItems());
-			
-		}else
+
+		} else {
 			System.err.println("Distribution Center not found");
+			return;
+		}
+		
+		if(center.getOrders().isEmpty()) {
+			return;
+		}
+
+		System.out.println("\nDo you want to attend the request orders from the shelters?\n");
+		char answer = scanner.nextLine().toUpperCase().charAt(0);
+
+		switch (answer) {
+		case 'S':
+			System.out.println(center.getOrders());
+		case 'N':
+			System.out.println("Returning to main menu\n");
+			return;
+		}
+		
+		System.out.println("Enter order id for attending");
+
 	}
 }

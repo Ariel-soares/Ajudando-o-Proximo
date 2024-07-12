@@ -25,11 +25,14 @@ public class Shelter {
 	private String name;
 	private String address;
 	private String responsible;
-	@Column(name = "phoneNumber")
 	private String phoneNumber;
 	private String email;
 	private Integer capacity;
 	private Integer occupancy;
+
+	private Integer clothItems;
+	private Integer foodItems;
+	private Integer hygieneItems;
 
 	@ElementCollection
 	@CollectionTable(name = "shelter_items", joinColumns = {
@@ -37,8 +40,9 @@ public class Shelter {
 	@Column(name = "quantity")
 	@MapKeyJoinColumn(name = "item")
 	private Map<String, Integer> items = new LinkedHashMap<>();
-	
-	public Shelter() {}
+
+	public Shelter() {
+	}
 
 	public Shelter(Integer id, String name, String address, String responsible, String phoneNumber, String email,
 			Integer capacity, Integer occupancy) {
@@ -115,10 +119,33 @@ public class Shelter {
 	public void setOccupancy(Integer occupancy) {
 		this.occupancy = occupancy;
 	}
-	
 
 	public Map<String, Integer> getItems() {
 		return items;
+	}
+
+	public Integer getClothItems() {
+		return clothItems;
+	}
+
+	public void setClothItems(Integer clothItems) {
+		this.clothItems = clothItems;
+	}
+
+	public Integer getFoodItems() {
+		return foodItems;
+	}
+
+	public void setFoodItems(Integer foodItems) {
+		this.foodItems = foodItems;
+	}
+
+	public Integer getHygieneItems() {
+		return hygieneItems;
+	}
+
+	public void setHygieneItems(Integer hygieneItems) {
+		this.hygieneItems = hygieneItems;
 	}
 
 	@Override
@@ -140,9 +167,8 @@ public class Shelter {
 
 	@Override
 	public String toString() {
-		return "Shelter [id=" + id + ", name=" + name + ", address=" + address + ", responsible=" + responsible
-				+ ", phoneNumber=" + phoneNumber + ", email=" + email + ", capacity=" + capacity + ", occupancy="
-				+ occupancy + "]";
+		return "Shelter " + name + ", addressadressed in: " + address + ", phoneNumber: " + phoneNumber + ", email="
+				+ email + ", capacity=" + capacity + ", occupancy=" + occupancy + "]" + ", responsible=" + responsible;
 	}
 
 }
