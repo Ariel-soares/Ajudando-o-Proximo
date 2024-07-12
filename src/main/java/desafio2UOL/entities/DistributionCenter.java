@@ -31,6 +31,7 @@ public class DistributionCenter {
 	private String city;
 	private String state;
 	private String cep;
+	
 	private Integer clothItems;
 	private Integer foodItems;
 	private Integer hygieneItems;

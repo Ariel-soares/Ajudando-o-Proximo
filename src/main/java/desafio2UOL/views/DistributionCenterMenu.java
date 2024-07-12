@@ -150,7 +150,11 @@ public class DistributionCenterMenu {
 	}
 
 	private static void findDistributionCenter(Scanner scanner, DistributionCenterService service, EntityManager em) {
+		List<DistributionCenter> centers = service.getAllDistributionCenters(em);
 		System.out.println("\n-------------- Distribution Centers available -----------------\n");
+		for(DistributionCenter center : centers) {
+			System.out.println(center);
+		}
 		System.out.println("Enter desired DistributionCenter Id:\n");
 		Integer id = scanner.nextInt();
 		
@@ -158,7 +162,7 @@ public class DistributionCenterMenu {
 		
 		if(center != null) {
 			System.out.println(center);
-			System.out.println("\nLista de itens do abrigo" + center.getName() + "\n");
+			System.out.println("\nItems on distribution center " + center.getName() + "\n");
 			System.out.println(center.getItems());
 			
 		}else

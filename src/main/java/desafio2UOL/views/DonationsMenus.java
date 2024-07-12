@@ -194,16 +194,32 @@ public class DonationsMenus {
 	private static void addDonation(Donation donation, EntityManager em,
 			DistributionCenterService distributionCenterService, DonationService donationService,
 			ItemService itemService) {
-
-		itemService.addItem(donation.getItem(), em);
-		donationService.addDonation(donation, em);
-
+		
 		DistributionCenter distributionCenter = distributionCenterService
 				.findById(donation.getDistributionCenter().getId(), em);
 		if (distributionCenter == null) {
 			System.out.println("Distribution Center not found: " + donation.getDistributionCenter().getId());
 			return;
 		}
+		
+		String[] values = donation.getItem().storageCode().split("/");
+		
+		if(values[0].toLowerCase().equals("food") && distributionCenter.getFoodItems() < 1000) {
+			if(distributionCenter.getFoodItems() + donation.getQuantity() > 1000) {
+				System.out.println("This distributionCenter can receive only " + (1000 - distributionCenter.getFoodItems()));
+			}
+		}else if(values[0].toLowerCase().equals("cloth") && distributionCenter.getClothItems() < 1000) {
+			if(distributionCenter.getClothItems() + donation.getQuantity() > 1000) {
+				System.out.println("This distributionCenter can receive only " + (1000 - distributionCenter.getClothItems()));
+			}
+		}else if(values[0].toLowerCase().equals("hygiene") && distributionCenter.getHygieneItems() < 1000) {
+			if(distributionCenter.getHygieneItems() + donation.getQuantity() > 1000) {
+				System.out.println("This distributionCenter can receive only " + (1000 - distributionCenter.getHygieneItems()));
+			}
+		}
+
+		itemService.addItem(donation.getItem(), em);
+		donationService.addDonation(donation, em);
 
 		Item i = donation.getItem();
 
@@ -215,7 +231,7 @@ public class DonationsMenus {
 		}
 		distributionCenter.getDonations().add(donation);
 		
-		String[] values = donation.getItem().storageCode().split("/");
+		
 		
 		if(values[0].toLowerCase().equals("food")) {
 			distributionCenter.setFoodItems(distributionCenter.getFoodItems() + donation.getQuantity());
@@ -227,19 +243,6 @@ public class DonationsMenus {
 			distributionCenter.setHygieneItems(distributionCenter.getHygieneItems() + donation.getQuantity());
 			System.out.println("aqui 3");
 		}
-		/*
-		switch(values[0].toLowerCase()) {
-		case "food":
-			distributionCenter.setFoodItems(distributionCenter.getFoodItems() + donation.getQuantity());
-			System.out.println("food + " + donation.getQuantity());
-		case "cloth":
-			distributionCenter.setClothItems(distributionCenter.getClothItems() + donation.getQuantity());
-			System.out.println("cloth + " + donation.getQuantity());
-		case "hygiene": 
-			distributionCenter.setHygieneItems(distributionCenter.getHygieneItems() + donation.getQuantity());
-			System.out.println("hygiene + " + donation.getQuantity());
-		}*/
-		
 		
 		distributionCenterService.updateDistributionCenter(distributionCenter, donation.getDistributionCenter().getId(),
 				em);
