@@ -40,7 +40,7 @@ https://www.linkedin.com/in/ariel-soares/
 
 # Agradecimentos
 
-Deixo aqui meus mais profundo obrigado aos orientadores:
+Deixo aqui meu mais profundo obrigado aos orientadores:
 
 - Franciele Ciostek
 - Diego Bonetti
