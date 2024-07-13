@@ -193,7 +193,7 @@ public class ShelterMenus {
 	
 	private static void createRequestOrder(Scanner scanner, EntityManager em, Order order, OrderService orderService, DistributionCenterService distributionCenterService) {
 		
-		System.out.print("Enter item type (1 - Clothes/2 - Hygiene/3 - Food/ 4 - End order request): ");
+		System.out.print("Enter item type (1 - Clothes/2 - Hygiene/3 - Food/ 4 - Back to menu): ");
 		Integer itemType = scanner.nextInt();
 		scanner.nextLine();
 		
@@ -219,9 +219,6 @@ public class ShelterMenus {
 				item.setItemType(ItemType.CLOTH);
 				order.setItem(item.storageCode());
 				addOrder(scanner, order, em, orderService, distributionCenterService);
-				
-				
-				//addDonation(donation, em, distributionCenterService, donationService, itemService);
 				break;
 			case 2:
 				item = new ClothItem(ItemName.valueOf(name.toUpperCase()), "cloth", 'F', size);
@@ -257,19 +254,7 @@ public class ShelterMenus {
 			addOrder(scanner, order, em, orderService, distributionCenterService);
 			break;
 		case 4:
-			/*if (order.getItem() == null) {
-				return;
-			}
-			if (distributionCenter != null) {
-				donation.setCenterId(distributionCenter);
-				addDonation(donation, em, distributionCenterService, donationService, itemService);
-				return;
-
-			} else
-				System.out.println("Distribution Center not found.");
 			return;
-		default:
-			System.out.println("Invalid option");*/
 		}
 	}
 	
@@ -325,8 +310,6 @@ public class ShelterMenus {
 		
 		orderService.addOrder(order, em);
 		System.out.println(order);
-		
-		//center.getOrders().clear();
 		
 		center.getOrders().add(order);
 		

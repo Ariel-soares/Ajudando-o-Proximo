@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Scanner;
 
 import desafio2UOL.entities.DistributionCenter;
+import desafio2UOL.entities.Order;
 import desafio2UOL.services.DistributionCenterService;
+import desafio2UOL.services.OrderService;
 import jakarta.persistence.EntityManager;
 
 public class DistributionCenterMenu {
@@ -32,7 +34,7 @@ public class DistributionCenterMenu {
 				listDistributionCenters(service, em);
 				break;
 			case 3:
-				findDistributionCenter(scanner, service, em);
+				attendOrderRequests(scanner, service, em);
 				break;
 			case 4:
 				showDistributionCenterUpdateMenu(scanner, service, em);
@@ -148,7 +150,8 @@ public class DistributionCenterMenu {
 
 	}
 
-	private static void findDistributionCenter(Scanner scanner, DistributionCenterService service, EntityManager em) {
+	private static void attendOrderRequests(Scanner scanner, DistributionCenterService service, EntityManager em) {
+		// OrderService orderService = new OrderService();
 		List<DistributionCenter> centers = service.getAllDistributionCenters(em);
 		System.out.println("\n-------------- Distribution Centers available -----------------\n");
 		for (DistributionCenter center : centers) {
@@ -156,6 +159,7 @@ public class DistributionCenterMenu {
 		}
 		System.out.println("Enter desired DistributionCenter Id:\n");
 		Integer id = scanner.nextInt();
+		scanner.nextLine();
 
 		DistributionCenter center = service.findById(id, em);
 
@@ -168,23 +172,64 @@ public class DistributionCenterMenu {
 			System.err.println("Distribution Center not found");
 			return;
 		}
-		
-		if(center.getOrders().isEmpty()) {
+
+		if (center.getOrders().isEmpty()) {
 			return;
 		}
 
-		System.out.println("\nDo you want to attend the request orders from the shelters?\n");
+		System.out.println("\nDo you want to attend the request orders from the shelters?\n   Y - YES / N - NOT \n");
 		char answer = scanner.nextLine().toUpperCase().charAt(0);
 
 		switch (answer) {
-		case 'S':
+		case 'Y':
 			System.out.println(center.getOrders());
 		case 'N':
 			System.out.println("Returning to main menu\n");
+			//return;
+		}
+
+		Order order = new Order();
+		System.out.println("Enter order id for attending\n");
+		int orderId = scanner.nextInt();
+		scanner.nextLine();
+
+		for (Order o : center.getOrders()) {
+			if (o.getId() == orderId) {
+				order = o;
+			}
+		}
+
+		if (order.getId() == null) {
+			System.err.println("Invalid id");
 			return;
 		}
-		
-		System.out.println("Enter order id for attending");
+
+		String[] values = order.getItemCode().split("/");
+
+		if (center.getItems().containsKey(order.getItemCode())) {
+			int value = center.getItems().get(order.getItemCode());
+			if (value < order.getQuantity()) {
+				System.out.println("This distribution Center does not have enough units of this item, maybe later with more donations incoming");
+				return;
+			}
+
+			if (values[0].toLowerCase() == "food") {
+				System.out.println("  This shelter asks for " + order.getQuantity() + " unit(s) of " + values[1]);
+			} else if (values[0].toLowerCase() == "cloth") {
+				System.out.println("  This shelter asks for " + order.getQuantity() + " unit(s) of " + values[1]
+						+ " of gender " + values[2] + " of size " + values[3]);
+			} else if (values[0].toLowerCase() == "hygiene") {
+				System.out.println("  This shelter asks for " + order.getQuantity() + " unit(s) of " + values[1]);
+			}
+
+			System.out.println("\nThis Distribution Center has " + value + " units of this item\nDo you want to accept or deny this request?");
+			
+			
+		} else {
+			System.out.println(
+					" This distribution Center does not have this item yet, maybe later with more donations incoming");
+			return;
+		}
 
 	}
 }

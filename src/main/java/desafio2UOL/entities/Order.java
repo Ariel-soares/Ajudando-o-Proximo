@@ -21,6 +21,7 @@ public class Order {
 	private int quantity;
 	private LocalDateTime time;
 	private String itemCode;
+	private String attendance;
 
 	@ManyToOne
 	private Shelter requester;
@@ -70,6 +71,14 @@ public class Order {
 
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
+	}
+
+	public String getAttendance() {
+		return attendance;
+	}
+
+	public void setAttendance(String attendance) {
+		this.attendance = attendance;
 	}
 
 	@Override
