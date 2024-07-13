@@ -1,9 +1,8 @@
 package desafio2UOL.views;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import desafio2UOL.entities.ClothItem;
 import desafio2UOL.entities.DistributionCenter;
@@ -28,7 +27,7 @@ public class ShelterMenus {
 			System.out.println("3. Add Shelter");
 			System.out.println("4. Delete Shelter");
 			System.out.println("5. Update Shelter");
-			System.out.println("6. Order items from shelter");
+			System.out.println("6. Order items from distribution centers");
 			System.out.println("7. Exit");
 			System.out.print("\nChoose an option: \n");
 			int option = scanner.nextInt();
@@ -264,6 +263,14 @@ public class ShelterMenus {
 		
 		String[] values = order.getItemCode().split("/");
 		
+		List<DistributionCenter> sortedCenters = centers.stream()
+	            .filter(dc -> dc.getItems().containsKey(order.getItemCode()))
+	            .sorted((dc1, dc2) -> dc2.getItems().get(order.getItemCode()).compareTo(dc1.getItems().get(order.getItemCode())))
+	            .collect(Collectors.toList());
+		
+		sortedCenters.forEach(dc -> System.out.println(dc.getName() + ": " + dc.getItems().get(order.getItemCode())));
+		
+		/*
 		switch(values[0].toLowerCase()) {
 		case "food":
 			Collections.sort(centers, new Comparator<DistributionCenter>() {
@@ -301,7 +308,7 @@ public class ShelterMenus {
 				System.out.println("Distribution Center " + cd.getName() + " disposing of " + cd.getHygieneItems() + "  hygiene items");
 			}
 			break;
-		}
+		}*/
 		
 		
 		System.out.println("Enter Center ID for requesting the order");

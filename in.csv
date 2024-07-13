@@ -1,3 +1,4 @@
 DistributionCenterID,ItemType,Quantity,Name,Description,AdditionalAttributes
 1,cloth,300,shirt,Cotton,M,M
 1,food,300,rice,1kg,2024-12-31
+2,cloth,600,shirt,Cotton,M,M
