@@ -1,7 +1,6 @@
 package desafio2UOL.entities;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Objects;
 
 import jakarta.persistence.Entity;

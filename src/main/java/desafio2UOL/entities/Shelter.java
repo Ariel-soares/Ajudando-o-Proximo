@@ -42,6 +42,9 @@ public class Shelter {
 	private Map<String, Integer> items = new LinkedHashMap<>();
 
 	public Shelter() {
+		this.clothItems = 0;
+		this.foodItems = 0;
+		this.hygieneItems = 0;
 	}
 
 	public Shelter(Integer id, String name, String address, String responsible, String phoneNumber, String email,
@@ -54,6 +57,9 @@ public class Shelter {
 		this.email = email;
 		this.capacity = capacity;
 		this.occupancy = occupancy;
+		this.clothItems = 0;
+		this.foodItems = 0;
+		this.hygieneItems = 0;
 	}
 
 	public Integer getId() {

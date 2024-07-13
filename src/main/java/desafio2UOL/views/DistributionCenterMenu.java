@@ -5,8 +5,10 @@ import java.util.Scanner;
 
 import desafio2UOL.entities.DistributionCenter;
 import desafio2UOL.entities.Order;
+import desafio2UOL.entities.Shelter;
 import desafio2UOL.services.DistributionCenterService;
 import desafio2UOL.services.OrderService;
+import desafio2UOL.services.ShelterService;
 import jakarta.persistence.EntityManager;
 
 public class DistributionCenterMenu {
@@ -152,7 +154,7 @@ public class DistributionCenterMenu {
 
 	private static void attendOrderRequests(Scanner scanner, DistributionCenterService service, EntityManager em) {
 		OrderService orderService = new OrderService();
-		
+
 		List<DistributionCenter> centers = service.getAllDistributionCenters(em);
 		System.out.println("\n-------------- Distribution Centers available -----------------\n");
 		for (DistributionCenter center : centers) {
@@ -232,39 +234,17 @@ public class DistributionCenterMenu {
 
 			switch (decision) {
 			case 1:
-				//attendRequestOrder(order);
-				//break;
-				
-				Integer quantitysoFar = center.getItems().get(order.getItemCode());
-				center.getItems().put(order.getItemCode(), (quantitysoFar - order.getQuantity()));
-				
-				if (values[0].toLowerCase().equals("food")) {
-					center.setFoodItems(center.getFoodItems() - order.getQuantity());
-					System.out.println("Food items amount decreased, actual amount: " + center.getFoodItems());
-				} else if (values[0].toLowerCase().equals("cloth")) {
-					center.setClothItems(center.getClothItems() - order.getQuantity());
-					System.out.println("Cloth items amount decreased, actual amount: " + center.getClothItems());
-				} else if (values[0].toLowerCase().equals("hygiene")) {
-					center.setHygieneItems(center.getHygieneItems() - order.getQuantity());
-					System.out.println("Hygiene items amount decreased, actual amount: " + center.getHygieneItems());
-				}
-				
-				service.updateDistributionCenter(center, center.getId(), em);
-				System.out.println("\nOrder request attended succesfully");
-				
-				order.setAttended(true);
-				orderService.updateOrder(order, orderId, em);
-				
+				attendRequestOrder(order, center, values[0].toLowerCase(), em, orderService, service);
 				break;
 			case 2:
-				
+
 				System.out.println("Enter the deny reason\n");
 				String reason = scanner.nextLine();
-				
+
 				order.setAttended(true);
 				order.setAttendance(reason);
 				orderService.updateOrder(order, orderId, em);
-				
+
 				break;
 			}
 
@@ -276,31 +256,50 @@ public class DistributionCenterMenu {
 
 	}
 
-	private static void attendRequestOrder(Order order, DistributionCenter center, String itemtype) {
-		/*Integer quantitysoFar = center.getItems().get(order.getItemCode());
-		center.getItems().put(order.getItemCode(), (quantitysoFar - order.getQuantity()));
+	private static void attendRequestOrder(Order order, DistributionCenter center, String itemType, EntityManager em, OrderService orderService, DistributionCenterService service) {
 		
-		if (itemtype.equals("food")) {
-			center.setFoodItems(center.getFoodItems() - order.getQuantity());
-			System.out.println("Food items amount decreased, actual amount: " + center.getFoodItems());
-		} else if (itemtype.equals("cloth")) {
-			center.setClothItems(center.getClothItems() - order.getQuantity());
-			System.out.println("Cloth items amount decreased, actual amount: " + center.getClothItems());
-		} else if (itemtype.equals("hygiene")) {
-			center.setHygieneItems(center.getHygieneItems() - order.getQuantity());
-			System.out.println("Hygiene items amount decreased, actual amount: " + center.getHygieneItems());
+		ShelterService shelterService = new ShelterService();
+		Shelter shelter = shelterService.findById(order.getRequester().getId(), em);
+		
+		if(shelter.getClothItems() == null) {
+			System.out.println("ESTÁ VAZIO");
 		}
 		
-		break;*/
+		Integer quantitysoFar = center.getItems().get(order.getItemCode());
+		center.getItems().put(order.getItemCode(), (quantitysoFar - order.getQuantity()));
+		
+		if (shelter.getItems().containsKey(order.getItemCode())) {
+			Integer quantityInShelter = shelter.getItems().get(order.getItemCode());
+			shelter.getItems().put(order.getItemCode(), quantityInShelter + order.getQuantity());
+		} else {
+			shelter.getItems().put(order.getItemCode(), order.getQuantity());
+		}
+		
+		
+
+		if (itemType.equals("food")) {
+			center.setFoodItems(center.getFoodItems() - order.getQuantity());
+			shelter.setFoodItems(shelter.getFoodItems() + order.getQuantity());
+			System.out.println("Food items amount decreased, actual amount: " + center.getFoodItems());
+		} else if (itemType.equals("cloth")) {
+			center.setClothItems(center.getClothItems() - order.getQuantity());
+			shelter.setClothItems(shelter.getClothItems() + order.getQuantity());
+			System.out.println("Cloth items amount decreased, actual amount: " + center.getClothItems());
+		} else if (itemType.equals("hygiene")) {
+			center.setHygieneItems(center.getHygieneItems() - order.getQuantity());
+			shelter.setHygieneItems(shelter.getHygieneItems() + order.getQuantity());
+			System.out.println("Hygiene items amount decreased, actual amount: " + center.getHygieneItems());
+		}
+
+		shelterService.updateShelter(shelter, shelter.getId(), em);
+		
+		service.updateDistributionCenter(center, center.getId(), em);
+		System.out.println("\nOrder request attended succesfully");
+		
+		order.setAttendance("Order attended, " + order.getQuantity() + " items sent to the requester");
+
+		order.setAttended(true);
+		orderService.updateOrder(order, order.getId(), em);
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }
