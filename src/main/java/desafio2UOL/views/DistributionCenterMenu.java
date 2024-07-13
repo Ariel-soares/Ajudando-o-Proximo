@@ -20,7 +20,7 @@ public class DistributionCenterMenu {
 			System.out.println("\nDistribution Center Menu:\n");
 			System.out.println("1. Add Distribution Center");
 			System.out.println("2. List Distribution Centers");
-			System.out.println("3. Find Distribution Center");
+			System.out.println("3. Manage distribution center request orders");
 			System.out.println("4. Update existing distribution Center");
 			System.out.println("5. Delete Distribution Center");
 			System.out.println("6. Back to Main Menu\n");

@@ -15,6 +15,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.MapKeyJoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -31,7 +33,7 @@ public class DistributionCenter {
 	private String city;
 	private String state;
 	private String cep;
-	
+
 	private Integer clothItems;
 	private Integer foodItems;
 	private Integer hygieneItems;
@@ -39,7 +41,8 @@ public class DistributionCenter {
 	@OneToMany(mappedBy = "distributionCenter", fetch = FetchType.EAGER)
 	private List<Donation> donations = new ArrayList<>();
 
-	@OneToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "distribution_center_orders", joinColumns = @JoinColumn(name = "distribution_center_id"), inverseJoinColumns = @JoinColumn(name = "order_id"))
 	private List<Order> orders = new ArrayList<>();
 
 	@ElementCollection
@@ -169,7 +172,8 @@ public class DistributionCenter {
 	public String toString() {
 		return "DistributionCenter " + name + ", located at " + address + ", in the city " + city + " in the state of "
 				+ state + " with CEP " + cep + "\n Number of cloth items available: " + clothItems
-				+ "\n Number of food items available: " + foodItems + "\n Number of hygiene items available: " + hygieneItems;
+				+ "\n Number of food items available: " + foodItems + "\n Number of hygiene items available: "
+				+ hygieneItems;
 	}
 
 }
