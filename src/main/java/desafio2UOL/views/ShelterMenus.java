@@ -276,6 +276,7 @@ public class ShelterMenus {
 			for(DistributionCenter cd : centers) {
 				System.out.println("Distribution Center " + cd.getName() + " disposing of " + cd.getFoodItems() + "  food items");
 			}
+			break;
 		case "cloth":
 			Collections.sort(centers, new Comparator<DistributionCenter>() {
 	            @Override
@@ -287,6 +288,7 @@ public class ShelterMenus {
 			for(DistributionCenter cd : centers) {
 				System.out.println("Distribution Center " + cd.getName() + " disposing of " + cd.getClothItems() + "  cloth items");
 			}
+			break;
 		case "hygiene":
 			Collections.sort(centers, new Comparator<DistributionCenter>() {
 	            @Override
@@ -298,6 +300,7 @@ public class ShelterMenus {
 			for(DistributionCenter cd : centers) {
 				System.out.println("Distribution Center " + cd.getName() + " disposing of " + cd.getHygieneItems() + "  hygiene items");
 			}
+			break;
 		}
 		
 		

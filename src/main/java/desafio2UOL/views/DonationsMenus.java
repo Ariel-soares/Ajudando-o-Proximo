@@ -205,9 +205,9 @@ public class DonationsMenus {
 		String[] values = donation.getItem().storageCode().split("/");
 		Integer amount = donation.getQuantity();
 
-		if (values[0].toLowerCase().equals("food") && distributionCenter.getFoodItems() >= 1000
-				|| values[0].toLowerCase().equals("cloth") && distributionCenter.getClothItems() >= 1000
-				|| values[0].toLowerCase().equals("cloth") && distributionCenter.getClothItems() >= 1000) {
+		if ((values[0].toLowerCase().equals("food") && distributionCenter.getFoodItems() >= 1000)
+				|| (values[0].toLowerCase().equals("cloth") && distributionCenter.getClothItems() >= 1000)
+				|| (values[0].toLowerCase().equals("hygiene") && distributionCenter.getHygieneItems() >= 1000)) {
 			System.out.println("The maximum possible for this type of item has been reached, try to make a donation with items of other types!");
 			return;
 		}

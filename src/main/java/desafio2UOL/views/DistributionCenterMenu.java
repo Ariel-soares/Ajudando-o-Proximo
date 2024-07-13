@@ -256,47 +256,92 @@ public class DistributionCenterMenu {
 
 	}
 
-	private static void attendRequestOrder(Order order, DistributionCenter center, String itemType, EntityManager em, OrderService orderService, DistributionCenterService service) {
-		
+	private static void attendRequestOrder(Order order, DistributionCenter center, String itemType, EntityManager em,
+			OrderService orderService, DistributionCenterService service) {
+
 		ShelterService shelterService = new ShelterService();
 		Shelter shelter = shelterService.findById(order.getRequester().getId(), em);
-		
-		if(shelter.getClothItems() == null) {
-			System.out.println("ESTÁ VAZIO");
+
+		// -------------------------- Conferindo se o abrigo têm espaço para esse item
+		// ---------------------------------
+
+		Integer amount = order.getQuantity();
+
+		if ((itemType.equals("food") && shelter.getFoodItems() >= 200)
+				|| (itemType.equals("cloth") && shelter.getClothItems() >= 200)
+				|| (itemType.equals("hygiene") && shelter.getHygieneItems() >= 200)) {
+			System.out.println(
+					"The maximum possible for this type of item has been reached on this shelter, try to attend this order later!");
+			return;
 		}
-		
-		Integer quantitysoFar = center.getItems().get(order.getItemCode());
-		center.getItems().put(order.getItemCode(), (quantitysoFar - order.getQuantity()));
-		
-		if (shelter.getItems().containsKey(order.getItemCode())) {
-			Integer quantityInShelter = shelter.getItems().get(order.getItemCode());
-			shelter.getItems().put(order.getItemCode(), quantityInShelter + order.getQuantity());
-		} else {
-			shelter.getItems().put(order.getItemCode(), order.getQuantity());
-		}
-		
-		
 
 		if (itemType.equals("food")) {
-			center.setFoodItems(center.getFoodItems() - order.getQuantity());
-			shelter.setFoodItems(shelter.getFoodItems() + order.getQuantity());
+			if (shelter.getFoodItems() + order.getQuantity() > 200) {
+				System.out.println("This shelter can receive only " + (200 - shelter.getFoodItems())
+						+ " units from this type of item.");
+				order.setAttendance(
+						"Order exceeds shelter's actual total capacity for this kind of item, we will be adding "
+								+ (200 - shelter.getFoodItems()) + " units from the previous requested amount of "
+								+ amount + " requested units");
+				amount = 200 - shelter.getFoodItems();
+			}
+		} else if (itemType.equals("cloth")) {
+			if (shelter.getClothItems() + order.getQuantity() > 200) {
+				System.out.println("This shelter can receive only " + (200 - shelter.getClothItems())
+						+ " units from this type of item.");
+				order.setAttendance(
+						"Order exceeds shelter's actual total capacity for this kind of item, we will be adding "
+								+ (200 - shelter.getClothItems()) + " units from the previous requested amount of "
+								+ amount + " requested units");
+				amount = 200 - shelter.getFoodItems();
+			}
+		} else if (itemType.equals("hygiene")) {
+			if (shelter.getHygieneItems() + order.getQuantity() > 200) {
+				System.out.println("This shelter can receive only " + (200 - shelter.getHygieneItems())
+						+ " units from this type of item.");
+				order.setAttendance(
+						"Order exceeds shelter's actual total capacity for this kind of item, we will be adding "
+								+ (200 - shelter.getHygieneItems()) + " units from the previous requested amount of "
+								+ amount + " requested units");
+				amount = 200 - shelter.getHygieneItems();
+			}
+		}
+
+		// -------------------------- Conferindo se o abrigo têm espaço para esse item
+		// ---------------------------------
+
+		Integer quantitysoFar = center.getItems().get(order.getItemCode());
+		center.getItems().put(order.getItemCode(), (quantitysoFar - amount));
+
+		if (shelter.getItems().containsKey(order.getItemCode())) {
+			Integer quantityInShelter = shelter.getItems().get(order.getItemCode());
+			shelter.getItems().put(order.getItemCode(), quantityInShelter + amount);
+		} else {
+			shelter.getItems().put(order.getItemCode(), amount);
+		}
+		
+		System.out.println("AMOUNT" + amount);
+
+		if (itemType.equals("food")) {
+			center.setFoodItems(center.getFoodItems() - amount);
+			shelter.setFoodItems(shelter.getFoodItems() + amount);
 			System.out.println("Food items amount decreased, actual amount: " + center.getFoodItems());
 		} else if (itemType.equals("cloth")) {
-			center.setClothItems(center.getClothItems() - order.getQuantity());
-			shelter.setClothItems(shelter.getClothItems() + order.getQuantity());
+			center.setClothItems(center.getClothItems() - amount);
+			shelter.setClothItems(shelter.getClothItems() + amount);
 			System.out.println("Cloth items amount decreased, actual amount: " + center.getClothItems());
 		} else if (itemType.equals("hygiene")) {
-			center.setHygieneItems(center.getHygieneItems() - order.getQuantity());
-			shelter.setHygieneItems(shelter.getHygieneItems() + order.getQuantity());
+			center.setHygieneItems(center.getHygieneItems() - amount);
+			shelter.setHygieneItems(shelter.getHygieneItems() + amount);
 			System.out.println("Hygiene items amount decreased, actual amount: " + center.getHygieneItems());
 		}
 
 		shelterService.updateShelter(shelter, shelter.getId(), em);
-		
+
 		service.updateDistributionCenter(center, center.getId(), em);
 		System.out.println("\nOrder request attended succesfully");
-		
-		order.setAttendance("Order attended, " + order.getQuantity() + " items sent to the requester");
+
+		order.setAttendance("Order attended, " + amount + " items sent to the requester");
 
 		order.setAttended(true);
 		orderService.updateOrder(order, order.getId(), em);
