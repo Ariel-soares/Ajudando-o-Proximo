@@ -41,11 +41,11 @@ public class Main {
 		em.persist(cd2);
 		em.getTransaction().commit();
 		
-		Shelter shelter = new Shelter();
+		/*Shelter shelter = new Shelter();
 		
 		em.getTransaction().begin();
 		em.persist(shelter);
-		em.getTransaction().commit();
+		em.getTransaction().commit();*/
 
 		showMenu(em);
 

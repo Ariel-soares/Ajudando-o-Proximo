@@ -54,7 +54,7 @@ public class ShelterService {
 		Shelter shelter = findById(id, em);
 		if (shelter != null) {
 			System.out.println(shelter);
-			System.out.println("\n--------------- SHELTER STORAGE LIST SORTED BY ( STORAGE CODE / QUANTITY ) -------------\n");
+			System.out.println("\n--------------- SHELTER STORAGE LIST SORTED BY ( STORAGE CODE -> QUANTITY ) -------------\n");
 			System.out.println(shelter.getItems());
 		} else {
 

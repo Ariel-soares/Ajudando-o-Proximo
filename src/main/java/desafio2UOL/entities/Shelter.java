@@ -47,9 +47,9 @@ public class Shelter {
 		this.hygieneItems = 0;
 	}
 
-	public Shelter(Integer id, String name, String address, String responsible, String phoneNumber, String email,
+	public Shelter( String name, String address, String responsible, String phoneNumber, String email,
 			Integer capacity, Integer occupancy) {
-		this.id = id;
+		this.id = null;
 		this.name = name;
 		this.address = address;
 		this.responsible = responsible;
@@ -173,8 +173,8 @@ public class Shelter {
 
 	@Override
 	public String toString() {
-		return "Shelter " + name + ", addressadressed in: " + address + ", phoneNumber: " + phoneNumber + ", email="
-				+ email + ", capacity=" + capacity + ", occupancy=" + occupancy + "]" + ", responsible=" + responsible;
+		return "Shelter " + name + ", adressed in: " + address + ", phoneNumber: " + phoneNumber + ", email= "
+				+ email + ", capacity=" + capacity + ", occupancy rate: " + (capacity/occupancy) + ", responsible=" + responsible;
 	}
 
 }
