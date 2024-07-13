@@ -151,11 +151,12 @@ public class DistributionCenterMenu {
 	}
 
 	private static void attendOrderRequests(Scanner scanner, DistributionCenterService service, EntityManager em) {
-		// OrderService orderService = new OrderService();
+		OrderService orderService = new OrderService();
+		
 		List<DistributionCenter> centers = service.getAllDistributionCenters(em);
 		System.out.println("\n-------------- Distribution Centers available -----------------\n");
 		for (DistributionCenter center : centers) {
-			System.out.println(center);
+			System.out.println("\n" + center);
 		}
 		System.out.println("Enter desired DistributionCenter Id:\n");
 		Integer id = scanner.nextInt();
@@ -183,13 +184,14 @@ public class DistributionCenterMenu {
 		switch (answer) {
 		case 'Y':
 			System.out.println(center.getOrders());
+			break;
 		case 'N':
 			System.out.println("Returning to main menu\n");
-			//return;
+			return;
 		}
 
 		Order order = new Order();
-		System.out.println("Enter order id for attending\n");
+		System.out.println("\nEnter order id for attending\n");
 		int orderId = scanner.nextInt();
 		scanner.nextLine();
 
@@ -209,22 +211,63 @@ public class DistributionCenterMenu {
 		if (center.getItems().containsKey(order.getItemCode())) {
 			int value = center.getItems().get(order.getItemCode());
 			if (value < order.getQuantity()) {
-				System.out.println("This distribution Center does not have enough units of this item, maybe later with more donations incoming");
+				System.out.println(
+						"This distribution Center does not have enough units of this item, maybe later with more donations incoming");
 				return;
 			}
 
-			if (values[0].toLowerCase() == "food") {
+			if (values[0].toLowerCase().equals("food")) {
 				System.out.println("  This shelter asks for " + order.getQuantity() + " unit(s) of " + values[1]);
-			} else if (values[0].toLowerCase() == "cloth") {
+			} else if (values[0].toLowerCase().equals("cloth")) {
 				System.out.println("  This shelter asks for " + order.getQuantity() + " unit(s) of " + values[1]
 						+ " of gender " + values[2] + " of size " + values[3]);
-			} else if (values[0].toLowerCase() == "hygiene") {
+			} else if (values[0].toLowerCase().equals("hygiene")) {
 				System.out.println("  This shelter asks for " + order.getQuantity() + " unit(s) of " + values[1]);
 			}
 
-			System.out.println("\nThis Distribution Center has " + value + " units of this item\nDo you want to accept or deny this request?");
-			
-			
+			System.out.println("\nThis Distribution Center has " + value
+					+ " units of this item\nDo you want to accept or deny this request? 1 - Accept/ 2 - Deny\n");
+			int decision = scanner.nextInt();
+			scanner.nextLine();
+
+			switch (decision) {
+			case 1:
+				//attendRequestOrder(order);
+				//break;
+				
+				Integer quantitysoFar = center.getItems().get(order.getItemCode());
+				center.getItems().put(order.getItemCode(), (quantitysoFar - order.getQuantity()));
+				
+				if (values[0].toLowerCase().equals("food")) {
+					center.setFoodItems(center.getFoodItems() - order.getQuantity());
+					System.out.println("Food items amount decreased, actual amount: " + center.getFoodItems());
+				} else if (values[0].toLowerCase().equals("cloth")) {
+					center.setClothItems(center.getClothItems() - order.getQuantity());
+					System.out.println("Cloth items amount decreased, actual amount: " + center.getClothItems());
+				} else if (values[0].toLowerCase().equals("hygiene")) {
+					center.setHygieneItems(center.getHygieneItems() - order.getQuantity());
+					System.out.println("Hygiene items amount decreased, actual amount: " + center.getHygieneItems());
+				}
+				
+				service.updateDistributionCenter(center, center.getId(), em);
+				System.out.println("\nOrder request attended succesfully");
+				
+				order.setAttended(true);
+				orderService.updateOrder(order, orderId, em);
+				
+				break;
+			case 2:
+				
+				System.out.println("Enter the deny reason\n");
+				String reason = scanner.nextLine();
+				
+				order.setAttended(true);
+				order.setAttendance(reason);
+				orderService.updateOrder(order, orderId, em);
+				
+				break;
+			}
+
 		} else {
 			System.out.println(
 					" This distribution Center does not have this item yet, maybe later with more donations incoming");
@@ -232,4 +275,32 @@ public class DistributionCenterMenu {
 		}
 
 	}
+
+	private static void attendRequestOrder(Order order, DistributionCenter center, String itemtype) {
+		/*Integer quantitysoFar = center.getItems().get(order.getItemCode());
+		center.getItems().put(order.getItemCode(), (quantitysoFar - order.getQuantity()));
+		
+		if (itemtype.equals("food")) {
+			center.setFoodItems(center.getFoodItems() - order.getQuantity());
+			System.out.println("Food items amount decreased, actual amount: " + center.getFoodItems());
+		} else if (itemtype.equals("cloth")) {
+			center.setClothItems(center.getClothItems() - order.getQuantity());
+			System.out.println("Cloth items amount decreased, actual amount: " + center.getClothItems());
+		} else if (itemtype.equals("hygiene")) {
+			center.setHygieneItems(center.getHygieneItems() - order.getQuantity());
+			System.out.println("Hygiene items amount decreased, actual amount: " + center.getHygieneItems());
+		}
+		
+		break;*/
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

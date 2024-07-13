@@ -22,6 +22,7 @@ public class Order {
 	private LocalDateTime time;
 	private String itemCode;
 	private String attendance;
+	private Boolean attended;
 
 	@ManyToOne
 	private Shelter requester;
@@ -33,8 +34,9 @@ public class Order {
 		this.id = null;
 		this.requester = requester;
 		this.itemCode = itemCode;
-		this.time = LocalDateTime.now(ZoneId.of("America/Sao_Paulo"));
+		this.time = LocalDateTime.now();
 		this.setQuantity(quantity);
+		this.attended = false;
 	}
 
 	public Integer getId() {
@@ -79,6 +81,14 @@ public class Order {
 
 	public void setAttendance(String attendance) {
 		this.attendance = attendance;
+	}
+
+	public Boolean getAttended() {
+		return attended;
+	}
+
+	public void setAttended(Boolean attended) {
+		this.attended = attended;
 	}
 
 	@Override
