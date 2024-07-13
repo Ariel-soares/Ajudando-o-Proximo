@@ -271,14 +271,14 @@ public class DistributionCenterMenu {
 				|| (itemType.equals("cloth") && shelter.getClothItems() >= 200)
 				|| (itemType.equals("hygiene") && shelter.getHygieneItems() >= 200)) {
 			System.out.println(
-					"The maximum possible for this type of item has been reached on this shelter, try to attend this order later!");
+					"The maximum possible for this type of item has been reached on this shelter, try to attend this order later!\n");
 			return;
 		}
 
 		if (itemType.equals("food")) {
 			if (shelter.getFoodItems() + order.getQuantity() > 200) {
 				System.out.println("This shelter can receive only " + (200 - shelter.getFoodItems())
-						+ " units from this type of item.");
+						+ " units from this type of item.\n");
 				order.setAttendance(
 						"Order exceeds shelter's actual total capacity for this kind of item, we will be adding "
 								+ (200 - shelter.getFoodItems()) + " units from the previous requested amount of "
@@ -288,7 +288,7 @@ public class DistributionCenterMenu {
 		} else if (itemType.equals("cloth")) {
 			if (shelter.getClothItems() + order.getQuantity() > 200) {
 				System.out.println("This shelter can receive only " + (200 - shelter.getClothItems())
-						+ " units from this type of item.");
+						+ " units from this type of item.\n");
 				order.setAttendance(
 						"Order exceeds shelter's actual total capacity for this kind of item, we will be adding "
 								+ (200 - shelter.getClothItems()) + " units from the previous requested amount of "
@@ -298,7 +298,7 @@ public class DistributionCenterMenu {
 		} else if (itemType.equals("hygiene")) {
 			if (shelter.getHygieneItems() + order.getQuantity() > 200) {
 				System.out.println("This shelter can receive only " + (200 - shelter.getHygieneItems())
-						+ " units from this type of item.");
+						+ " units from this type of item.\n");
 				order.setAttendance(
 						"Order exceeds shelter's actual total capacity for this kind of item, we will be adding "
 								+ (200 - shelter.getHygieneItems()) + " units from the previous requested amount of "
@@ -319,8 +319,6 @@ public class DistributionCenterMenu {
 		} else {
 			shelter.getItems().put(order.getItemCode(), amount);
 		}
-		
-		System.out.println("AMOUNT" + amount);
 
 		if (itemType.equals("food")) {
 			center.setFoodItems(center.getFoodItems() - amount);

@@ -75,7 +75,7 @@ public class Main {
 				DistributionCenterMenu.showDistributionCenterMenu(scanner, em);
 				break;
 			case 4:
-				System.out.println("\nENCERRANDO SISTEMA");
+				System.out.println("\nCLOSING SYSTEM");
 				System.exit(0);
 				break;
 			default:

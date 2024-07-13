@@ -27,6 +27,7 @@ public class Order {
 	private Shelter requester;
 
 	public Order() {
+		this.time = LocalDateTime.now();
 	}
 
 	public Order(Shelter requester, String itemCode, int quantity) {

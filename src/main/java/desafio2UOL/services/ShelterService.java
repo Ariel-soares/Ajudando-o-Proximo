@@ -54,11 +54,11 @@ public class ShelterService {
 		Shelter shelter = findById(id, em);
 		if (shelter != null) {
 			System.out.println(shelter);
-			System.out.println("\n--------------- Lista de itens do abrigo -------------\n");
+			System.out.println("\n--------------- SHELTER STORAGE LIST SORTED BY ( STORAGE CODE / QUANTITY ) -------------\n");
 			System.out.println(shelter.getItems());
 		} else {
 
-			System.err.println("Entidade nao encontrada");
+			System.err.println("Shelter not found\n");
 
 		}
 	}
