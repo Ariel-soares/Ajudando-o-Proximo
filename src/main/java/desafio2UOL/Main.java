@@ -3,7 +3,6 @@ package desafio2UOL;
 import java.util.Scanner;
 
 import desafio2UOL.entities.DistributionCenter;
-import desafio2UOL.entities.Shelter;
 import desafio2UOL.services.DistributionCenterService;
 import desafio2UOL.services.DonationService;
 import desafio2UOL.services.ItemService;

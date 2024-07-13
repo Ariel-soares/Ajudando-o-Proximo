@@ -3,9 +3,15 @@ package desafio2UOL.views;
 import java.util.List;
 import java.util.Scanner;
 
+import desafio2UOL.entities.ClothItem;
 import desafio2UOL.entities.DistributionCenter;
+import desafio2UOL.entities.FoodItem;
+import desafio2UOL.entities.HygieneItem;
+import desafio2UOL.entities.Item;
 import desafio2UOL.entities.Order;
 import desafio2UOL.entities.Shelter;
+import desafio2UOL.entities.enums.ItemName;
+import desafio2UOL.entities.enums.ItemType;
 import desafio2UOL.services.DistributionCenterService;
 import desafio2UOL.services.OrderService;
 import desafio2UOL.services.ShelterService;
@@ -23,7 +29,8 @@ public class DistributionCenterMenu {
 			System.out.println("3. Manage distribution center request orders");
 			System.out.println("4. Update existing distribution Center");
 			System.out.println("5. Delete Distribution Center");
-			System.out.println("6. Back to Main Menu\n");
+			System.out.println("6. Transfer items between distribution centers");
+			System.out.println("7. Back to Main Menu\n");
 			System.out.print("Choose an option: \n");
 			int option = scanner.nextInt();
 			scanner.nextLine();
@@ -45,6 +52,8 @@ public class DistributionCenterMenu {
 				deleteDistributionCenter(scanner, service, em);
 				break;
 			case 6:
+				distributionCenterItemsTransfer(scanner, service, em);
+			case 7:
 				return;
 			default:
 				System.out.println("Invalid option");
@@ -307,9 +316,6 @@ public class DistributionCenterMenu {
 			}
 		}
 
-		// -------------------------- Conferindo se o abrigo têm espaço para esse item
-		// ---------------------------------
-
 		Integer quantitysoFar = center.getItems().get(order.getItemCode());
 		center.getItems().put(order.getItemCode(), (quantitysoFar - amount));
 
@@ -343,6 +349,192 @@ public class DistributionCenterMenu {
 
 		order.setAttended(true);
 		orderService.updateOrder(order, order.getId(), em);
+	}
+
+	private static void distributionCenterItemsTransfer(Scanner scanner,
+			DistributionCenterService distributionCenterService, EntityManager em) {
+
+		System.out.println("\nAvailable distribution centers");
+
+		distributionCenterService.listDistributionCenters(em);
+
+		System.out.print("Enter the ID of the source distribution center: ");
+		int sourceCenterId = scanner.nextInt();
+		System.out.print("Enter the ID of the destination distribution center: ");
+		int destinationCenterId = scanner.nextInt();
+		scanner.nextLine();
+
+		DistributionCenter sourceCenter = distributionCenterService.findById(sourceCenterId, em);
+		DistributionCenter destinationCenter = distributionCenterService.findById(destinationCenterId, em);
+
+		if (sourceCenter == null || destinationCenter == null) {
+			System.out.println("One or both distribution centers not found.");
+			return;
+		}
+
+		// -------------------------------------Criando item-------------------------
+
+		System.out.print("Enter item type (1 - Clothes/2 - Hygiene/3 - Food/ 4 - Back to menu): ");
+		Integer itemType = scanner.nextInt();
+		scanner.nextLine();
+
+		System.out.println("Enter quantity to be requested:");
+		Integer quantity = scanner.nextInt();
+		scanner.nextLine();
+
+		Item item;
+
+		switch (itemType) {
+		case 1:
+
+			System.out.println("Enter item name: ");
+			String name = scanner.nextLine();
+			System.out.println("Enter product size (Infantil/PP/P/M/G/GG)");
+			String size = scanner.next().toUpperCase();
+			System.out.println("Enter item gender: (1 - Masculine / 2 - Feminine)");
+			Integer option = scanner.nextInt();
+			scanner.nextLine();
+			switch (option) {
+			case 1:
+				item = new ClothItem(ItemName.valueOf(name.toUpperCase()), "cloth", 'M', size);
+				item.setItemType(ItemType.CLOTH);
+				createTransference(item, sourceCenter, destinationCenter, quantity, distributionCenterService, em);
+
+				break;
+			case 2:
+				item = new ClothItem(ItemName.valueOf(name.toUpperCase()), "cloth", 'F', size);
+				item.setItemType(ItemType.CLOTH);
+				// order.setItem(item.storageCode());
+				// addOrder(scanner, order, em, orderService, distributionCenterService);
+				break;
+			}
+			break;
+		case 2:
+			System.out.println("Enter item name: ");
+			name = scanner.nextLine();
+			System.out.println("Enter item description: ");
+			String description = scanner.nextLine();
+			item = new HygieneItem(ItemName.valueOf(name.toUpperCase()), description);
+			item.setItemType(ItemType.HYGIENE);
+			// order.setItem(item.storageCode());
+			// addOrder(scanner, order, em, orderService, distributionCenterService);
+			break;
+		case 3:
+			System.out.println("Enter item name: ");
+			name = scanner.nextLine();
+			System.out.println("Enter item description: ");
+			description = scanner.nextLine();
+			System.out.println("Enter the item measurement: ");
+			String measurement = scanner.nextLine();
+			System.out.println("Enter item validity date: ");
+			String validity = scanner.nextLine();
+
+			item = new FoodItem(ItemName.valueOf(name.toUpperCase()), description, measurement, validity);
+			item.setItemType(ItemType.FOOD);
+			// order.setItem(item.storageCode());
+			// addOrder(scanner, order, em, orderService, distributionCenterService);
+			break;
+		case 4:
+			return;
+		}
+
+	}
+
+	public static void createTransference(Item item, DistributionCenter sourceCenter,
+			DistributionCenter destinationCenter, Integer desiredQuantity,
+			DistributionCenterService distributionCenterService, EntityManager em) {
+
+		String[] values = item.storageCode().split("/");
+
+		if (sourceCenter.getItems().containsKey(item.storageCode())) {
+
+			if (sourceCenter.getItems().get(item.storageCode()) < desiredQuantity) {
+				System.out.println(
+						"This distribution Center does not have enough units of this item, maybe later with more donations incoming");
+				return;
+			}
+
+			System.out.println("  This distribution center disposes of "
+					+ sourceCenter.getItems().get(item.storageCode()) + " unit(s) of this item");
+
+			if (values[0].toLowerCase().equals("food")) {
+				if (destinationCenter.getFoodItems() >= 1000) {
+					System.out.println("\nDistributionCenter of destiny alredy has the maximum type of this item.\n");
+					return;
+				} else if ((destinationCenter.getFoodItems() + desiredQuantity) > 1000) {
+					System.out.println(
+							"\nThis amount of items is bigger than the available space in the **destiny distribution center");
+					return;
+				}
+				sourceCenter.getItems().put(item.storageCode(),
+						(sourceCenter.getItems().get(item.storageCode()) - desiredQuantity));
+				sourceCenter.setFoodItems(sourceCenter.getFoodItems() - (desiredQuantity));
+
+				destinationCenter.getItems().put(item.storageCode(),
+						(destinationCenter.getItems().get(item.storageCode()) + desiredQuantity));
+				destinationCenter.setFoodItems(destinationCenter.getFoodItems() + (desiredQuantity));
+
+				distributionCenterService.updateDistributionCenter(sourceCenter, sourceCenter.getId(), em);
+				distributionCenterService.updateDistributionCenter(destinationCenter, destinationCenter.getId(), em);
+
+				System.out.println("Transference complete");
+
+			} else if (values[0].toLowerCase().equals("cloth")) {
+				if (destinationCenter.getClothItems() >= 1000) {
+					System.out.println("\nDistributionCenter of destiny alredy has the maximum type of this item.\n");
+					return;
+				} else if ((destinationCenter.getClothItems() + desiredQuantity) > 1000) {
+					System.out.println(
+							"\nThis amount of items is bigger than the available space in the destiny distribution center");
+					return;
+				}
+
+				sourceCenter.getItems().put(item.storageCode(),
+						(sourceCenter.getItems().get(item.storageCode()) - desiredQuantity));
+				sourceCenter.setClothItems(sourceCenter.getClothItems() - (desiredQuantity));
+
+				destinationCenter.getItems().put(item.storageCode(),
+						(destinationCenter.getItems().get(item.storageCode()) + desiredQuantity));
+				destinationCenter.setClothItems(destinationCenter.getClothItems() + (desiredQuantity));
+
+				distributionCenterService.updateDistributionCenter(sourceCenter, sourceCenter.getId(), em);
+				distributionCenterService.updateDistributionCenter(destinationCenter, destinationCenter.getId(), em);
+
+				System.out.println("Transference complete");
+
+				return;
+
+			} else if (values[0].toLowerCase().equals("hygiene")) {
+				if (destinationCenter.getHygieneItems() >= 1000) {
+					System.out.println("\nDistributionCenter of destiny alredy has the maximum type of this item.\n");
+					return;
+				} else if ((destinationCenter.getHygieneItems() + desiredQuantity) > 1000) {
+					System.out.println(
+							"\nThis amount of items is bigger than the available space in the destiny distribution center");
+					return;
+				}
+				
+				sourceCenter.getItems().put(item.storageCode(),
+						(sourceCenter.getItems().get(item.storageCode()) - desiredQuantity));
+				sourceCenter.setHygieneItems(sourceCenter.getHygieneItems() - (desiredQuantity));
+
+				destinationCenter.getItems().put(item.storageCode(),
+						(destinationCenter.getItems().get(item.storageCode()) + desiredQuantity));
+				destinationCenter.setHygieneItems(destinationCenter.getHygieneItems() + (desiredQuantity));
+
+				distributionCenterService.updateDistributionCenter(sourceCenter, sourceCenter.getId(), em);
+				distributionCenterService.updateDistributionCenter(destinationCenter, destinationCenter.getId(), em);
+
+				System.out.println("Transference complete");
+
+			}
+
+		} else {
+			System.out.println(
+					" This distribution Center does not have this item yet, maybe later with more donations incoming");
+			return;
+		}
+
 	}
 
 }

@@ -325,7 +325,6 @@ public class ShelterMenus {
 
 		List<DistributionCenter> centers = distributionCenterService.getAllDistributionCenters(em);
 
-		// String[] values = order.getItemCode().split("/");
 
 		List<DistributionCenter> sortedCenters = centers.stream()
 				.filter(dc -> dc.getItems().containsKey(order.getItemCode())).sorted((dc1, dc2) -> dc2.getItems()
@@ -355,50 +354,6 @@ public class ShelterMenus {
 			dc.getOrders().add(order);
 			distributionCenterService.updateDistributionCenter(dc, dc.getId(), em);
 		}
-		/*
-		 * switch(values[0].toLowerCase()) { case "food": Collections.sort(centers, new
-		 * Comparator<DistributionCenter>() {
-		 * 
-		 * @Override public int compare(DistributionCenter dc1, DistributionCenter dc2)
-		 * { return dc2.getFoodItems().compareTo(dc1.getFoodItems()); } }); System.out.
-		 * println("\n------------ DistributionCenters Available for request ------------\n"
-		 * ); for(DistributionCenter cd : centers) {
-		 * System.out.println("Distribution Center " + cd.getName() + " disposing of " +
-		 * cd.getFoodItems() + "  food items"); } break; case "cloth":
-		 * Collections.sort(centers, new Comparator<DistributionCenter>() {
-		 * 
-		 * @Override public int compare(DistributionCenter dc1, DistributionCenter dc2)
-		 * { return dc2.getClothItems().compareTo(dc1.getClothItems()); } });
-		 * System.out.
-		 * println("\n------------ DistributionCenters Available for request ------------\n"
-		 * ); for(DistributionCenter cd : centers) {
-		 * System.out.println("Distribution Center " + cd.getName() + " disposing of " +
-		 * cd.getClothItems() + "  cloth items"); } break; case "hygiene":
-		 * Collections.sort(centers, new Comparator<DistributionCenter>() {
-		 * 
-		 * @Override public int compare(DistributionCenter dc1, DistributionCenter dc2)
-		 * { return dc2.getHygieneItems().compareTo(dc1.getHygieneItems()); } });
-		 * System.out.
-		 * println("\n------------ DistributionCenters Available for request ------------\n"
-		 * ); for(DistributionCenter cd : centers) {
-		 * System.out.println("Distribution Center " + cd.getName() + " disposing of " +
-		 * cd.getHygieneItems() + "  hygiene items"); } break; }
-		 */
-
-		/*
-		 * System.out.println("Enter Center ID for requesting the order"); Integer
-		 * centerId = scanner.nextInt();
-		 * 
-		 * DistributionCenter center = distributionCenterService.findById(centerId, em);
-		 * 
-		 * order.setId(null);
-		 * 
-		 * orderService.addOrder(order, em); System.out.println(order);
-		 * 
-		 * center.getOrders().add(order);
-		 * 
-		 * distributionCenterService.updateDistributionCenter(center, centerId, em);
-		 */
 
 		System.out.println("\nOrder Request completed");
 	}
