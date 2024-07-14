@@ -26,7 +26,7 @@ Maven
 
 ```bash
 # clonar repositório
-git clone https://github.com/Ariel-soares/Desafio2
+git clone https://github.com/Ariel-soares/Ajudando-o-Proximo
 ```
 
 2ºPasso: Entrar no arquivo persistence.xml e trocar o valor das propriedades "user" e "password" pelas credenciais de usuário do seu banco de dados
