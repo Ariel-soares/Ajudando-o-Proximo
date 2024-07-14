@@ -170,8 +170,8 @@ public class DistributionCenter {
 
 	@Override
 	public String toString() {
-		return "DistributionCenter " + name + ", located at " + address + ", in the city " + city + " in the state of "
-				+ state + " with CEP " + cep + "\n Number of cloth items available: " + clothItems
+		return "\nID: " + id + ", DistributionCenter " + name + ", located at " + address + ", in the city " + city
+				+ " in the state of " + state + " with CEP " + cep + "\n Number of cloth items available: " + clothItems
 				+ "\n Number of food items available: " + foodItems + "\n Number of hygiene items available: "
 				+ hygieneItems;
 	}

@@ -95,21 +95,27 @@ public class DistributionCenterMenu {
 
 	private static void showDistributionCenterUpdateMenu(Scanner scanner, DistributionCenterService service,
 			EntityManager em) {
+		
+		List<DistributionCenter> centers = service.getAllDistributionCenters(em);
+		
+		System.out.println(centers + "\n");
+		
 		System.out.print("\nEnter Distribution Center ID to update:\n");
 		int id = scanner.nextInt();
 		scanner.nextLine();
 
 		DistributionCenter center = service.findById(id, em);
+		System.out.println(center + "\n");
 
 		while (true) {
-			System.out.println("Updating DistributionCenter: " + center.getName());
+			System.out.println("\nUpdating DistributionCenter: " + center.getName());
 			System.out.println("1. Update Name");
 			System.out.println("2. Update Address");
 			System.out.println("3. Update City");
 			System.out.println("4. Update State");
 			System.out.println("5. Update Cep");
-			System.out.println("6. Back to Distribution Center Menu");
-			System.out.print("Choose an option: ");
+			System.out.println("6. Back to Distribution Center Menu and update distribution center");
+			System.out.print("Choose an option: \n");
 			int option = scanner.nextInt();
 			scanner.nextLine();
 
@@ -193,16 +199,12 @@ public class DistributionCenterMenu {
 
 		System.out.println("\nDo you want to attend the request orders from the shelters?\n   Y - YES / N - NOT \n");
 		char answer = scanner.nextLine().toUpperCase().charAt(0);
-		
+
 		List<Order> unattendedOrders = center.getOrders().stream().filter(order -> !order.getAttended())
 				.collect(Collectors.toList());
 
 		switch (answer) {
 		case 'Y':
-			//System.out.println(center.getOrders());
-
-			
-
 			unattendedOrders.forEach(order -> System.out.println(order.toString()));
 			break;
 		case 'N':

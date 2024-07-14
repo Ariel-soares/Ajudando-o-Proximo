@@ -172,7 +172,6 @@ public class DonationsMenus {
 				String itemType = values[1];
 
 				Item item = createItemFromCSV(itemType, values);
-				// itemService.addItem(item, em);
 				DistributionCenter distributionCenter = distributionCenterService.findById(distributionCenterId, em);
 				if (item == null) {
 					System.out.println("Invalid item type in CSV: " + itemType);

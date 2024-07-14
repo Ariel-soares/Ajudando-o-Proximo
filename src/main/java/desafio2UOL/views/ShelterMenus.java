@@ -70,106 +70,91 @@ public class ShelterMenus {
 	}
 
 	private static void addShelter(Scanner scanner, ShelterService shelterService, EntityManager em) {
-	/*	System.out.print("Enter name: ");
-		String name = scanner.nextLine();
+
+		System.out.print("Enter name: ");
+		String name = scanner.nextLine().trim();
+		if (name.isEmpty()) {
+			System.out.println("Name cannot be empty.");
+			return;
+		}
+
 		System.out.print("Enter address: ");
-		String address = scanner.nextLine();
+		String address = scanner.nextLine().trim();
+		if (address.isEmpty()) {
+			System.out.println("Address cannot be empty.");
+			return;
+		}
+
 		System.out.print("Enter contact: ");
-		String contact = scanner.nextLine();
+		String contact = scanner.nextLine().trim();
+		if (contact.isEmpty()) {
+			System.out.println("Contact cannot be empty.");
+			return;
+		}
+
 		System.out.print("Enter capacity: ");
 		int capacity = scanner.nextInt();
+		if (capacity <= 0) {
+			System.out.println("Capacity must be greater than 0.");
+			return;
+		}
+
 		System.out.print("Enter occupancy: ");
 		int occupancy = scanner.nextInt();
+		if (occupancy < 0 || occupancy > capacity) {
+			System.out.println("Occupancy must be between 0 and capacity.");
+			return;
+		}
 		scanner.nextLine();
 		System.out.print("Enter responsible: ");
-		String responsible = scanner.nextLine();
-		System.out.print("Enter email: ");
-		String email = scanner.nextLine();
+		String responsible = scanner.nextLine().trim();
+		if (responsible.isEmpty()) {
+			System.out.println("Responsible cannot be empty.");
+			return;
+		}
 
-		Shelter shelter = new Shelter(null, name, address, responsible, contact, email, capacity, occupancy);
+		System.out.print("Enter email: ");
+		String email = scanner.nextLine().trim();
+		if (!email.contains("@") || !email.contains(".")) {
+			System.out.println("Email is not valid.");
+			return;
+		}
+
+		Shelter shelter = new Shelter(name, address, responsible, contact, email, capacity, occupancy);
 		shelterService.addShelter(shelter, em);
 
-		System.out.println("\nCadastro realizado com sucesso \n");*/
-		
-		    System.out.print("Enter name: ");
-		    String name = scanner.nextLine().trim();
-		    if (name.isEmpty()) {
-		        System.out.println("Name cannot be empty.");
-		        return;
-		    }
-
-		    System.out.print("Enter address: ");
-		    String address = scanner.nextLine().trim();
-		    if (address.isEmpty()) {
-		        System.out.println("Address cannot be empty.");
-		        return;
-		    }
-
-		    System.out.print("Enter contact: ");
-		    String contact = scanner.nextLine().trim();
-		    if (contact.isEmpty()) {
-		        System.out.println("Contact cannot be empty.");
-		        return;
-		    }
-
-		    System.out.print("Enter capacity: ");
-		    int capacity = scanner.nextInt();
-		    if (capacity <= 0) {
-		        System.out.println("Capacity must be greater than 0.");
-		        return;
-		    }
-
-		    System.out.print("Enter occupancy: ");
-		    int occupancy = scanner.nextInt();
-		    if (occupancy < 0 || occupancy > capacity) {
-		        System.out.println("Occupancy must be between 0 and capacity.");
-		        return;
-		    }
-		    scanner.nextLine(); // Consume newline
-
-		    System.out.print("Enter responsible: ");
-		    String responsible = scanner.nextLine().trim();
-		    if (responsible.isEmpty()) {
-		        System.out.println("Responsible cannot be empty.");
-		        return;
-		    }
-
-		    System.out.print("Enter email: ");
-		    String email = scanner.nextLine().trim();
-		    if (!email.contains("@") || !email.contains(".")) {
-		        System.out.println("Email is not valid.");
-		        return;
-		    }
-
-		    Shelter shelter = new Shelter(name, address, responsible, contact, email, capacity, occupancy);
-		    shelterService.addShelter(shelter, em);
-
-		    System.out.println("\nCadastro realizado com sucesso \n");
-		
+		System.out.println("\nCadastro realizado com sucesso \n");
 
 	}
 
 	private static void showUpdateShelterMenu(Scanner scanner, ShelterService shelterService, EntityManager em) {
+		
+		List<Shelter> shelters = shelterService.getAllShelters(em);
+		for(Shelter s : shelters) {
+			System.out.println("ID: " + s.getId() + " -> " + s);
+		}
+		
 		System.out.print("\nEnter Shelter ID to update:\n");
 		int id = scanner.nextInt();
 		scanner.nextLine();
 
 		Shelter shelter = shelterService.findById(id, em);
+		System.out.println(shelter);
 		if (shelter == null) {
 			System.out.println("Shelter not found.");
 			return;
 		}
 
 		while (true) {
-			System.out.println("Updating Shelter: " + shelter.getName());
+			System.out.println("\nUpdating Shelter: " + shelter.getName());
 			System.out.println("1. Update Name");
 			System.out.println("2. Update Address");
 			System.out.println("3. Update Contact");
 			System.out.println("4. Update Capacity");
 			System.out.println("5. Update Occupancy");
 			System.out.println("6. Update email");
-			System.out.println("7. Back to Shelters Menu");
-			System.out.print("Choose an option: ");
+			System.out.println("7. Back to Shelters Menu and complete update");
+			System.out.print("Choose an option: \n");
 			int option = scanner.nextInt();
 			scanner.nextLine();
 
@@ -324,7 +309,6 @@ public class ShelterMenus {
 			DistributionCenterService distributionCenterService) {
 
 		List<DistributionCenter> centers = distributionCenterService.getAllDistributionCenters(em);
-
 
 		List<DistributionCenter> sortedCenters = centers.stream()
 				.filter(dc -> dc.getItems().containsKey(order.getItemCode())).sorted((dc1, dc2) -> dc2.getItems()

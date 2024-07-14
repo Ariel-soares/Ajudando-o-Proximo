@@ -18,14 +18,13 @@ public class ClothItem extends Item {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	@Enumerated(EnumType.STRING)
 	private ItemName name;
 	private String description;
 	private char gender;
 	private String size;
-	
-	
+
 	public ClothItem() {
 	}
 
@@ -85,7 +84,7 @@ public class ClothItem extends Item {
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + Objects.hash(gender, name, size);
+		result = prime * result + Objects.hash(id);
 		return result;
 	}
 
@@ -98,13 +97,13 @@ public class ClothItem extends Item {
 		if (getClass() != obj.getClass())
 			return false;
 		ClothItem other = (ClothItem) obj;
-		return gender == other.gender && name == other.name && Objects.equals(size, other.size);
+		return Objects.equals(id, other.id);
 	}
 
 	@Override
 	public String toString() {
 		return " cloth item type with description: " + description + ", of name : " + name + ", of gender " + gender
-				+ ", of size " + size + " " +  super.getItemType() + " <- itemType\n";
+				+ ", of size " + size + " " + super.getItemType() + " <- itemType\n";
 	}
 
 }

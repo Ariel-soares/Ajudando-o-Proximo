@@ -22,7 +22,7 @@ public class Donation {
 	private LocalDateTime time;
 	private Integer quantity;
 	private String observation;
-	
+
 	@OneToOne
 	private Item item;
 
@@ -51,7 +51,7 @@ public class Donation {
 	public Item getItem() {
 		return item;
 	}
-	
+
 	public void setItem(Item item) {
 		this.item = item;
 	}
@@ -108,7 +108,7 @@ public class Donation {
 	@Override
 	public String toString() {
 		return "\nDonation number " + id + ", made to distribution center " + distributionCenter.getName() + " adding "
-				+ quantity + item.getName() + "(s) to its storage\n";
+				+ quantity + " " + item.getName() + "(s) to its storage\n";
 	}
 
 }

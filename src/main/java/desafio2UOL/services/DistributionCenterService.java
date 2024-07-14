@@ -9,7 +9,6 @@ import jakarta.persistence.EntityManager;
 public class DistributionCenterService {
 
 	private DistributionCenterDao DistributionCenterDao = new DistributionCenterDao();
-	
 
 	public DistributionCenter findById(Integer id, EntityManager em) {
 		return DistributionCenterDao.findById(id, em);
@@ -25,7 +24,6 @@ public class DistributionCenterService {
 
 	public void updateDistributionCenter(DistributionCenter DistributionCenter, Integer id, EntityManager em) {
 		DistributionCenter old = DistributionCenterDao.findById(id, em);
-		updateData(old, DistributionCenter);
 		DistributionCenterDao.updateDistributionCenter(old, id, em);
 	}
 
@@ -40,26 +38,4 @@ public class DistributionCenterService {
 		}
 	}
 
-	private void updateData(DistributionCenter old, DistributionCenter updated) {
-
-		old.setAddress(updated.getAddress());
-		old.setCep(updated.getCep());
-		old.setCity(updated.getCity());;
-		old.setId(updated.getId());
-		old.setName(updated.getName());
-		old.setState(updated.getState());
-		old.setId(updated.getId());
-		old.getItems().putAll(updated.getItems());
-		//old.setFoodItems(updated.getFoodItems());
-	}
-
-	public void findOne(Integer id, EntityManager em) {
-		DistributionCenter DistributionCenter = findById(id, em);
-		if (DistributionCenter != null) {
-			System.out.println(DistributionCenter);
-			System.out.println("\n--------------- Lista de doações do abrigo -------------\n");
-			System.out.println(DistributionCenter.getDonations());
-		} else
-			System.err.println("Entidade não encontrada");
-	}
 }

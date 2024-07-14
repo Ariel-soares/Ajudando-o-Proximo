@@ -24,7 +24,6 @@ public class ShelterService {
 
 	public void updateShelter(Shelter shelter, Integer id, EntityManager em) {
 		Shelter old = shelterDao.findById(id, em);
-		updateData(old, shelter);
 		shelterDao.updateShelter(old, id, em);
 	}
 
@@ -39,22 +38,12 @@ public class ShelterService {
 		}
 	}
 
-	private void updateData(Shelter old, Shelter updated) {
-		old.setAddress(updated.getAddress());
-		old.setCapacity(updated.getCapacity());
-		old.setEmail(updated.getEmail());
-		old.setId(updated.getId());
-		old.setName(updated.getName());
-		old.setOccupancy(updated.getOccupancy());
-		old.setPhoneNumber(updated.getPhoneNumber());
-		old.setResponsible(updated.getResponsible());
-	}
-
 	public void findOne(Integer id, EntityManager em) {
 		Shelter shelter = findById(id, em);
 		if (shelter != null) {
 			System.out.println(shelter);
-			System.out.println("\n--------------- SHELTER STORAGE LIST SORTED BY ( STORAGE CODE -> QUANTITY ) -------------\n");
+			System.out.println(
+					"\n--------------- SHELTER STORAGE LIST SORTED BY ( STORAGE CODE -> QUANTITY ) -------------\n");
 			System.out.println(shelter.getItems());
 		} else {
 

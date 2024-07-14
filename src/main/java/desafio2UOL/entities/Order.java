@@ -1,6 +1,7 @@
 package desafio2UOL.entities;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Objects;
 
 import jakarta.persistence.Entity;
@@ -27,7 +28,7 @@ public class Order {
 	private Shelter requester;
 
 	public Order() {
-		this.time = LocalDateTime.now();
+		this.time = LocalDateTime.now(ZoneId.of("America/Sao_Paulo"));
 		this.attended = false;
 	}
 
@@ -35,7 +36,7 @@ public class Order {
 		this.id = null;
 		this.requester = requester;
 		this.itemCode = itemCode;
-		this.time = LocalDateTime.now();
+		this.time = LocalDateTime.now(ZoneId.of("America/Sao_Paulo"));
 		this.setQuantity(quantity);
 		this.attended = false;
 	}
@@ -111,9 +112,8 @@ public class Order {
 
 	@Override
 	public String toString() {
-		return "Order [id=" + id + ", quantity=" + quantity + ", time=" + time + ", requester=" + requester.getId() + ", itemCode="
-				+ itemCode + "]";
+		return "Order number " + id + ", requesting " + quantity + " units of " + itemCode + ", requested at " + time
+				+ ", requested by " + requester.getName();
 	}
-	
-	
+
 }
