@@ -13,7 +13,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "food_items")
-public class FoodItem extends Item{
+public class FoodItem extends Item {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,8 +23,9 @@ public class FoodItem extends Item{
 	private String description;
 	private String measurement;
 	private String validity;
-	
-	public FoodItem() {}
+
+	public FoodItem() {
+	}
 
 	public FoodItem(ItemName name, String description, String measurement, String validity) {
 		this.name = name;
@@ -40,11 +41,11 @@ public class FoodItem extends Item{
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
+
 	public ItemName getName() {
 		return name;
 	}
-	
+
 	public void setName(ItemName name) {
 		this.name = name;
 	}
@@ -85,7 +86,7 @@ public class FoodItem extends Item{
 		result = prime * result + Objects.hash(name);
 		return result;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -100,7 +101,8 @@ public class FoodItem extends Item{
 
 	@Override
 	public String toString() {
-		return "Food type item, with description: " + description + ", spoiling at date: " + validity + ", measured in:" + measurement + super.getItemType() +"\n";
+		return " Food type item, with description: " + description + ", spoiling at date: " + validity + ", measured in:"
+				+ measurement + "\n";
 	}
-	
+
 }

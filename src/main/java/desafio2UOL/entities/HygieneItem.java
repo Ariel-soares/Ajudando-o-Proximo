@@ -18,7 +18,7 @@ public class HygieneItem extends Item {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	@Enumerated(EnumType.STRING)
 	private ItemName name;
 	private String description;
@@ -39,20 +39,20 @@ public class HygieneItem extends Item {
 		this.id = id;
 	}
 
-	public ItemName getNome() {
+	public ItemName getName() {
 		return name;
 	}
 
-	public void setNome(ItemName nome) {
-		this.name = nome;
+	public void setName(ItemName name) {
+		this.name = name;
 	}
 
-	public String getDescricao() {
+	public String getDescription() {
 		return description;
 	}
 
-	public void setDescricao(String descricao) {
-		this.description = descricao;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	@Override
@@ -82,7 +82,7 @@ public class HygieneItem extends Item {
 
 	@Override
 	public String toString() {
-		return "Hygiene type item of name: " + name + ", with description: " + description + "\n";
+		return " Hygiene type item of name: " + name + ", with description: " + description + "\n";
 	}
 
 }
