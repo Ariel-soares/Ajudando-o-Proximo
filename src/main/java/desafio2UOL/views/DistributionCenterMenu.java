@@ -313,7 +313,7 @@ public class DistributionCenterMenu {
 						"Order exceeds shelter's actual total capacity for this kind of item, we will be adding "
 								+ (200 - shelter.getClothItems()) + " units from the previous requested amount of "
 								+ amount + " requested units");
-				amount = 200 - shelter.getFoodItems();
+				amount = 200 - shelter.getClothItems();
 			}
 		} else if (itemType.equals("hygiene")) {
 			if (shelter.getHygieneItems() + order.getQuantity() > 200) {
