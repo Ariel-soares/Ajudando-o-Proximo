@@ -11,6 +11,10 @@ O projeto consiste em um sistema de manejamento de itens advindos de doeações,
 - Java
 - JPA / Hibernate
 - Maven
+
+## Modelo de domínio
+![Modelo-De-Cominio](https://github.com/Ariel-soares/Ajudando-o-Proximo/blob/main/assets/domain-model.jpg)
+
 ## Implantação em produção
 - Banco de dados: Postgresql
 
@@ -18,10 +22,25 @@ O projeto consiste em um sistema de manejamento de itens advindos de doeações,
 Pré-requisitos: Java 17,
 Maven
 
+1º Passo: Clonar o projeto
+
 ```bash
 # clonar repositório
 git clone https://github.com/Ariel-soares/Desafio2
+```
 
+2ºPasso: Entrar no arquivo persistence.xml e trocar o valor das propriedades "user" e "password" pelas credenciais de usuário do seu banco de dados
+
+![Persistence directory](https://github.com/Ariel-soares/Ajudando-o-Proximo/blob/main/assets/persistence-files.jpg)
+
+![DB-credentials](https://github.com/Ariel-soares/Ajudando-o-Proximo/blob/main/assets/DB-credentials.jpg)
+
+(Utilize PostgreSQL para evitar problemas de compatibilidade).
+Mas caso queira trocar a base de dados para uma de sua escolha, basta retirar a dependência do PostgreSQL no arquivo POM.xml e adicionar a de seu gosto.
+
+3º Passo: Executar o projeto via linha de comando
+
+```bash
 # entrar na pasta do projeto
 # executar comandos maven para build do projeto
 mvn clean install
