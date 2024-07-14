@@ -2,6 +2,7 @@ package desafio2UOL.views;
 
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import desafio2UOL.entities.ClothItem;
 import desafio2UOL.entities.DistributionCenter;
@@ -186,15 +187,23 @@ public class DistributionCenterMenu {
 		}
 
 		if (center.getOrders().isEmpty()) {
+			System.out.println("\nNo request orders for this DistributionCenter\n");
 			return;
 		}
 
 		System.out.println("\nDo you want to attend the request orders from the shelters?\n   Y - YES / N - NOT \n");
 		char answer = scanner.nextLine().toUpperCase().charAt(0);
+		
+		List<Order> unattendedOrders = center.getOrders().stream().filter(order -> !order.getAttended())
+				.collect(Collectors.toList());
 
 		switch (answer) {
 		case 'Y':
-			System.out.println(center.getOrders());
+			//System.out.println(center.getOrders());
+
+			
+
+			unattendedOrders.forEach(order -> System.out.println(order.toString()));
 			break;
 		case 'N':
 			System.out.println("Returning to main menu\n");
@@ -206,7 +215,7 @@ public class DistributionCenterMenu {
 		int orderId = scanner.nextInt();
 		scanner.nextLine();
 
-		for (Order o : center.getOrders()) {
+		for (Order o : unattendedOrders) {
 			if (o.getId() == orderId) {
 				order = o;
 			}
@@ -215,6 +224,10 @@ public class DistributionCenterMenu {
 		if (order.getId() == null) {
 			System.err.println("Invalid id");
 			return;
+		}
+
+		if (order.getAttended()) {
+			System.out.println("This request order has already been attended");
 		}
 
 		String[] values = order.getItemCode().split("/");
@@ -270,10 +283,6 @@ public class DistributionCenterMenu {
 
 		ShelterService shelterService = new ShelterService();
 		Shelter shelter = shelterService.findById(order.getRequester().getId(), em);
-
-		// -------------------------- Conferindo se o abrigo têm espaço para esse item
-		// ---------------------------------
-
 		Integer amount = order.getQuantity();
 
 		if ((itemType.equals("food") && shelter.getFoodItems() >= 200)
@@ -372,8 +381,6 @@ public class DistributionCenterMenu {
 			return;
 		}
 
-		// -------------------------------------Criando item-------------------------
-
 		System.out.print("Enter item type (1 - Clothes/2 - Hygiene/3 - Food/ 4 - Back to menu): ");
 		Integer itemType = scanner.nextInt();
 		scanner.nextLine();
@@ -404,8 +411,7 @@ public class DistributionCenterMenu {
 			case 2:
 				item = new ClothItem(ItemName.valueOf(name.toUpperCase()), "cloth", 'F', size);
 				item.setItemType(ItemType.CLOTH);
-				// order.setItem(item.storageCode());
-				// addOrder(scanner, order, em, orderService, distributionCenterService);
+				createTransference(item, sourceCenter, destinationCenter, quantity, distributionCenterService, em);
 				break;
 			}
 			break;
@@ -416,8 +422,7 @@ public class DistributionCenterMenu {
 			String description = scanner.nextLine();
 			item = new HygieneItem(ItemName.valueOf(name.toUpperCase()), description);
 			item.setItemType(ItemType.HYGIENE);
-			// order.setItem(item.storageCode());
-			// addOrder(scanner, order, em, orderService, distributionCenterService);
+			createTransference(item, sourceCenter, destinationCenter, quantity, distributionCenterService, em);
 			break;
 		case 3:
 			System.out.println("Enter item name: ");
@@ -431,8 +436,7 @@ public class DistributionCenterMenu {
 
 			item = new FoodItem(ItemName.valueOf(name.toUpperCase()), description, measurement, validity);
 			item.setItemType(ItemType.FOOD);
-			// order.setItem(item.storageCode());
-			// addOrder(scanner, order, em, orderService, distributionCenterService);
+			createTransference(item, sourceCenter, destinationCenter, quantity, distributionCenterService, em);
 			break;
 		case 4:
 			return;
@@ -513,7 +517,7 @@ public class DistributionCenterMenu {
 							"\nThis amount of items is bigger than the available space in the destiny distribution center");
 					return;
 				}
-				
+
 				sourceCenter.getItems().put(item.storageCode(),
 						(sourceCenter.getItems().get(item.storageCode()) - desiredQuantity));
 				sourceCenter.setHygieneItems(sourceCenter.getHygieneItems() - (desiredQuantity));

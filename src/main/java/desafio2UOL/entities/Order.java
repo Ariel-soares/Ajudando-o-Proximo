@@ -28,6 +28,7 @@ public class Order {
 
 	public Order() {
 		this.time = LocalDateTime.now();
+		this.attended = false;
 	}
 
 	public Order(Shelter requester, String itemCode, int quantity) {
