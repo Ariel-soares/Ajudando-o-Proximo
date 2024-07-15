@@ -51,6 +51,8 @@ cd target
 # executar o projeto
 java -jar arquivo.jar que está na pasta
 ```
+**Caso seu projeto não execute após estes passos, tente apenas rodá-lo na sua IDE de preferência.**
+
 # Autor
 
 Ariel Soares Franco
