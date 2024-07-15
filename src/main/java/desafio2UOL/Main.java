@@ -2,8 +2,6 @@ package desafio2UOL;
 
 import java.util.Scanner;
 
-import desafio2UOL.entities.DistributionCenter;
-import desafio2UOL.entities.Shelter;
 import desafio2UOL.services.DistributionCenterService;
 import desafio2UOL.services.DonationService;
 import desafio2UOL.services.ItemService;
@@ -30,32 +28,7 @@ public class Main {
 
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("desafio-context");
 		EntityManager em = emf.createEntityManager();
-/*
-		DistributionCenter cd = new DistributionCenter(null, "Centro de Distribuição Esperança",
-				"Av. Boqueirão, 2450 - Igara", "Canoas", "RS", "92032-420");
-		DistributionCenter cd2 = new DistributionCenter(null, "Centro de Distribuição Prosperidade",
-				"Av. Borges de Medeiros, 1501 – Cidade Baixa", "Porto Alegre ", "RS", "90119-900");
-		DistributionCenter cd3 = new DistributionCenter(null, "Centro de Distribuição Reconstrução",
-				"R. Dr. Décio Martins Costa, 312 - Vila Eunice Nova", "Cachoeirinha", "RS", "94920-170\r\n");
 
-		em.getTransaction().begin();
-		em.persist(cd);
-		em.getTransaction().commit();
-
-		em.getTransaction().begin();
-		em.persist(cd2);
-		em.getTransaction().commit();
-		
-		em.getTransaction().begin();
-		em.persist(cd3);
-		em.getTransaction().commit();
-
-		Shelter shelter = new Shelter("Abrigo casa de apoio", "rua 1", "Ariel", "75 998785246", "ariel@gmail.com", 100, 50);
-
-		em.getTransaction().begin();
-		em.persist(shelter);
-		em.getTransaction().commit();
-*/
 		showMenu(em);
 
 		emf.close();

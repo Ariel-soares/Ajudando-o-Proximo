@@ -13,8 +13,8 @@
 			<property name="javakarta.persistence.jdbc.driver"
 				value="com.mysql.jdbc.Driver" />
 				
-			<property name="jakarta.persistence.jdbc.user" value="root" />
-			<property name="jakarta.persistence.jdbc.password" value="3425" />
+			<property name="jakarta.persistence.jdbc.user" value="seu-usuario" />
+			<property name="jakarta.persistence.jdbc.password" value="sua-senha" />
 			
 			
 			<property name="hibernate.hbm2ddl.auto" value="create" />
