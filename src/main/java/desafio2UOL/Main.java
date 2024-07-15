@@ -30,7 +30,7 @@ public class Main {
 
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("desafio-context");
 		EntityManager em = emf.createEntityManager();
-
+/*
 		DistributionCenter cd = new DistributionCenter(null, "Centro de Distribuição Esperança",
 				"Av. Boqueirão, 2450 - Igara", "Canoas", "RS", "92032-420");
 		DistributionCenter cd2 = new DistributionCenter(null, "Centro de Distribuição Prosperidade",
@@ -50,12 +50,12 @@ public class Main {
 		em.persist(cd3);
 		em.getTransaction().commit();
 
-		Shelter shelter = new Shelter("shelter1", "rua 1", "Ariel", "9999999", "ariel@gmail.com", 100, 50);
+		Shelter shelter = new Shelter("Abrigo casa de apoio", "rua 1", "Ariel", "75 998785246", "ariel@gmail.com", 100, 50);
 
 		em.getTransaction().begin();
 		em.persist(shelter);
 		em.getTransaction().commit();
-
+*/
 		showMenu(em);
 
 		emf.close();
