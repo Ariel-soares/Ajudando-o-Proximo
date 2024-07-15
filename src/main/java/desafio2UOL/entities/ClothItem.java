@@ -103,7 +103,7 @@ public class ClothItem extends Item {
 	@Override
 	public String toString() {
 		return " Cloth item type with description: " + description + ", of name : " + name + ", of gender " + gender
-				+ ", of size " + size + "\n";
+				+ ", of size " + size;
 	}
 
 }

@@ -1,0 +1,28 @@
+ID: 1
+Time: 15/07/2024 07:41:14
+Item:  Cloth item type with description: Cotton, of name : SHIRT, of gender M, of size M
+Quantity: 600
+Observation: Donation received
+Distribution Center ID: 1
+---------------------------------
+ID: 2
+Time: 15/07/2024 07:41:14
+Item:  Food type item, with description: rice, spoiling at date: 2024-12-31, measured in:1kg
+Quantity: 600
+Observation: Donation received
+Distribution Center ID: 1
+---------------------------------
+ID: 3
+Time: 15/07/2024 07:41:14
+Item:  Cloth item type with description: Cotton, of name : SHIRT, of gender M, of size M
+Quantity: 600
+Observation: Donation received
+Distribution Center ID: 2
+---------------------------------
+ID: 4
+Time: 15/07/2024 07:41:14
+Item:  Hygiene type item of name: TOOTHBRUSH, with description: soap for bath
+Quantity: 600
+Observation: Donation received
+Distribution Center ID: 3
+---------------------------------

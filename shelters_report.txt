@@ -1,0 +1,8 @@
+ID: 1
+Name: shelter1
+Address: rua 1
+Stock: {CLOTH/SHIRT/M/M=100}
+Cloth Items: 100
+Food Items: 0
+Hygiene Items: 0
+---------------------------------

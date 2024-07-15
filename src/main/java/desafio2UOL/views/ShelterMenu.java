@@ -19,7 +19,7 @@ import desafio2UOL.services.OrderService;
 import desafio2UOL.services.ShelterService;
 import jakarta.persistence.EntityManager;
 
-public class ShelterMenus {
+public class ShelterMenu {
 
 	public static void showShelterMenu(Scanner scanner, ShelterService shelterService, EntityManager em,
 			DistributionCenterService distributionCenterService, OrderService orderService) {
@@ -334,7 +334,6 @@ public class ShelterMenus {
 		System.out.println(order);
 
 		for (DistributionCenter dc : selectedCenters) {
-			System.out.println(order);
 			dc.getOrders().add(order);
 			distributionCenterService.updateDistributionCenter(dc, dc.getId(), em);
 		}

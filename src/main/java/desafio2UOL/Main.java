@@ -10,8 +10,9 @@ import desafio2UOL.services.ItemService;
 import desafio2UOL.services.OrderService;
 import desafio2UOL.services.ShelterService;
 import desafio2UOL.views.DistributionCenterMenu;
-import desafio2UOL.views.DonationsMenus;
-import desafio2UOL.views.ShelterMenus;
+import desafio2UOL.views.DonationsMenu;
+import desafio2UOL.views.ReportMenu;
+import desafio2UOL.views.ShelterMenu;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
@@ -67,22 +68,26 @@ public class Main {
 			System.out.println("\n1. Donation Management");
 			System.out.println("2. Shelter Management");
 			System.out.println("3. Distribution Center Management");
-			System.out.println("4. Exit");
+			System.out.println("4. Report menu");
+			System.out.println("5. Exit");
 			System.out.print("\nChoose an option:\n");
 			int option = scanner.nextInt();
 			scanner.nextLine();
 
 			switch (option) {
 			case 1:
-				DonationsMenus.showDonationsMenu(scanner, distributionCenterService, itemService, donationService, em);
+				DonationsMenu.showDonationsMenu(scanner, distributionCenterService, itemService, donationService, em);
 				break;
 			case 2:
-				ShelterMenus.showShelterMenu(scanner, shelterService, em, distributionCenterService, orderService);
+				ShelterMenu.showShelterMenu(scanner, shelterService, em, distributionCenterService, orderService);
 				break;
 			case 3:
 				DistributionCenterMenu.showDistributionCenterMenu(scanner, em);
 				break;
 			case 4:
+				ReportMenu.showReportMenu(scanner, distributionCenterService, shelterService, donationService, em);
+				break;
+			case 5:
 				System.out.println("\nCLOSING SYSTEM");
 				System.exit(0);
 				break;

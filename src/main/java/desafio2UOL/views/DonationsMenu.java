@@ -20,7 +20,7 @@ import desafio2UOL.services.DonationService;
 import desafio2UOL.services.ItemService;
 import jakarta.persistence.EntityManager;
 
-public class DonationsMenus {
+public class DonationsMenu {
 
 	public static void showDonationsMenu(Scanner scanner, DistributionCenterService distributionCenterService,
 			ItemService itemService, DonationService donationService, EntityManager em) {
