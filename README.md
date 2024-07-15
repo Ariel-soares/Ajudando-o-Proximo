@@ -72,8 +72,12 @@ Que apesar de terem suas próprias demandas internas na empresa, estiveram a dis
 Também deixo aqui meus agradecimentos aos mebros do meu squad:
 
 - Diego Pimenta
+  https://www.linkedin.com/in/diego-pimenta-dev/
 - Gerson Luís Soares
+  https://www.linkedin.com/in/gersonluis/
 - Luís Otavio de Siqueira
+  https://www.linkedin.com/in/luisotaviosiqueira/
 - Pedro Roberto Chicuta
+  https://www.linkedin.com/in/pedro-chicuta-5b2315257/
 
 Que apesar de não compartilharmos código ou lógica de programação mantiveram a boa comunicação e o incentivo mesmo o projeto sendo de avaliação individual.)
