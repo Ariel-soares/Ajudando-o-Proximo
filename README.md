@@ -5,7 +5,7 @@
 
 Ajudando o próximo é uma aplicação backend criada como resposta ao desafio 2 no estágio de Backend na UOL Compass.
 
-O projeto consiste em um sistema de manejamento de itens advindos de doeações, que serão direcionadas a centros de distribuição e então para abrigos, administrando assim os estoques.
+O projeto consiste em um sistema de manejamento de itens advindos de doações, que serão direcionadas a centros de distribuição e então para abrigos, administrando assim os estoques.
 
 # Tecnologias utilizadas
 - Java
