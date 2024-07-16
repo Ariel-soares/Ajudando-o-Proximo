@@ -16,7 +16,7 @@ O projeto consiste em um sistema de manejamento de itens advindos de doações, 
 ![Modelo-De-Cominio](https://github.com/Ariel-soares/Ajudando-o-Proximo/blob/main/assets/domain-model.jpg)
 
 ## Implantação em produção
-- Banco de dados: Postgresql
+- Banco de dados: MySQL
 
 # Como executar o projeto
 Pré-requisitos: Java 17,
@@ -36,7 +36,7 @@ git clone https://github.com/Ariel-soares/Ajudando-o-Proximo
 ![DB-credentials](https://github.com/Ariel-soares/Ajudando-o-Proximo/blob/main/assets/DB-credentials.jpg)
 
 (Utilize PostgreSQL para evitar problemas de compatibilidade).
-Mas caso queira trocar a base de dados para uma de sua escolha, basta retirar a dependência do PostgreSQL no arquivo POM.xml e adicionar a de seu gosto.
+Mas caso queira trocar a base de dados para uma de sua escolha, basta retirar a dependência do MySQL no arquivo POM.xml e adicionar a de seu gosto.
 
 3º Passo: Executar o projeto via linha de comando
 
